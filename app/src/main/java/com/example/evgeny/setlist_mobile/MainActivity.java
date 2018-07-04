@@ -17,11 +17,16 @@ import com.example.evgeny.setlist_mobile.search.SearchFragment;
 
 public class MainActivity extends BottomNavigationActivity {
 
+    SetlistConnection setlistConnection;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         openLaunchFragment();
+        setlistConnection = new SetlistConnection();
+        setlistConnection.execute();
+
     }
 
 }
