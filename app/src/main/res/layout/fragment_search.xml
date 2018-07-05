@@ -16,10 +16,11 @@
             android:layout_weight="5"/>
 
         <Button
+            android:text="search"
             android:id="@+id/btn_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
     </LinearLayout>
 
