@@ -76,6 +76,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     void search(String bandName) {
         setlistConnection = new SetlistConnection();
+        setlistConnection.setArtistName(bandName);
         setlistConnection.execute();
     }
 }

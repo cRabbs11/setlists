@@ -18,11 +18,23 @@ import java.net.URL;
 
 public class SetlistConnection extends AsyncTask {
 
-    private final String stringURL = "https://api.setlist.fm/rest/1.0/search/artists?artistName=Metallica&p=1&sort=sortName";
+    private String artistName="artist";
+
+    public void setArtistName(String artistName) {
+        this.artistName=artistName;
+    }
+
+    private String getStringURL() {
+        return "https://api.setlist.fm/rest/1.0/search/artists?artistName=" + artistName + "&p=1&sort=sortName";
+    }
+
+    //private final String stringURL = "https://api.setlist.fm/rest/1.0/search/artists?artistName=Metallica&p=1&sort=sortName";
 
     private void getConnection() {
         try {
-            URL url = new URL(stringURL);
+            //URL url = new URL(stringURL);
+
+            URL url = new URL(getStringURL());
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestProperty ("x-api-key", "5f26897a-5ead-4985-8c6e-b8d427eb757e");
