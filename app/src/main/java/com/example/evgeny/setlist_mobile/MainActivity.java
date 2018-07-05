@@ -24,9 +24,6 @@ public class MainActivity extends BottomNavigationActivity {
         super.onCreate(savedInstanceState);
 
         openLaunchFragment();
-        setlistConnection = new SetlistConnection();
-        setlistConnection.execute();
-
     }
 
 }

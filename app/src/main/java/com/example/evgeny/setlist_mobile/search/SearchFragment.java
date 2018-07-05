@@ -15,17 +15,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
+import com.example.evgeny.setlist_mobile.SetlistConnection;
 
 /**
  * Created by Evgeny on 03.07.2018.
  */
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private TextView emptySearchText;
     private EditText editSearch;
     private Button btnSearch;
+    private SetlistConnection setlistConnection;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class SearchFragment extends Fragment {
         editSearch = (EditText) rootView.findViewById(R.id.edit_search);
         btnSearch = (Button) rootView.findViewById(R.id.btn_search);
 
+        btnSearch.setOnClickListener(this);
 
         return rootView;
     }
@@ -64,6 +67,15 @@ public class SearchFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        if (!editSearch.getText().equals("")) {
+            search(editSearch.getText().toString());
+        }
+    }
 
-
+    void search(String bandName) {
+        setlistConnection = new SetlistConnection();
+        setlistConnection.execute();
+    }
 }
