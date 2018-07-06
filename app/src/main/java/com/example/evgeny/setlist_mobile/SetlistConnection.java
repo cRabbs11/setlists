@@ -3,6 +3,10 @@ package com.example.evgeny.setlist_mobile;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,6 +15,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Evgeny on 25.05.2018.
@@ -19,6 +25,16 @@ import java.net.URL;
 public class SetlistConnection extends AsyncTask {
 
     private String artistName="artist";
+
+    String response="";
+
+    private List<Artist> mArtists = new ArrayList<>();
+
+    ArtitstListListener artitstListListener;
+
+    public SetlistConnection(ArtitstListListener artitstListListener) {
+        this.artitstListListener = artitstListListener;
+    }
 
     public void setArtistName(String artistName) {
         this.artistName=artistName;
@@ -49,6 +65,10 @@ public class SetlistConnection extends AsyncTask {
                 String response = getStringFromInputStream(inputStream);
 
                 Log.d("BMTH", "response: " + response);
+
+                this.response = response;
+
+
 
             } else {
                 Log.d("BMTH", "responseCode is NOT OK: " + responseCode);
@@ -100,5 +120,58 @@ public class SetlistConnection extends AsyncTask {
     protected Object doInBackground(Object[] objects) {
         getConnection();
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+
+        if (!response.equals("")) {
+            unParse(response);
+            artitstListListener.getArtistList(mArtists);
+        }
+    }
+
+    private void unParse(String response) {
+        JSONObject dataJsonObj = null;
+
+        try {
+            dataJsonObj = new JSONObject(response);
+            JSONArray artists = dataJsonObj.getJSONArray("artist");
+
+            // 2. перебираем и выводим контакты каждого друга
+            for (int i = 0; i < artists.length(); i++) {
+                JSONObject artistJson = artists.getJSONObject(i);
+
+                String name = artistJson.getString("name");
+                String sortName = artistJson.getString("sortName");
+                String url = artistJson.getString("url");
+//                JSONObject contacts = artist.getJSONObject("contacts");
+//
+//
+//                String phone = contacts.getString("mobile");
+//                String email = contacts.getString("email");
+//                String skype = contacts.getString("skype");
+
+                Log.d("BMTH", "name: " + name);
+                Log.d("BMTH", "sortName: " + sortName);
+                Log.d("BMTH", "url: " + url);
+
+                Artist artist = new Artist();
+                artist.name = name;
+                artist.sortName = sortName;
+                artist.url = url;
+
+                mArtists.add(artist);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public interface ArtitstListListener {
+        void getArtistList(List<Artist> artists);
     }
 }
