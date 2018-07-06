@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,14 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.evgeny.setlist_mobile.Artist;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SetlistConnection;
+
+import java.util.List;
 
 /**
  * Created by Evgeny on 03.07.2018.
  */
 
-public class SearchFragment extends Fragment implements View.OnClickListener {
+public class SearchFragment extends Fragment implements View.OnClickListener, SetlistConnection.ArtitstListListener {
 
     private RecyclerView recyclerView;
     private TextView emptySearchText;
@@ -75,8 +79,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     void search(String bandName) {
-        setlistConnection = new SetlistConnection();
+        setlistConnection = new SetlistConnection(this);
         setlistConnection.setArtistName(bandName);
         setlistConnection.execute();
     }
+
+    @Override
+    public void getArtistList(List<Artist> artists) {
+        for (Artist artist: artists) {
+            Log.d("BMTH", "in fragment name: " + artist.name);
+            Log.d("BMTH", "in fragment sortName: " + artist.sortName);
+            Log.d("BMTH", "in fragment url: " + artist.url);
+        }
+    }
+
+    
 }
