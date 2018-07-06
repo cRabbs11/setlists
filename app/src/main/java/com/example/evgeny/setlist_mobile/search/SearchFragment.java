@@ -3,6 +3,7 @@ package com.example.evgeny.setlist_mobile.search;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.example.evgeny.setlist_mobile.Artist;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SetlistConnection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +34,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
     private EditText editSearch;
     private Button btnSearch;
     private SetlistConnection setlistConnection;
+    private List<Artist> mArtists;
+    private ArtistsAdapter artistsAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -44,12 +48,20 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
 
         btnSearch.setOnClickListener(this);
 
+
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(artistsAdapter);
         return rootView;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mArtists = new ArrayList<>();
+
+        artistsAdapter = new ArtistsAdapter();
         //уведомляем фрагмент, что он работает с optionsMenu
         setHasOptionsMenu(true);
     }
@@ -86,12 +98,45 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
 
     @Override
     public void getArtistList(List<Artist> artists) {
+        mArtists.clear();
         for (Artist artist: artists) {
+            mArtists.add(artist);
             Log.d("BMTH", "in fragment name: " + artist.name);
             Log.d("BMTH", "in fragment sortName: " + artist.sortName);
             Log.d("BMTH", "in fragment url: " + artist.url);
         }
+        Log.d("BMTH", " mArtists.size(): " + mArtists.size());
+        artistsAdapter.notifyDataSetChanged();
     }
 
-    
+    class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistHolder> {
+
+        class ArtistHolder extends RecyclerView.ViewHolder{
+
+            TextView name;
+
+            public ArtistHolder(View itemView) {
+                super(itemView);
+                name = itemView.findViewById(R.id.artistName);
+            }
+        }
+
+        @Override
+        public ArtistHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.artist_layout_item, parent, false);
+            return new ArtistHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ArtistHolder holder, int position) {
+            Artist artist = mArtists.get(position);
+            holder.name.setText(artist.name);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mArtists.size();
+        }
+    }
 }
