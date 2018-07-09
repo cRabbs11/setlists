@@ -1,5 +1,6 @@
 package com.example.evgeny.setlist_mobile.search;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
     private SetlistConnection setlistConnection;
     private List<Artist> mArtists;
     private ArtistsAdapter artistsAdapter;
+    private InputMethodManager inputMethodManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +90,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
     public void onClick(View view) {
         if (!editSearch.getText().equals("")) {
             search(editSearch.getText().toString());
+            hideKeyboard(editSearch);
         }
     }
 
@@ -94,6 +98,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
         setlistConnection = new SetlistConnection(this);
         setlistConnection.setArtistName(bandName);
         setlistConnection.execute();
+    }
+
+    /**
+     * скрывает экранную клавиатуру
+     * @param view активный view
+     */
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
+                InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 
     @Override
