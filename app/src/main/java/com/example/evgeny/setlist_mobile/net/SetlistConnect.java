@@ -1,11 +1,8 @@
 package com.example.evgeny.setlist_mobile.net;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.evgeny.setlist_mobile.Artist;
-import com.example.evgeny.setlist_mobile.search.SearchSetlist;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +58,8 @@ public class SetlistConnect {
 
     //private final String stringURL = "https://api.setlist.fm/rest/1.0/search/artists?artistName=Metallica&p=1&sort=sortName";
 
-    public void getConnection() {
+    public String getConnection() {
+        String response="0";
         try {
             //URL url = new URL(stringURL);
 
@@ -77,13 +75,9 @@ public class SetlistConnect {
 
                 InputStream inputStream = httpURLConnection.getInputStream();
 
-                String response = getStringFromInputStream(inputStream);
+                response = getStringFromInputStream(inputStream);
 
                 Log.d("BMTH1", "response: " + response);
-
-                this.response = response;
-
-
 
             } else {
                 Log.d("BMTH1", "responseCode is NOT OK: " + responseCode);
@@ -94,6 +88,7 @@ public class SetlistConnect {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return response;
     }
 
     private String getStringFromInputStream(InputStream inputStream) {
@@ -133,9 +128,8 @@ public class SetlistConnect {
 
     /**
      * распарсивание полученного ответа
-     * @param response ответ от сервера
      */
-    private void unParse(String response) {
+    public List<Artist> unParse(String response) {
         JSONObject dataJsonObj = null;
 
         try {
@@ -171,7 +165,7 @@ public class SetlistConnect {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        return mArtists;
     }
 
     public interface SetListListener {

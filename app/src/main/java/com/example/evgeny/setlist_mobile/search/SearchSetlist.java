@@ -2,6 +2,8 @@ package com.example.evgeny.setlist_mobile.search;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import com.example.evgeny.setlist_mobile.Artist;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SetlistConnection;
+import com.example.evgeny.setlist_mobile.Threader;
+import com.example.evgeny.setlist_mobile.ThreaderInterface;
 import com.example.evgeny.setlist_mobile.net.SetlistConnect;
 
 import java.util.ArrayList;
@@ -29,7 +33,7 @@ import java.util.List;
  * Created by Evgeny on 03.07.2018.
  */
 
-public class SearchSetlist extends Fragment implements View.OnClickListener, SetlistConnect.SetListListener {
+public class SearchSetlist extends Fragment implements View.OnClickListener, SetlistConnect.SetListListener, ThreaderInterface {
 
     private RecyclerView recyclerView;
     private TextView emptySearchText;
@@ -41,6 +45,7 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     private InputMethodManager inputMethodManager;
     private SetlistConnect setlistConnect;
     private String artistName;
+    Threader threader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        threader = Threader.getInstance();
+        threader.sign(this);
         mArtists = new ArrayList<>();
         setlistConnect = SetlistConnect.getInstance(this);
         artistsAdapter = new ArtistsAdapter();
@@ -98,28 +105,31 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
 
     void searchSetlist(String bandName) {
         artistName=bandName;
-        mainProcessing();
+        //mainProcessing();
+        threader.newThread(runnable);
     }
 
-    // Этот метод вызывается из главного потока GUI.
-    private void mainProcessing() {
-        // Здесь трудоемкие задачи переносятся в дочерний поток.
-        Thread thread = new Thread(null, doBackgroundThreadProcessing,
-                "Background");
-        thread.start();
-    }
-    // Объект Runnable, который запускает метод для выполнения задач
-// в фоновом режиме.
-    private Runnable doBackgroundThreadProcessing = new Runnable() {
+    Runnable runnable = new Runnable() {
+        @Override
         public void run() {
-            backgroundThreadProcessing();
+            setlistConnect.setArtistName(artistName);
+            String data = setlistConnect.getConnection();
+            Bundle bundle = new Bundle();
+            bundle.putString("response", data);
+            Message message = new Message();
+            message.setData(bundle);
+            handler.sendMessage(message);
         }
     };
-    // Метод, который выполняет какие-то действия в фоновом режиме.
-    private void backgroundThreadProcessing() {
-        setlistConnect.setArtistName(artistName);
-        setlistConnect.getConnection();
-    }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+            mArtists = setlistConnect.unParse(bundle.getString("response"));
+            artistsAdapter.notifyDataSetChanged();
+        }
+    };
 
     /**
      * скрывает экранную клавиатуру
@@ -133,6 +143,16 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
 
     @Override
     public void getSetList(List<Artist> artists) {
+
+    }
+
+    @Override
+    public void send(String method, String request) {
+
+    }
+
+    @Override
+    public void get(String method, String result) {
 
     }
 
