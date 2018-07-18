@@ -48,6 +48,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
         emptySearchText = (TextView) rootView.findViewById(R.id.emptySearchText);
         editSearch = (EditText) rootView.findViewById(R.id.edit_search);
         btnSearch = (Button) rootView.findViewById(R.id.btn_search);
+        editSearch.setHint("artists...");
 
         btnSearch.setOnClickListener(this);
 

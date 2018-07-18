@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,7 +50,7 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
         emptySearchText = (TextView) rootView.findViewById(R.id.emptySearchText);
         editSearch = (EditText) rootView.findViewById(R.id.edit_search);
         btnSearch = (Button) rootView.findViewById(R.id.btn_search);
-
+        editSearch.setHint("setlists...");
         btnSearch.setOnClickListener(this);
 
 
