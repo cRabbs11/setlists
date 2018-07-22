@@ -1,9 +1,9 @@
 package com.example.evgeny.setlist_mobile.search;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.Artist;
 import com.example.evgeny.setlist_mobile.R;
-import com.example.evgeny.setlist_mobile.SetlistConnection;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 import com.example.evgeny.setlist_mobile.utils.Parser;
 import com.example.evgeny.setlist_mobile.utils.Threader;
@@ -39,7 +38,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private TextView emptySearchText;
     private EditText editSearch;
     private Button btnSearch;
-    private SetlistConnection setlistConnection;
     private List<Artist> mArtists;
     private ArtistsAdapter artistsAdapter;
     private InputMethodManager inputMethodManager;

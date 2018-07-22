@@ -7,10 +7,6 @@ import android.util.Log;
 
 import com.example.evgeny.setlist_mobile.Artist;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -193,48 +189,6 @@ public class SetlistConnectNew implements Runnable {
         }
 
         return out.toString();
-    }
-
-    /**
-     * распарсивание полученного ответа
-     */
-    public List<Artist> unParse(String response) {
-        JSONObject dataJsonObj = null;
-
-        try {
-            dataJsonObj = new JSONObject(response);
-            JSONArray artists = dataJsonObj.getJSONArray("artist");
-
-            // 2. перебираем и выводим контакты каждого друга
-            for (int i = 0; i < artists.length(); i++) {
-                JSONObject artistJson = artists.getJSONObject(i);
-
-                String name = artistJson.getString("name");
-                String sortName = artistJson.getString("sortName");
-                String url = artistJson.getString("url");
-//                JSONObject contacts = artist.getJSONObject("contacts");
-//
-//
-//                String phone = contacts.getString("mobile");
-//                String email = contacts.getString("email");
-//                String skype = contacts.getString("skype");
-
-                Log.d("BMTH", "name: " + name);
-                Log.d("BMTH", "sortName: " + sortName);
-                Log.d("BMTH", "url: " + url);
-
-                Artist artist = new Artist();
-                artist.name = name;
-                artist.sortName = sortName;
-                artist.url = url;
-
-                mArtists.add(artist);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return mArtists;
     }
 
     @Override

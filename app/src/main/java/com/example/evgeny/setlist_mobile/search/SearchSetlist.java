@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.Artist;
 import com.example.evgeny.setlist_mobile.R;
-import com.example.evgeny.setlist_mobile.SetlistConnection;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 
 import org.json.JSONArray;
@@ -40,7 +39,6 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     private TextView emptySearchText;
     private EditText editSearch;
     private Button btnSearch;
-    private SetlistConnection setlistConnection;
     private List<Artist> mArtists;
     private ArtistsAdapter artistsAdapter;
     private InputMethodManager inputMethodManager;
