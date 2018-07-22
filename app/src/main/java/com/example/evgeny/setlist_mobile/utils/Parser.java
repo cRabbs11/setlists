@@ -40,16 +40,59 @@ public class Parser {
             // 2. перебираем и выводим контакты каждого друга
             for (int i = 0; i < artists.length(); i++) {
                 JSONObject artistJson = artists.getJSONObject(i);
+                String mbid = artistJson.getString("mdid");
                 String name = artistJson.getString("name");
                 String sortName = artistJson.getString("sortName");
                 String url = artistJson.getString("url");
+                String disambiguation = artistJson.getString("disambiguation");
 //                Log.d(TAG, "name: " + name);
 //                Log.d(TAG, "sortName: " + sortName);
 //                Log.d(TAG, "url: " + url);
                 Artist artist = new Artist();
+                artist.mbid = mbid;
                 artist.name = name;
                 artist.sortName = sortName;
                 artist.url = url;
+                artist.disambiguation = disambiguation;
+                mArtists.add(artist);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "mArtists.size(): " + mArtists.size());
+        return mArtists;
+    }
+
+    /**
+     * Распарсивание списка сетлистов
+     * @param JSON ответ от сервера
+     * @return список сетлистов
+     */
+    public List<Artist> parseSetlists(String JSON) {
+        List<Artist> mArtists = new ArrayList<>();
+        JSONObject dataJsonObj = null;
+        try {
+            dataJsonObj = new JSONObject(JSON);
+            JSONArray artists = dataJsonObj.getJSONArray("artist");
+            // 2. перебираем и выводим контакты каждого друга
+            for (int i = 0; i < artists.length(); i++) {
+                JSONObject artistJson = artists.getJSONObject(i);
+                String mbid = artistJson.getString("mdid");
+                String name = artistJson.getString("name");
+                String sortName = artistJson.getString("sortName");
+                String url = artistJson.getString("url");
+                String disambiguation = artistJson.getString("disambiguation");
+//                Log.d(TAG, "name: " + name);
+//                Log.d(TAG, "sortName: " + sortName);
+//                Log.d(TAG, "url: " + url);
+                Artist artist = new Artist();
+                artist.mbid = mbid;
+                artist.name = name;
+                artist.sortName = sortName;
+                artist.url = url;
+                artist.disambiguation = disambiguation;
                 mArtists.add(artist);
             }
 

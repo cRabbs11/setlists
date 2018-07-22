@@ -5,7 +5,9 @@ package com.example.evgeny.setlist_mobile;
  */
 
 public class Artist {
+    public String mbid;
     public String name;
     public String sortName;
     public String url;
+    public String disambiguation;
 }
