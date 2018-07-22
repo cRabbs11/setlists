@@ -25,6 +25,7 @@ import com.example.evgeny.setlist_mobile.SetlistConnection;
 import com.example.evgeny.setlist_mobile.Threader;
 import com.example.evgeny.setlist_mobile.ThreaderInterface;
 import com.example.evgeny.setlist_mobile.net.SetlistConnect;
+import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,9 +105,12 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     }
 
     void searchSetlist(String bandName) {
-        artistName=bandName;
+        //artistName=bandName;
         //mainProcessing();
-        threader.newThread(runnable);
+        //threader.newThread(runnable);
+        Bundle data = new Bundle();
+        data.putString("artist", bandName);
+        SetlistConnectNew setlistConnectNew = new SetlistConnectNew("getArtists", data);
     }
 
     Runnable runnable = new Runnable() {
