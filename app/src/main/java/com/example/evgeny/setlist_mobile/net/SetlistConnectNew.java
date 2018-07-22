@@ -41,7 +41,7 @@ public class SetlistConnectNew implements Runnable {
     Handler mHander = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            answerListener.getAnswer(request, response);
+            answerListener.getAnswer(response);
         }
     };
 
@@ -244,6 +244,6 @@ public class SetlistConnectNew implements Runnable {
     }
 
     public interface AnswerListener {
-        void getAnswer(String request, String answer);
+        void getAnswer(String answer);
     }
 }

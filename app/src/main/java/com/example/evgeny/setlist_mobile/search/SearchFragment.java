@@ -21,6 +21,9 @@ import android.widget.TextView;
 import com.example.evgeny.setlist_mobile.Artist;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SetlistConnection;
+import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
+import com.example.evgeny.setlist_mobile.utils.Parser;
+import com.example.evgeny.setlist_mobile.utils.Threader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +32,9 @@ import java.util.List;
  * Created by Evgeny on 03.07.2018.
  */
 
-public class SearchFragment extends Fragment implements View.OnClickListener, SetlistConnection.ArtitstListListener {
+public class SearchFragment extends Fragment implements View.OnClickListener {
 
+    private String TAG = "SearchFragment: " + SearchFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private TextView emptySearchText;
     private EditText editSearch;
@@ -39,6 +43,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
     private List<Artist> mArtists;
     private ArtistsAdapter artistsAdapter;
     private InputMethodManager inputMethodManager;
+    private Threader threader;
+    Parser parser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -64,8 +70,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mArtists = new ArrayList<>();
+        parser = Parser.getInstance();
 
         artistsAdapter = new ArtistsAdapter();
+
+        threader = Threader.getInstance();
         //уведомляем фрагмент, что он работает с optionsMenu
         setHasOptionsMenu(true);
     }
@@ -90,16 +99,33 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
     @Override
     public void onClick(View view) {
         if (!editSearch.getText().equals("")) {
-            search(editSearch.getText().toString());
+            //search(editSearch.getText().toString());
+            getArtists(editSearch.getText().toString());
             hideKeyboard(editSearch);
         }
     }
 
-    void search(String bandName) {
-        setlistConnection = new SetlistConnection(this);
-        setlistConnection.setArtistName(bandName);
-        setlistConnection.execute();
+    private void getArtists(String artist) {
+        Bundle data = new Bundle();
+        data.putString("artist", artist);
+        threader.getArtists(data, new SetlistConnectNew.AnswerListener() {
+            @Override
+            public void getAnswer(String answer) {
+                Log.d(TAG, "getAnswer... ");
+                mArtists = parser.parseArtists(answer);
+                callbackArtists.addArtists(mArtists);
+            }
+        }, callbackArtists);
     }
+
+    Threader.CallbackArtists callbackArtists = new Threader.CallbackArtists() {
+        @Override
+        public void addArtists(List<Artist> artists) {
+            Log.d(TAG, "addArtists... ");
+            mArtists = artists;
+            artistsAdapter.notifyDataSetChanged();
+        }
+    };
 
     /**
      * скрывает экранную клавиатуру
@@ -109,19 +135,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Se
         InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
-    }
-
-    @Override
-    public void getArtistList(List<Artist> artists) {
-        mArtists.clear();
-        for (Artist artist: artists) {
-            mArtists.add(artist);
-            Log.d("BMTH", "in fragment name: " + artist.name);
-            Log.d("BMTH", "in fragment sortName: " + artist.sortName);
-            Log.d("BMTH", "in fragment url: " + artist.url);
-        }
-        Log.d("BMTH", " mArtists.size(): " + mArtists.size());
-        artistsAdapter.notifyDataSetChanged();
     }
 
     class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistHolder> {

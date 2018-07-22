@@ -2,8 +2,6 @@ package com.example.evgeny.setlist_mobile.search;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,9 +21,6 @@ import android.widget.TextView;
 import com.example.evgeny.setlist_mobile.Artist;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SetlistConnection;
-import com.example.evgeny.setlist_mobile.Threader;
-import com.example.evgeny.setlist_mobile.ThreaderInterface;
-import com.example.evgeny.setlist_mobile.net.SetlistConnect;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 
 import org.json.JSONArray;
@@ -39,7 +34,7 @@ import java.util.List;
  * Created by Evgeny on 03.07.2018.
  */
 
-public class SearchSetlist extends Fragment implements View.OnClickListener, SetlistConnect.SetListListener, ThreaderInterface, SetlistConnectNew.AnswerListener {
+public class SearchSetlist extends Fragment implements View.OnClickListener, SetlistConnectNew.AnswerListener {
 
     private RecyclerView recyclerView;
     private TextView emptySearchText;
@@ -49,15 +44,7 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     private List<Artist> mArtists;
     private ArtistsAdapter artistsAdapter;
     private InputMethodManager inputMethodManager;
-    private SetlistConnect setlistConnect;
     private String artistName;
-    Threader threader;
-
-    static Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            // Act on the message
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -81,10 +68,7 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        threader = Threader.getInstance();
-        threader.sign(this);
         mArtists = new ArrayList<>();
-        setlistConnect = SetlistConnect.getInstance(this);
         artistsAdapter = new ArtistsAdapter();
         //уведомляем фрагмент, что он работает с optionsMenu
         setHasOptionsMenu(true);
@@ -116,35 +100,10 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     }
 
     void searchSetlist(String bandName) {
-        //artistName=bandName;
-        //mainProcessing();
-        //threader.newThread(runnable);
         Bundle data = new Bundle();
         data.putString("artist", bandName);
         SetlistConnectNew setlistConnectNew = new SetlistConnectNew("getArtists", data, this);
     }
-
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            setlistConnect.setArtistName(artistName);
-            String data = setlistConnect.getConnection();
-            Bundle bundle = new Bundle();
-            bundle.putString("response", data);
-            Message message = new Message();
-            message.setData(bundle);
-            handler.sendMessage(message);
-        }
-    };
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle bundle = msg.getData();
-            mArtists = setlistConnect.unParse(bundle.getString("response"));
-            artistsAdapter.notifyDataSetChanged();
-        }
-    };
 
     /**
      * скрывает экранную клавиатуру
@@ -157,22 +116,7 @@ public class SearchSetlist extends Fragment implements View.OnClickListener, Set
     }
 
     @Override
-    public void getSetList(List<Artist> artists) {
-
-    }
-
-    @Override
-    public void send(String method, String request) {
-
-    }
-
-    @Override
-    public void get(String method, String result) {
-
-    }
-
-    @Override
-    public void getAnswer(String request, String answer) {
+    public void getAnswer(String answer) {
         mArtists.clear();
         unParse(answer);
         artistsAdapter.notifyDataSetChanged();
