@@ -31,7 +31,7 @@ public class BottomNavigationActivity extends AppCompatActivity
         bottomMenu = (BottomNavigationView) findViewById(R.id.bottomMenu);
         bottomMenu.setOnNavigationItemSelectedListener(this);
         searchFragment = new SearchFragment(this);
-        searchSetlist = new SearchSetlist(this);
+        //searchSetlist = new SearchSetlist(this);
         //openLaunchFragment();
     }
 
@@ -44,7 +44,7 @@ public class BottomNavigationActivity extends AppCompatActivity
                 Log.d("BMTH", " поиск: ");
                 break;
             case R.id.menu_bottom_setlists:
-                ftrans.replace(R.id.fragment_container, searchSetlist);
+                //ftrans.replace(R.id.fragment_container, searchSetlist);
                 break;
 
         }

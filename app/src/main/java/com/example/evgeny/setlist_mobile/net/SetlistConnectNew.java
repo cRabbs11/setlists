@@ -29,6 +29,7 @@ public class SetlistConnectNew implements Runnable {
 
     private String response="";
     private String request;
+    private String URL;
 
     private AnswerListener answerListener;
 
@@ -64,10 +65,10 @@ public class SetlistConnectNew implements Runnable {
         Log.d("BMTH", "identifyRequest: " + request);
         switch(request) {
             case "getArtists":
-                getArtists();
+                URL=getArtists();
                 break;
             case "getSetlists":
-                getSetlists();
+                URL=getSetlists();
                 break;
         }
     }
@@ -76,6 +77,7 @@ public class SetlistConnectNew implements Runnable {
      * Строит URL для поиска сетлистов
      */
     private String getSetlists() {
+        Log.d("BMTH", "getSetlists... ");
         //the Musicbrainz MBID of the artist
         String mbid="b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d";
         //the number of the result page
@@ -84,9 +86,9 @@ public class SetlistConnectNew implements Runnable {
         String URL;
         if (!data.isEmpty()) {
             mbid = data.getString("mbid");
-            page = data.getString("page");
+            //page = data.getString("page");
         }
-        URL = "https://api.setlist.fm/rest/1.0/artist/" + mbid + "/setlists?p=" + page + "\"";
+        URL = "https://api.setlist.fm/rest/1.0/artist/" + mbid + "/setlists?p=1";
         return URL;
     }
 
@@ -128,7 +130,7 @@ public class SetlistConnectNew implements Runnable {
         try {
             //URL url = new URL(stringURL);
 
-            URL url = new URL(getArtists());
+            URL url = new URL(URL);
 
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestProperty ("x-api-key", "5f26897a-5ead-4985-8c6e-b8d427eb757e");

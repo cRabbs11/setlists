@@ -3,6 +3,7 @@ package com.example.evgeny.setlist_mobile.utils;
 import android.os.Bundle;
 
 import com.example.evgeny.setlist_mobile.model.Artist;
+import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class Threader {
 
     public interface CallbackArtists {
         void addArtists(List<Artist> artists);
+    }
+
+    public interface CallbackSetlists {
+        void addSetlists(List<Setlist> setlists);
     }
 
     private Threader() {
@@ -34,6 +39,14 @@ public class Threader {
      */
     public void getArtists(Bundle data, SetlistConnectNew.AnswerListener answerListener, CallbackArtists callbackArtists) {
         String request = "getArtists";
+        SetlistConnectNew setlistConnectNew = new SetlistConnectNew(request, data, answerListener);
+    }
+
+    /**
+     * получение списка сетлистов артиста
+     */
+    public void getSetlists(Bundle data, SetlistConnectNew.AnswerListener answerListener, CallbackSetlists callbackSetlists) {
+        String request = "getSetlists";
         SetlistConnectNew setlistConnectNew = new SetlistConnectNew(request, data, answerListener);
     }
 }

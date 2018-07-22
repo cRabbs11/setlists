@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,6 +50,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     Parser parser;
     public BottomNavigationView bottomMenu;
     private SelectBottomMenuListener selectBottomMenuListener;
+    private SearchSetlist searchSetlist;
+    private FragmentTransaction ftrans;
 
     @SuppressLint("ValidFragment")
     public SearchFragment(SelectBottomMenuListener selectBottomMenuListener) {
@@ -146,7 +149,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void onClick(Artist artist) {
-            selectBottomMenuListener.setMenuItem("setlists", artist);
+            //selectBottomMenuListener.setMenuItem("setlists", artist);
+            openSearchSetlists(artist);
         }
 
         class ArtistHolder extends RecyclerView.ViewHolder{
@@ -186,5 +190,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     interface ArtistClickListener {
         void onClick(Artist artist);
+    }
+
+    void openSearchSetlists(Artist artist) {
+        searchSetlist = new SearchSetlist(artist);
+        ftrans = getActivity().getSupportFragmentManager().beginTransaction();
+        ftrans.replace(R.id.fragment_container, searchSetlist);
+        ftrans.commit();
     }
 }
