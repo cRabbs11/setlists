@@ -1,6 +1,8 @@
 package com.example.evgeny.setlist_mobile.net;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.example.evgeny.setlist_mobile.Artist;
@@ -27,19 +29,31 @@ import java.util.List;
 public class SetlistConnectNew implements Runnable {
 
     private Thread thread;
-    Bundle data;
+    private Bundle data;
 
-    String response="";
+    private String response="";
+    private String request;
+
+    private AnswerListener answerListener;
 
     private List<Artist> mArtists = new ArrayList<>();
+
+    Handler mHander = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            answerListener.getAnswer(request, response);
+        }
+    };
 
     /**
      * Создание нового потока для запроса на сервер setlist
      * @param request тип запроса
      * @param data данные для запроса
      */
-    public SetlistConnectNew(String request, Bundle data) {
+    public SetlistConnectNew(String request, Bundle data, AnswerListener answerListener) {
         Log.d("BMTH", "new Thread... ");
+        this.answerListener = answerListener;
+        this.request = request;
         this.data = data;
         identifyRequest(request);
         thread = new Thread(this, "новый поток");
@@ -225,6 +239,11 @@ public class SetlistConnectNew implements Runnable {
 
     @Override
     public void run() {
-        getConnection();
+        response = getConnection();
+        mHander.sendEmptyMessage(1);
+    }
+
+    public interface AnswerListener {
+        void getAnswer(String request, String answer);
     }
 }
