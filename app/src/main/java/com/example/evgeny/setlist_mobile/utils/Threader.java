@@ -2,7 +2,7 @@ package com.example.evgeny.setlist_mobile.utils;
 
 import android.os.Bundle;
 
-import com.example.evgeny.setlist_mobile.Artist;
+import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.example.evgeny.setlist_mobile.net;
 
 import android.util.Log;
 
-import com.example.evgeny.setlist_mobile.Artist;
+import com.example.evgeny.setlist_mobile.model.Artist;
 
 import org.json.JSONArray;
 import org.json.JSONException;

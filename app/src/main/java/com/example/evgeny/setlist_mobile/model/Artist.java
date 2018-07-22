@@ -1,4 +1,4 @@
-package com.example.evgeny.setlist_mobile;
+package com.example.evgeny.setlist_mobile.model;
 
 /**
  * Created by Evgeny on 06.07.2018.

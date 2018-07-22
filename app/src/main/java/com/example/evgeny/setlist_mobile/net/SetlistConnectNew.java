@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.evgeny.setlist_mobile.Artist;
+import com.example.evgeny.setlist_mobile.model.Artist;
 
 import java.io.IOException;
 import java.io.InputStream;

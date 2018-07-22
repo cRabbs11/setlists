@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.evgeny.setlist_mobile.Artist;
+import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 import com.example.evgeny.setlist_mobile.utils.Parser;
