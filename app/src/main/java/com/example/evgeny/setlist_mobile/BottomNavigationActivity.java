@@ -8,16 +8,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.evgeny.setlist_mobile.model.BaseModel;
+import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.search.SearchFragment;
 import com.example.evgeny.setlist_mobile.search.SearchSetlist;
 
-public class BottomNavigationActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class BottomNavigationActivity extends AppCompatActivity
+        implements BottomNavigationView.OnNavigationItemSelectedListener,
+        SelectBottomMenuListener {
 
-    private BottomNavigationView bottomMenu;
+    public BottomNavigationView bottomMenu;
 
     private SearchFragment searchFragment;
     private SearchSetlist searchSetlist;
     public FragmentTransaction ftrans;
+    private Setlist setlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +30,8 @@ public class BottomNavigationActivity extends AppCompatActivity implements Botto
         setContentView(R.layout.activity_main);
         bottomMenu = (BottomNavigationView) findViewById(R.id.bottomMenu);
         bottomMenu.setOnNavigationItemSelectedListener(this);
-        searchFragment = new SearchFragment();
-        searchSetlist = new SearchSetlist();
+        searchFragment = new SearchFragment(this);
+        searchSetlist = new SearchSetlist(this);
         //openLaunchFragment();
     }
 
@@ -51,5 +56,12 @@ public class BottomNavigationActivity extends AppCompatActivity implements Botto
         ftrans = getSupportFragmentManager().beginTransaction();
         ftrans.replace(R.id.fragment_container, searchFragment);
         ftrans.commit();
+    }
+
+    @Override
+    public <T extends BaseModel> void setMenuItem(String item, T object) {
+        Log.d("BMTH", " нажали: " + item);
+        bottomMenu.setSelectedItemId(R.id.menu_bottom_setlists);
+        setlist = (Setlist) object;
     }
 }

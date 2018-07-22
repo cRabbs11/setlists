@@ -1,5 +1,6 @@
 package com.example.evgeny.setlist_mobile.search;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
+import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
 import com.example.evgeny.setlist_mobile.model.Artist;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.List;
  * Created by Evgeny on 03.07.2018.
  */
 
+@SuppressLint("ValidFragment")
 public class SearchSetlist extends Fragment implements View.OnClickListener{
 
     private RecyclerView recyclerView;
@@ -37,6 +40,12 @@ public class SearchSetlist extends Fragment implements View.OnClickListener{
     private ArtistsAdapter artistsAdapter;
     private InputMethodManager inputMethodManager;
     private String artistName;
+    private SelectBottomMenuListener selectBottomMenuListener;
+
+    @SuppressLint("ValidFragment")
+    public SearchSetlist(SelectBottomMenuListener selectBottomMenuListener) {
+        this.selectBottomMenuListener = selectBottomMenuListener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

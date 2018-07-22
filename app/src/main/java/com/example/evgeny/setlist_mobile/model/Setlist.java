@@ -1,6 +1,6 @@
 package com.example.evgeny.setlist_mobile.model;
 
-public class Setlist {
+public class Setlist extends BaseModel {
 
     public String artist;
     public String venue;

@@ -1,8 +1,10 @@
 package com.example.evgeny.setlist_mobile.search;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,8 +20,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.R;
+import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
+import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 import com.example.evgeny.setlist_mobile.utils.Parser;
 import com.example.evgeny.setlist_mobile.utils.Threader;
@@ -31,6 +34,7 @@ import java.util.List;
  * Created by Evgeny on 03.07.2018.
  */
 
+@SuppressLint("ValidFragment")
 public class SearchFragment extends Fragment implements View.OnClickListener {
 
     private String TAG = "SearchFragment: " + SearchFragment.class.getSimpleName();
@@ -43,20 +47,23 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private InputMethodManager inputMethodManager;
     private Threader threader;
     Parser parser;
+    public BottomNavigationView bottomMenu;
+    private SelectBottomMenuListener selectBottomMenuListener;
+
+    @SuppressLint("ValidFragment")
+    public SearchFragment(SelectBottomMenuListener selectBottomMenuListener) {
+        this.selectBottomMenuListener = selectBottomMenuListener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         emptySearchText = (TextView) rootView.findViewById(R.id.emptySearchText);
         editSearch = (EditText) rootView.findViewById(R.id.edit_search);
         btnSearch = (Button) rootView.findViewById(R.id.btn_search);
         editSearch.setHint("artists...");
-
         btnSearch.setOnClickListener(this);
-
-
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -135,14 +142,21 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
     }
 
-    class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistHolder> {
+    class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistHolder> implements ArtistClickListener {
+
+        @Override
+        public void onClick(Artist artist) {
+            selectBottomMenuListener.setMenuItem("setlists", artist);
+        }
 
         class ArtistHolder extends RecyclerView.ViewHolder{
 
             TextView name;
+            ArtistClickListener artistClickListener;
 
-            public ArtistHolder(View itemView) {
+            public ArtistHolder(View itemView, ArtistClickListener artistClickListener) {
                 super(itemView);
+                this.artistClickListener = artistClickListener;
                 name = itemView.findViewById(R.id.artistName);
             }
         }
@@ -151,18 +165,26 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         public ArtistHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.artist_layout_item, parent, false);
-            return new ArtistHolder(view);
+            return new ArtistHolder(view, this);
         }
 
         @Override
         public void onBindViewHolder(ArtistHolder holder, int position) {
             Artist artist = mArtists.get(position);
             holder.name.setText(artist.name);
+            holder.name.setOnClickListener(
+                    (view) -> {
+                holder.artistClickListener.onClick(artist);
+            });
         }
 
         @Override
         public int getItemCount() {
             return mArtists.size();
         }
+    }
+
+    interface ArtistClickListener {
+        void onClick(Artist artist);
     }
 }
