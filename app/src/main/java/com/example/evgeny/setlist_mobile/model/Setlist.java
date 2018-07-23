@@ -2,10 +2,10 @@ package com.example.evgeny.setlist_mobile.model;
 
 public class Setlist extends BaseModel {
 
-    public String artist;
-    public String venue;
-    public String tour;
-    public String set;
+    public Artist artist;
+    public Venue venue;
+    public Tour tour;
+    public Set set;
     public String info;
     public String url;
     public String id;
@@ -13,4 +13,11 @@ public class Setlist extends BaseModel {
     public String lastFmEventId;
     public String eventDate;
     public String lastUpdated;
+
+    Setlist() {
+        artist = new Artist();
+        venue = new Venue();
+        tour = new Tour();
+        set = new Set();
+    }
 }
