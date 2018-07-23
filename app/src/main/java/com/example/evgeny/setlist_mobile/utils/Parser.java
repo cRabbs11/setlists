@@ -7,6 +7,7 @@ import com.example.evgeny.setlist_mobile.model.City;
 import com.example.evgeny.setlist_mobile.model.Coords;
 import com.example.evgeny.setlist_mobile.model.Country;
 import com.example.evgeny.setlist_mobile.model.Setlist;
+import com.example.evgeny.setlist_mobile.model.Song;
 import com.example.evgeny.setlist_mobile.model.Venue;
 
 import org.json.JSONArray;
@@ -75,6 +76,8 @@ public class Parser {
                 Artist artist = getArtist(artistJson);
                 JSONObject venueJson = setlistJson.getJSONObject("venue");
                 Venue venue = getVenue(venueJson);
+                JSONObject sets = setlistJson.getJSONObject("sets");
+                List<Song> mSongs = getSets(sets);
                 //String tour = artistJson.getString("tour");
                 //String set = artistJson.getString("set");
                 //String info = artistJson.getString("info");
@@ -98,6 +101,7 @@ public class Parser {
                 setlist.lastUpdated = lastUpdated;
                 setlist.artist = artist;
                 setlist.venue = venue;
+                setlist.set.songs = mSongs;
                 mSetlists.add(setlist);
             }
 
@@ -107,6 +111,31 @@ public class Parser {
 
         Log.d(TAG, "mSetlists.size(): " + mSetlists.size());
         return mSetlists;
+    }
+
+    private List<Song> getSets(JSONObject sets) {
+        List<Song> mSongs = new ArrayList<>();
+        try {
+            JSONArray set = sets.getJSONArray("set");
+            for (int i = 0; i < set.length(); i++) {
+                JSONObject song = set.getJSONObject(i);
+                mSongs.add(getSong(song));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return mSongs;
+    }
+
+    private Song getSong(JSONObject jsonObject) {
+        Song song = new Song();
+        try {
+            String name = jsonObject.getString("name");
+            song.name = name;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return song;
     }
 
     private Artist getArtist(JSONObject jsonObject) {
