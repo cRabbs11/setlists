@@ -172,7 +172,8 @@ public class SearchSetlist extends Fragment implements View.OnClickListener{
             Setlist setlist = mSetlists.get(position);
             String name = setlist.artist.name;
             String date = setlist.eventDate;
-            String header = name + " at: " + date;
+            String venue = setlist.venue.name + " " + setlist.venue.city.name + " " + setlist.venue.city.country.name;
+            String header = name + " at: " + date + " in " + venue;
             holder.name.setText(header);
         }
 

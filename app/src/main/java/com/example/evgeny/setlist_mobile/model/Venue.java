@@ -8,4 +8,9 @@ public class Venue extends BaseModel {
     public String id;
     public String name;
     public String url;
+    public City city;
+
+    public Venue() {
+        city = new City();
+    }
 }

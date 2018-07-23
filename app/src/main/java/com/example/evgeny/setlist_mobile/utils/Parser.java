@@ -3,7 +3,11 @@ package com.example.evgeny.setlist_mobile.utils;
 import android.util.Log;
 
 import com.example.evgeny.setlist_mobile.model.Artist;
+import com.example.evgeny.setlist_mobile.model.City;
+import com.example.evgeny.setlist_mobile.model.Coords;
+import com.example.evgeny.setlist_mobile.model.Country;
 import com.example.evgeny.setlist_mobile.model.Setlist;
+import com.example.evgeny.setlist_mobile.model.Venue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,7 +73,8 @@ public class Parser {
                 JSONObject setlistJson = setlists.getJSONObject(i);
                 JSONObject artistJson = setlistJson.getJSONObject("artist");
                 Artist artist = getArtist(artistJson);
-                //String venue = artistJson.getString("venue");
+                JSONObject venueJson = setlistJson.getJSONObject("venue");
+                Venue venue = getVenue(venueJson);
                 //String tour = artistJson.getString("tour");
                 //String set = artistJson.getString("set");
                 //String info = artistJson.getString("info");
@@ -92,6 +97,7 @@ public class Parser {
                 setlist.eventDate = eventDate;
                 setlist.lastUpdated = lastUpdated;
                 setlist.artist = artist;
+                setlist.venue = venue;
                 mSetlists.add(setlist);
             }
 
@@ -118,5 +124,77 @@ public class Parser {
             e.printStackTrace();
         }
         return artist;
+    }
+
+    private Venue getVenue(JSONObject jsonObject) {
+        Venue venue = new Venue();
+        try {
+
+            JSONObject cityJson = jsonObject.getJSONObject("city");
+            City city = getCity(cityJson);
+
+            String id = jsonObject.getString("id");
+            String name = jsonObject.getString("name");
+            String url = jsonObject.getString("url");
+            venue.id = id;
+            venue.name = name;
+            venue.url = url;
+            venue.city = city;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return venue;
+    }
+
+    private City getCity(JSONObject jsonObject) {
+        City city = new City();
+        try {
+
+            JSONObject countryJson = jsonObject.getJSONObject("country");
+            Country country = getCountry(countryJson);
+
+            JSONObject coordsJson = jsonObject.getJSONObject("coords");
+            Coords coords = getCoords(coordsJson);
+
+            String id = jsonObject.getString("id");
+            String name = jsonObject.getString("name");
+            String state = jsonObject.getString("state");
+            String stateCode = jsonObject.getString("stateCode");
+            city.id = id;
+            city.name = name;
+            city.state = state;
+            city.stateCode = stateCode;
+            city.country = country;
+            city.coords = coords;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return city;
+    }
+
+    private Coords getCoords(JSONObject jsonObject) {
+        Coords coords = new Coords();
+        try {
+            String coord_lat = jsonObject.getString("lat");
+            String coord_long = jsonObject.getString("long");
+            coords.coord_lat = coord_lat;
+            coords.coord_long = coord_long;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return coords;
+    }
+
+    private Country getCountry(JSONObject jsonObject) {
+        Country country = new Country();
+        try {
+            String code = jsonObject.getString("code");
+            String name = jsonObject.getString("name");
+            country.code = code;
+            country.name = name;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return country;
     }
 }
