@@ -8,6 +8,7 @@ import com.example.evgeny.setlist_mobile.model.Coords;
 import com.example.evgeny.setlist_mobile.model.Country;
 import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.model.Song;
+import com.example.evgeny.setlist_mobile.model.Tour;
 import com.example.evgeny.setlist_mobile.model.Venue;
 
 import org.json.JSONArray;
@@ -76,8 +77,10 @@ public class Parser {
                 Artist artist = getArtist(artistJson);
                 JSONObject venueJson = setlistJson.getJSONObject("venue");
                 Venue venue = getVenue(venueJson);
+                JSONObject tourJson = setlistJson.getJSONObject("tour");
+                Tour tour = getTour(tourJson);
                 JSONObject sets = setlistJson.getJSONObject("sets");
-                List<Song> mSongs = getSets(sets);
+                getSets(sets);
                 //String tour = artistJson.getString("tour");
                 //String set = artistJson.getString("set");
                 //String info = artistJson.getString("info");
@@ -101,7 +104,8 @@ public class Parser {
                 setlist.lastUpdated = lastUpdated;
                 setlist.artist = artist;
                 setlist.venue = venue;
-                setlist.set.songs = mSongs;
+                setlist.tour = tour;
+                //setlist.set.songs = mSongs;
                 mSetlists.add(setlist);
             }
 
@@ -115,12 +119,22 @@ public class Parser {
 
     private List<Song> getSets(JSONObject sets) {
         List<Song> mSongs = new ArrayList<>();
+        //Log.d("BMTH", "sets: " + sets);
         try {
             JSONArray set = sets.getJSONArray("set");
             for (int i = 0; i < set.length(); i++) {
-                JSONObject song = set.getJSONObject(i);
-                mSongs.add(getSong(song));
+                JSONObject object = set.getJSONObject(i);
+                //Log.d("BMTH", " ");
+                //Log.d("BMTH", "object: " + object);
+                JSONArray song = object.getJSONArray("song");
+                for (int x = 0; x < song.length(); x++) {
+                    JSONObject object1 = song.getJSONObject(x);
+                    String name = object1.getString("name");
+                    Log.d("BMTH", " ");
+                    Log.d("BMTH", "song name: " + name);
+                }
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -153,6 +167,17 @@ public class Parser {
             e.printStackTrace();
         }
         return artist;
+    }
+
+    private Tour getTour(JSONObject jsonObject) {
+        Tour tour = new Tour();
+        try {
+            String name = jsonObject.getString("name");
+            tour.name = name;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return tour;
     }
 
     private Venue getVenue(JSONObject jsonObject) {
