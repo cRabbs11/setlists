@@ -170,7 +170,10 @@ public class SearchSetlist extends Fragment implements View.OnClickListener{
         @Override
         public void onBindViewHolder(SetlistHolder holder, int position) {
             Setlist setlist = mSetlists.get(position);
-            holder.name.setText(setlist.eventDate);
+            String name = setlist.artist.name;
+            String date = setlist.eventDate;
+            String header = name + " at: " + date;
+            holder.name.setText(header);
         }
 
         @Override

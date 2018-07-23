@@ -14,7 +14,7 @@ public class Setlist extends BaseModel {
     public String eventDate;
     public String lastUpdated;
 
-    Setlist() {
+    public Setlist() {
         artist = new Artist();
         venue = new Venue();
         tour = new Tour();

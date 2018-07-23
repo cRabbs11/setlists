@@ -41,23 +41,10 @@ public class Parser {
             // 2. перебираем и выводим контакты каждого друга
             for (int i = 0; i < artists.length(); i++) {
                 JSONObject artistJson = artists.getJSONObject(i);
-                String mbid = artistJson.getString("mbid");
-                String name = artistJson.getString("name");
-                String sortName = artistJson.getString("sortName");
-                String url = artistJson.getString("url");
-                //String disambiguation = artistJson.getString("disambiguation");
-//                Log.d(TAG, "name: " + name);
-//                Log.d(TAG, "sortName: " + sortName);
-//                Log.d(TAG, "url: " + url);
-                Artist artist = new Artist();
-                artist.mbid = mbid;
-                artist.name = name;
-                artist.sortName = sortName;
-                artist.url = url;
-                //artist.disambiguation = disambiguation;
+                Artist artist;
+                artist = getArtist(artistJson);
                 mArtists.add(artist);
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,18 +66,19 @@ public class Parser {
             JSONArray setlists = dataJsonObj.getJSONArray("setlist");
             // 2. перебираем и выводим контакты каждого друга
             for (int i = 0; i < setlists.length(); i++) {
-                JSONObject artistJson = setlists.getJSONObject(i);
-                //String artist = artistJson.getString("artist");
+                JSONObject setlistJson = setlists.getJSONObject(i);
+                JSONObject artistJson = setlistJson.getJSONObject("artist");
+                Artist artist = getArtist(artistJson);
                 //String venue = artistJson.getString("venue");
                 //String tour = artistJson.getString("tour");
                 //String set = artistJson.getString("set");
                 //String info = artistJson.getString("info");
                 //String url = artistJson.getString("url");
-                //String id = artistJson.getString("id");
-                //String versionId = artistJson.getString("versionId");
+                String id = setlistJson.getString("id");
+                String versionId = setlistJson.getString("versionId");
                 //String lastFmEventId = artistJson.getString("lastFmEventIdo");
-                String eventDate = artistJson.getString("eventDate");
-                String lastUpdated = artistJson.getString("lastUpdated");
+                String eventDate = setlistJson.getString("eventDate");
+                String lastUpdated = setlistJson.getString("lastUpdated");
                 Setlist setlist = new Setlist();
                 //setlist.artist = artist;
                 //setlist.venue = venue;
@@ -103,6 +91,7 @@ public class Parser {
                 //setlist.lastFmEventId = lastFmEventId;
                 setlist.eventDate = eventDate;
                 setlist.lastUpdated = lastUpdated;
+                setlist.artist = artist;
                 mSetlists.add(setlist);
             }
 
@@ -112,5 +101,22 @@ public class Parser {
 
         Log.d(TAG, "mSetlists.size(): " + mSetlists.size());
         return mSetlists;
+    }
+
+    private Artist getArtist(JSONObject jsonObject) {
+        Artist artist = new Artist();
+        try {
+        String mbid = jsonObject.getString("mbid");
+        String name = jsonObject.getString("name");
+        String sortName = jsonObject.getString("sortName");
+        String url = jsonObject.getString("url");
+        artist.mbid = mbid;
+        artist.name = name;
+        artist.sortName = sortName;
+        artist.url = url;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return artist;
     }
 }
