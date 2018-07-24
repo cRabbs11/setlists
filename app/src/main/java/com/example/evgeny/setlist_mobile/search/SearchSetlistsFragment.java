@@ -160,7 +160,7 @@ public class SearchSetlistsFragment extends Fragment {
             String name = setlist.artist.name;
             String eventDate = setlist.eventDate;
 
-            SimpleDateFormat dt = new SimpleDateFormat("mm-dd-yyyy");
+            SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yyyy");
 
             try {
                 Date date = dt.parse(eventDate);
