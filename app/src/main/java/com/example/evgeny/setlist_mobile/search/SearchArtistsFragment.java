@@ -36,9 +36,9 @@ import java.util.List;
  */
 
 @SuppressLint("ValidFragment")
-public class SearchFragment extends Fragment implements View.OnClickListener {
+public class SearchArtistsFragment extends Fragment implements View.OnClickListener {
 
-    private String TAG = "SearchFragment: " + SearchFragment.class.getSimpleName();
+    private String TAG = "SearchArtistsFragment: " + SearchArtistsFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private TextView emptySearchText;
     private EditText editSearch;
@@ -50,11 +50,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     Parser parser;
     public BottomNavigationView bottomMenu;
     private SelectBottomMenuListener selectBottomMenuListener;
-    private SearchSetlist searchSetlist;
+    private SearchSetlistsFragment searchSetlistsFragment;
     private FragmentTransaction ftrans;
 
     @SuppressLint("ValidFragment")
-    public SearchFragment(SelectBottomMenuListener selectBottomMenuListener) {
+    public SearchArtistsFragment(SelectBottomMenuListener selectBottomMenuListener) {
         this.selectBottomMenuListener = selectBottomMenuListener;
     }
 
@@ -193,9 +193,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     void openSearchSetlists(Artist artist) {
-        searchSetlist = new SearchSetlist(artist);
+        searchSetlistsFragment = new SearchSetlistsFragment(artist);
         ftrans = getActivity().getSupportFragmentManager().beginTransaction();
-        ftrans.replace(R.id.fragment_container, searchSetlist);
+        ftrans.replace(R.id.fragment_container, searchSetlistsFragment);
         ftrans.commit();
     }
 }

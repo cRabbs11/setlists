@@ -1,7 +1,6 @@
 package com.example.evgeny.setlist_mobile.search;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,14 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
 import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.model.Setlist;
+import com.example.evgeny.setlist_mobile.model.Song;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 import com.example.evgeny.setlist_mobile.utils.Parser;
 import com.example.evgeny.setlist_mobile.utils.Threader;
@@ -35,44 +33,36 @@ import java.util.List;
  */
 
 @SuppressLint("ValidFragment")
-public class SearchSetlist extends Fragment implements View.OnClickListener{
+public class SetlistFragment extends Fragment {
 
-    private String TAG = "SearchFragment: " + SearchSetlist.class.getSimpleName();
+    private String TAG = "SearchArtistsFragment: " + SetlistFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private TextView emptySearchText;
-    private EditText editSearch;
-    private Button btnSearch;
     private List<Setlist> mSetlists;
-    private SetlistsAdapter setlistsAdapter;
+    private SetlistAdapter setlistAdapter;
     private InputMethodManager inputMethodManager;
     private String artistName;
     private SelectBottomMenuListener selectBottomMenuListener;
-    private Artist artist;
+    private Setlist setlist;
     Threader threader;
     private Parser parser;
 
     @SuppressLint("ValidFragment")
-    public SearchSetlist(Artist artist) {
-        this.artist = artist;
+    public SetlistFragment(Setlist setlist) {
+        this.setlist = setlist;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_setlists, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         emptySearchText = (TextView) rootView.findViewById(R.id.emptySearchText);
-        editSearch = (EditText) rootView.findViewById(R.id.edit_search);
-        btnSearch = (Button) rootView.findViewById(R.id.btn_search);
-        editSearch.setHint("setlists...");
-        btnSearch.setOnClickListener(this);
-
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(setlistsAdapter);
-        getSetlists(artist);
+        recyclerView.setAdapter(setlistAdapter);
         return rootView;
     }
 
@@ -82,7 +72,7 @@ public class SearchSetlist extends Fragment implements View.OnClickListener{
         mSetlists = new ArrayList<>();
         parser = Parser.getInstance();
         threader = Threader.getInstance();
-        setlistsAdapter = new SetlistsAdapter();
+        setlistAdapter = new SetlistAdapter();
         //уведомляем фрагмент, что он работает с optionsMenu
         setHasOptionsMenu(true);
     }
@@ -103,59 +93,21 @@ public class SearchSetlist extends Fragment implements View.OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
+    class SetlistAdapter extends RecyclerView.Adapter<SetlistAdapter.SetlistHolder> implements OnSetlistClickListener {
 
-    @Override
-    public void onClick(View view) {
-        if (!editSearch.getText().equals("")) {
-            searchSetlist(editSearch.getText().toString());
-            hideKeyboard(editSearch);
-        }
-    }
-
-    void searchSetlist(String bandName) {
-
-    }
-
-    private void getSetlists(Artist artist) {
-        Bundle data = new Bundle();
-        String mbid = artist.mbid;
-        data.putString("mbid", mbid);
-        threader.getSetlists(data, new SetlistConnectNew.AnswerListener() {
-            @Override
-            public void getAnswer(String answer) {
-                mSetlists = parser.parseSetlists(answer);
-                callbackSetlists.addSetlists(mSetlists);
-            }
-        }, callbackSetlists);
-    }
-
-    Threader.CallbackSetlists callbackSetlists = new Threader.CallbackSetlists() {
         @Override
-        public void addSetlists(List<Setlist> setlists) {
-            Log.d(TAG, "addSetlists... ");
-            mSetlists = setlists;
-            setlistsAdapter.notifyDataSetChanged();
+        public void onSetlistClick(Song song) {
+            Log.d("BMTH", "нажали на сетлист");
         }
-    };
-
-    /**
-     * скрывает экранную клавиатуру
-     * @param view активный view
-     */
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
-                InputMethodManager.RESULT_UNCHANGED_SHOWN);
-    }
-
-    class SetlistsAdapter extends RecyclerView.Adapter<SetlistsAdapter.SetlistHolder> {
 
         class SetlistHolder extends RecyclerView.ViewHolder{
 
             TextView name;
+            OnSetlistClickListener onSetlistClickListener;
 
-            public SetlistHolder(View itemView) {
+            public SetlistHolder(View itemView, OnSetlistClickListener onSetlistClickListener) {
                 super(itemView);
+                this.onSetlistClickListener = onSetlistClickListener;
                 name = itemView.findViewById(R.id.artistName);
             }
         }
@@ -164,22 +116,27 @@ public class SearchSetlist extends Fragment implements View.OnClickListener{
         public SetlistHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.artist_layout_item, parent, false);
-            return new SetlistHolder(view);
+            return new SetlistHolder(view, this);
         }
 
         @Override
         public void onBindViewHolder(SetlistHolder holder, int position) {
-            Setlist setlist = mSetlists.get(position);
-            String name = setlist.artist.name;
-            String date = setlist.eventDate;
-            String venue = setlist.venue.name + " " + setlist.venue.city.name + " " + setlist.venue.city.country.name;
-            String header = name + " at: " + date + " in " + venue;
+            Song song = setlist.set.songs.get(position);
+            String name = song.name;
+            String header = name;
             holder.name.setText(header);
+            holder.name.setOnClickListener(view -> {
+                holder.onSetlistClickListener.onSetlistClick(song);
+            });
         }
 
         @Override
         public int getItemCount() {
-            return mSetlists.size();
+            return setlist.set.songs.size();
         }
+    }
+
+    interface OnSetlistClickListener {
+        void onSetlistClick(Song song);
     }
 }

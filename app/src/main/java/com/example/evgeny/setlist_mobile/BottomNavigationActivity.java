@@ -10,8 +10,8 @@ import android.view.MenuItem;
 
 import com.example.evgeny.setlist_mobile.model.BaseModel;
 import com.example.evgeny.setlist_mobile.model.Setlist;
-import com.example.evgeny.setlist_mobile.search.SearchFragment;
-import com.example.evgeny.setlist_mobile.search.SearchSetlist;
+import com.example.evgeny.setlist_mobile.search.SearchArtistsFragment;
+import com.example.evgeny.setlist_mobile.search.SearchSetlistsFragment;
 
 public class BottomNavigationActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
@@ -19,8 +19,8 @@ public class BottomNavigationActivity extends AppCompatActivity
 
     public BottomNavigationView bottomMenu;
 
-    private SearchFragment searchFragment;
-    private SearchSetlist searchSetlist;
+    private SearchArtistsFragment searchArtistsFragment;
+    private SearchSetlistsFragment searchSetlistsFragment;
     public FragmentTransaction ftrans;
     private Setlist setlist;
 
@@ -30,8 +30,8 @@ public class BottomNavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         bottomMenu = (BottomNavigationView) findViewById(R.id.bottomMenu);
         bottomMenu.setOnNavigationItemSelectedListener(this);
-        searchFragment = new SearchFragment(this);
-        //searchSetlist = new SearchSetlist(this);
+        searchArtistsFragment = new SearchArtistsFragment(this);
+        //searchSetlistsFragment = new SearchSetlistsFragment(this);
         //openLaunchFragment();
     }
 
@@ -40,11 +40,11 @@ public class BottomNavigationActivity extends AppCompatActivity
         ftrans = getSupportFragmentManager().beginTransaction();
         switch(item.getItemId()) {
             case R.id.menu_bottom_artists:
-                ftrans.replace(R.id.fragment_container, searchFragment);
+                ftrans.replace(R.id.fragment_container, searchArtistsFragment);
                 Log.d("BMTH", " поиск: ");
                 break;
             case R.id.menu_bottom_setlists:
-                //ftrans.replace(R.id.fragment_container, searchSetlist);
+                //ftrans.replace(R.id.fragment_container, searchSetlistsFragment);
                 break;
 
         }
@@ -54,7 +54,7 @@ public class BottomNavigationActivity extends AppCompatActivity
 
     public void openLaunchFragment() {
         ftrans = getSupportFragmentManager().beginTransaction();
-        ftrans.replace(R.id.fragment_container, searchFragment);
+        ftrans.replace(R.id.fragment_container, searchArtistsFragment);
         ftrans.commit();
     }
 
