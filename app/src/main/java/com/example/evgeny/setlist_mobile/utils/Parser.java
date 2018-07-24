@@ -77,12 +77,10 @@ public class Parser {
                 Artist artist = getArtist(artistJson);
                 JSONObject venueJson = setlistJson.getJSONObject("venue");
                 Venue venue = getVenue(venueJson);
-                JSONObject tourJson = setlistJson.getJSONObject("tour");
-                Tour tour = getTour(tourJson);
+                //JSONObject tourJson = setlistJson.getJSONObject("tour");
+                //Tour tour = getTour(tourJson);
                 JSONObject sets = setlistJson.getJSONObject("sets");
-                getSets(sets);
-                //String tour = artistJson.getString("tour");
-                //String set = artistJson.getString("set");
+                List<Song> mSongs = getSets(sets);
                 //String info = artistJson.getString("info");
                 //String url = artistJson.getString("url");
                 String id = setlistJson.getString("id");
@@ -91,10 +89,6 @@ public class Parser {
                 String eventDate = setlistJson.getString("eventDate");
                 String lastUpdated = setlistJson.getString("lastUpdated");
                 Setlist setlist = new Setlist();
-                //setlist.artist = artist;
-                //setlist.venue = venue;
-                //setlist.tour = tour;
-                //setlist.set = set;
                // setlist.info = info;
                 //setlist.url = url;
                 //setlist.id = id;
@@ -104,8 +98,8 @@ public class Parser {
                 setlist.lastUpdated = lastUpdated;
                 setlist.artist = artist;
                 setlist.venue = venue;
-                setlist.tour = tour;
-                //setlist.set.songs = mSongs;
+                //setlist.tour = tour;
+                setlist.set.songs = mSongs;
                 mSetlists.add(setlist);
             }
 
@@ -119,20 +113,15 @@ public class Parser {
 
     private List<Song> getSets(JSONObject sets) {
         List<Song> mSongs = new ArrayList<>();
-        //Log.d("BMTH", "sets: " + sets);
         try {
             JSONArray set = sets.getJSONArray("set");
             for (int i = 0; i < set.length(); i++) {
-                JSONObject object = set.getJSONObject(i);
-                //Log.d("BMTH", " ");
-                //Log.d("BMTH", "object: " + object);
-                JSONArray song = object.getJSONArray("song");
+                JSONObject songs = set.getJSONObject(i);
+                JSONArray song = songs.getJSONArray("song");
                 for (int x = 0; x < song.length(); x++) {
-                    JSONObject object1 = song.getJSONObject(x);
-                    String name = object1.getString("name");
-                    Log.d("BMTH", " ");
-                    Log.d("BMTH", "song name: " + name);
+                    mSongs.add(getSong(song.getJSONObject(x)));
                 }
+                //Log.d("BMTH", "mSongs.size(): " + mSongs.size());
             }
 
         } catch (JSONException e) {
