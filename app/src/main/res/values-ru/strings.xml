@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">сетлист</string>
+
+    <string name="jan">янв</string>
+    <string name="feb">фев</string>
+    <string name="mar">мар</string>
+    <string name="apr">апр</string>
+    <string name="may">май</string>
+    <string name="jun">июнь</string>
+    <string name="jul">июль</string>
+    <string name="aug">авг</string>
+    <string name="sep">сен</string>
+    <string name="nov">ноя</string>
+    <string name="oct">окт</string>
+    <string name="dec">дек</string>
 </resources>

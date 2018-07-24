@@ -25,7 +25,10 @@ import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 import com.example.evgeny.setlist_mobile.utils.Parser;
 import com.example.evgeny.setlist_mobile.utils.Threader;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -128,6 +131,9 @@ public class SearchSetlistsFragment extends Fragment {
 
         class SetlistHolder extends RecyclerView.ViewHolder{
 
+            TextView month;
+            TextView day;
+            TextView year;
             TextView name;
             OnSetlistClickListener onSetlistClickListener;
 
@@ -135,13 +141,16 @@ public class SearchSetlistsFragment extends Fragment {
                 super(itemView);
                 this.onSetlistClickListener = onSetlistClickListener;
                 name = itemView.findViewById(R.id.artistName);
+                month = itemView.findViewById(R.id.month);
+                day = itemView.findViewById(R.id.day);
+                year = itemView.findViewById(R.id.year);
             }
         }
 
         @Override
         public SetlistHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.artist_layout_item, parent, false);
+            View view = inflater.inflate(R.layout.setlist_layout_item, parent, false);
             return new SetlistHolder(view, this);
         }
 
@@ -149,10 +158,29 @@ public class SearchSetlistsFragment extends Fragment {
         public void onBindViewHolder(SetlistHolder holder, int position) {
             Setlist setlist = mSetlists.get(position);
             String name = setlist.artist.name;
-            String date = setlist.eventDate;
+            String eventDate = setlist.eventDate;
+
+            SimpleDateFormat dt = new SimpleDateFormat("mm-dd-yyyy");
+
+            try {
+                Date date = dt.parse(eventDate);
+                SimpleDateFormat month = new SimpleDateFormat("mm");
+                String sMonth = identMonth(month.format(date));
+                SimpleDateFormat day = new SimpleDateFormat("dd");
+                String sDay = day.format(date);
+                SimpleDateFormat year = new SimpleDateFormat("yyyy");
+                String sYear = year.format(date);
+
+                holder.month.setText(sMonth);
+                holder.day.setText(sDay);
+                holder.year.setText(sYear);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             String songsSize = String.valueOf(setlist.set.songs.size());
             String venue = setlist.venue.name + " " + setlist.venue.city.name + " " + setlist.venue.city.country.name + " songs: " + songsSize;
-            String header = name + " at: " + date + " in " + venue;
+            String header = name + " at: " + eventDate + " in " + venue;
             holder.name.setText(header);
             holder.name.setOnClickListener(view -> {
                 holder.onSetlistClickListener.onSetlistClick(setlist);
@@ -162,6 +190,37 @@ public class SearchSetlistsFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mSetlists.size();
+        }
+    }
+
+    private String identMonth(String format) {
+        switch(format) {
+            case "01":
+                return getResources().getString(R.string.jan);
+            case "02":
+                return getResources().getString(R.string.feb);
+            case "03":
+                return getResources().getString(R.string.mar);
+            case "04":
+                return getResources().getString(R.string.apr);
+            case "05":
+                return getResources().getString(R.string.may);
+            case "06":
+                return getResources().getString(R.string.jun);
+            case "07":
+                return getResources().getString(R.string.jul);
+            case "08":
+                return getResources().getString(R.string.aug);
+            case "09":
+                return getResources().getString(R.string.sep);
+            case "10":
+                return getResources().getString(R.string.oct);
+            case "11":
+                return getResources().getString(R.string.nov);
+            case "12":
+                return getResources().getString(R.string.nov);
+            default:
+                return getResources().getString(R.string.jan);
         }
     }
 
