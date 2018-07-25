@@ -134,13 +134,17 @@ public class SearchSetlistsFragment extends Fragment {
             TextView month;
             TextView day;
             TextView year;
-            TextView name;
+            TextView artist;
+            TextView tour;
+            TextView venue;
             OnSetlistClickListener onSetlistClickListener;
 
             public SetlistHolder(View itemView, OnSetlistClickListener onSetlistClickListener) {
                 super(itemView);
                 this.onSetlistClickListener = onSetlistClickListener;
-                name = itemView.findViewById(R.id.artistName);
+                artist = itemView.findViewById(R.id.artist);
+                tour = itemView.findViewById(R.id.tour);
+                venue = itemView.findViewById(R.id.venue);
                 month = itemView.findViewById(R.id.month);
                 day = itemView.findViewById(R.id.day);
                 year = itemView.findViewById(R.id.year);
@@ -179,12 +183,15 @@ public class SearchSetlistsFragment extends Fragment {
             }
 
             String songsSize = String.valueOf(setlist.set.songs.size());
-            String venue = setlist.venue.name + " " + setlist.venue.city.name + " " + setlist.venue.city.country.name + " songs: " + songsSize;
-            String header = name + " at: " + eventDate + " in " + venue;
-            holder.name.setText(header);
-            holder.name.setOnClickListener(view -> {
+            String tour = " songs: " + songsSize;
+            String venue = setlist.venue.name + " " + setlist.venue.city.name + " " + setlist.venue.city.country.name;
+            String header = name + " at: " + venue;
+            holder.artist.setText(name);
+            holder.artist.setOnClickListener(view -> {
                 holder.onSetlistClickListener.onSetlistClick(setlist);
             });
+            holder.tour.setText(tour);
+            holder.venue.setText(venue);
         }
 
         @Override

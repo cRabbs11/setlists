@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name">сетлист</string>
 
+    <string name="artist">Артист: </string>
+    <string name="tour">Тур: </string>
+    <string name="venue">Место: </string>
+
     <string name="jan">янв</string>
     <string name="feb">фев</string>
     <string name="mar">мар</string>
