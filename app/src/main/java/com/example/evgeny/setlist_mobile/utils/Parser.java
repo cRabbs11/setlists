@@ -72,13 +72,21 @@ public class Parser {
             JSONArray setlists = dataJsonObj.getJSONArray("setlist");
             // 2. перебираем и выводим контакты каждого друга
             for (int i = 0; i < setlists.length(); i++) {
+                Setlist setlist = new Setlist();
+
                 JSONObject setlistJson = setlists.getJSONObject(i);
                 JSONObject artistJson = setlistJson.getJSONObject("artist");
                 Artist artist = getArtist(artistJson);
                 JSONObject venueJson = setlistJson.getJSONObject("venue");
                 Venue venue = getVenue(venueJson);
-                //JSONObject tourJson = setlistJson.getJSONObject("tour");
-                //Tour tour = getTour(tourJson);
+
+                //название тура
+                if (setlistJson.has("tour")) {
+                    JSONObject tourJson = setlistJson.getJSONObject("tour");
+                    Tour tour = getTour(tourJson);
+                    setlist.tour = tour;
+                }
+
                 JSONObject sets = setlistJson.getJSONObject("sets");
                 List<Song> mSongs = getSets(sets);
                 //String info = artistJson.getString("info");
@@ -88,8 +96,8 @@ public class Parser {
                 //String lastFmEventId = artistJson.getString("lastFmEventIdo");
                 String eventDate = setlistJson.getString("eventDate");
                 String lastUpdated = setlistJson.getString("lastUpdated");
-                Setlist setlist = new Setlist();
-               // setlist.info = info;
+
+                //setlist.info = info;
                 //setlist.url = url;
                 //setlist.id = id;
                 //setlist.versionId = versionId;
@@ -98,7 +106,6 @@ public class Parser {
                 setlist.lastUpdated = lastUpdated;
                 setlist.artist = artist;
                 setlist.venue = venue;
-                //setlist.tour = tour;
                 setlist.set.songs = mSongs;
                 mSetlists.add(setlist);
             }

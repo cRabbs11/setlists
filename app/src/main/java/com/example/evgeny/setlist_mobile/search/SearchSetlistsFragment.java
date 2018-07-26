@@ -133,6 +133,7 @@ public class SearchSetlistsFragment extends Fragment {
         class SetlistHolder extends RecyclerView.ViewHolder{
 
             LinearLayout setlist;
+            LinearLayout layout_tour;
             TextView month;
             TextView day;
             TextView year;
@@ -145,6 +146,7 @@ public class SearchSetlistsFragment extends Fragment {
                 super(itemView);
                 this.onSetlistClickListener = onSetlistClickListener;
                 setlist = itemView.findViewById(R.id.setlist);
+                layout_tour = itemView.findViewById(R.id.layout_tour);
                 artist = itemView.findViewById(R.id.artist);
                 tour = itemView.findViewById(R.id.tour);
                 venue = itemView.findViewById(R.id.venue);
@@ -186,7 +188,14 @@ public class SearchSetlistsFragment extends Fragment {
             }
 
             String songsSize = String.valueOf(setlist.set.songs.size());
-            String tour = " songs: " + songsSize;
+
+            String tourName = " not tour name";
+            if (setlist.tour.name!=null) {
+                tourName = setlist.tour.name;
+            } else {
+                holder.layout_tour.setVisibility(View.GONE);
+            }
+            String tour = tourName;
             String venue = setlist.venue.name + ": " + setlist.venue.city.name + ", " + setlist.venue.city.country.name;
             String header = name + " at: " + venue;
             holder.artist.setText(name);
