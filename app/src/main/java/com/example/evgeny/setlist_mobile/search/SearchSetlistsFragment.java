@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
@@ -131,6 +132,7 @@ public class SearchSetlistsFragment extends Fragment {
 
         class SetlistHolder extends RecyclerView.ViewHolder{
 
+            LinearLayout setlist;
             TextView month;
             TextView day;
             TextView year;
@@ -142,6 +144,7 @@ public class SearchSetlistsFragment extends Fragment {
             public SetlistHolder(View itemView, OnSetlistClickListener onSetlistClickListener) {
                 super(itemView);
                 this.onSetlistClickListener = onSetlistClickListener;
+                setlist = itemView.findViewById(R.id.setlist);
                 artist = itemView.findViewById(R.id.artist);
                 tour = itemView.findViewById(R.id.tour);
                 venue = itemView.findViewById(R.id.venue);
@@ -187,7 +190,7 @@ public class SearchSetlistsFragment extends Fragment {
             String venue = setlist.venue.name + " " + setlist.venue.city.name + " " + setlist.venue.city.country.name;
             String header = name + " at: " + venue;
             holder.artist.setText(name);
-            holder.artist.setOnClickListener(view -> {
+            holder.setlist.setOnClickListener(view -> {
                 holder.onSetlistClickListener.onSetlistClick(setlist);
             });
             holder.tour.setText(tour);
