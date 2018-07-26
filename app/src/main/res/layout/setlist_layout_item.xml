@@ -7,6 +7,7 @@
     android:minHeight="60dp"
     android:background="@drawable/cell_selector_white">
 
+    <!-- дата -->
     <LinearLayout
         android:layout_margin="5dp"
         android:orientation="vertical"
@@ -43,18 +44,19 @@
             android:textAppearance="?android:attr/textAppearanceSmall"/>
     </LinearLayout>
 
-    <LinearLayout
+    <!-- подробности -->
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_weight="5"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/layout_artist"
             android:paddingLeft="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:paddingLeft="10dp"
@@ -71,11 +73,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_tour"
+            android:layout_below="@id/layout_artist"
             android:paddingLeft="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:paddingLeft="10dp"
@@ -92,11 +95,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_venue"
+            android:layout_below="@id/layout_tour"
             android:paddingLeft="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:paddingLeft="10dp"
@@ -112,6 +116,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

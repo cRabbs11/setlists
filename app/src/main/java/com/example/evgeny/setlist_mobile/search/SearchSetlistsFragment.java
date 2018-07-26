@@ -187,7 +187,7 @@ public class SearchSetlistsFragment extends Fragment {
 
             String songsSize = String.valueOf(setlist.set.songs.size());
             String tour = " songs: " + songsSize;
-            String venue = setlist.venue.name + " " + setlist.venue.city.name + " " + setlist.venue.city.country.name;
+            String venue = setlist.venue.name + ": " + setlist.venue.city.name + ", " + setlist.venue.city.country.name;
             String header = name + " at: " + venue;
             holder.artist.setText(name);
             holder.setlist.setOnClickListener(view -> {
