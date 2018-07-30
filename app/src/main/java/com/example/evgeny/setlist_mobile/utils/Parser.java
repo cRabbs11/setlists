@@ -6,6 +6,7 @@ import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.model.City;
 import com.example.evgeny.setlist_mobile.model.Coords;
 import com.example.evgeny.setlist_mobile.model.Country;
+import com.example.evgeny.setlist_mobile.model.Cover;
 import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.model.Song;
 import com.example.evgeny.setlist_mobile.model.Tour;
@@ -142,6 +143,10 @@ public class Parser {
         try {
             String name = jsonObject.getString("name");
             song.name = name;
+            if (jsonObject.has("cover")) {
+                JSONObject jsonCover = jsonObject.getJSONObject("cover");
+                song.cover = getArtist(jsonCover);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
