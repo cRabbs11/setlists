@@ -123,11 +123,17 @@ public class SetlistFragment extends Fragment {
         public void onBindViewHolder(SetlistHolder holder, int position) {
             Song song = setlist.set.songs.get(position);
             String cover = " ";
+            String info = " ";
             String name = song.name;
             String header = name;
             if (song.cover.name!=null) {
                 cover =  song.cover.name;
                 header = header + " (" + cover + " cover)";
+            }
+
+            if (song.info!=null) {
+                info = song.info;
+                header = header + " (" + info + " )";
             }
             holder.name.setText(header);
             holder.name.setOnClickListener(view -> {
