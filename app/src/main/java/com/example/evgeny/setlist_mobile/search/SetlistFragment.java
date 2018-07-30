@@ -155,16 +155,6 @@ public class SetlistFragment extends Fragment {
         public int getItemCount() {return setlist.sets.get(0).songs.size();}
     }
 
-    private int getSongsSize() {
-        int size=0;
-        for (Set set: setlist.sets) {
-            for (Song song:set.songs) {
-                size++;
-            }
-        }
-        return size;
-    }
-
     interface OnSetlistClickListener {
         void onSetlistClick(Song song);
     }
