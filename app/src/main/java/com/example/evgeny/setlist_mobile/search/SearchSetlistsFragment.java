@@ -128,7 +128,7 @@ public class SearchSetlistsFragment extends Fragment {
         @Override
         public void onSetlistClick(Setlist setlist) {
             Log.d("BMTH", "нажали на сетлист");
-            if (setlist.set.songs.isEmpty()) {
+            if (setlist.sets.isEmpty()) {
                 Toast.makeText(getActivity(), "Сетлист неизвестен", Toast.LENGTH_SHORT).show();
             } else {
                 openSetlist(setlist);
@@ -196,7 +196,7 @@ public class SearchSetlistsFragment extends Fragment {
 
             String songsSize = String.valueOf(setlist.set.songs.size());
 
-            if (setlist.set.songs.isEmpty()) {
+            if (setlist.sets.isEmpty()) {
                 holder.setlistView.setBackgroundResource(R.drawable.cell_selector_red);
             } else {
                 holder.setlistView.setBackgroundResource(R.drawable.cell_selector_green);

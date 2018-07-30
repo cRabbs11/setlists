@@ -6,6 +6,7 @@ import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.model.City;
 import com.example.evgeny.setlist_mobile.model.Coords;
 import com.example.evgeny.setlist_mobile.model.Country;
+import com.example.evgeny.setlist_mobile.model.Set;
 import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.model.Song;
 import com.example.evgeny.setlist_mobile.model.Tour;
@@ -89,6 +90,7 @@ public class Parser {
 
                 JSONObject sets = setlistJson.getJSONObject("sets");
                 List<Song> mSongs = getSets(sets);
+                List<Set> mSets = getSets1(sets);
                 //String info = artistJson.getString("info");
                 //String url = artistJson.getString("url");
                 String id = setlistJson.getString("id");
@@ -106,7 +108,8 @@ public class Parser {
                 setlist.lastUpdated = lastUpdated;
                 setlist.artist = artist;
                 setlist.venue = venue;
-                setlist.set.songs = mSongs;
+                //setlist.set.songs = mSongs;
+                setlist.sets = mSets;
                 mSetlists.add(setlist);
             }
 
@@ -129,6 +132,10 @@ public class Parser {
                     mSongs.add(getSong(song.getJSONObject(x)));
                 }
 
+                if (songs.has("encore")) {
+
+                }
+
                 //Log.d("BMTH", "mSongs.size(): " + mSongs.size());
             }
 
@@ -136,6 +143,31 @@ public class Parser {
             e.printStackTrace();
         }
         return mSongs;
+    }
+
+    private List<Set> getSets1(JSONObject sets) {
+        List<Set> mSets = new ArrayList<>();
+        try {
+            JSONArray jsonSet = sets.getJSONArray("set");
+            for (int i = 0; i < jsonSet.length(); i++) {
+                Set set = new Set();
+                JSONObject songs = jsonSet.getJSONObject(i);
+                JSONArray song = songs.getJSONArray("song");
+                for (int x = 0; x < song.length(); x++) {
+                    set.songs.add(getSong(song.getJSONObject(x)));
+                }
+
+                if (songs.has("encore")) {
+                    set.encore = songs.getString("encore");
+                }
+                mSets.add(set);
+                //Log.d("BMTH", "mSongs.size(): " + mSongs.size());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return mSets;
     }
 
     private Song getSong(JSONObject jsonObject) {

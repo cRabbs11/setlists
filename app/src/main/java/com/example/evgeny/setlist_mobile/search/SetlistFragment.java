@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
 import com.example.evgeny.setlist_mobile.model.Artist;
+import com.example.evgeny.setlist_mobile.model.Set;
 import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.model.Song;
 import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
@@ -121,7 +122,10 @@ public class SetlistFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(SetlistHolder holder, int position) {
-            Song song = setlist.set.songs.get(position);
+            //Song song = setlist.set.songs.get(position);
+            Set set = setlist.sets.get(0);
+            Song song = setlist.sets.get(0).songs.get(position);
+            String encore = " ";
             String cover = " ";
             String info = " ";
             String name = song.name;
@@ -135,6 +139,12 @@ public class SetlistFragment extends Fragment {
                 info = song.info;
                 header = header + " (" + info + " )";
             }
+
+            if (set.encore!=null) {
+                encore = set.encore;
+                header = header + " " + encore;
+            }
+
             holder.name.setText(header);
             holder.name.setOnClickListener(view -> {
                 holder.onSetlistClickListener.onSetlistClick(song);
@@ -142,9 +152,17 @@ public class SetlistFragment extends Fragment {
         }
 
         @Override
-        public int getItemCount() {
-            return setlist.set.songs.size();
+        public int getItemCount() {return setlist.sets.get(0).songs.size();}
+    }
+
+    private int getSongsSize() {
+        int size=0;
+        for (Set set: setlist.sets) {
+            for (Song song:set.songs) {
+                size++;
+            }
         }
+        return size;
     }
 
     interface OnSetlistClickListener {
