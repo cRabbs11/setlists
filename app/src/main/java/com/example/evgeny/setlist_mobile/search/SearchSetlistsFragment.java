@@ -132,6 +132,7 @@ public class SearchSetlistsFragment extends Fragment {
 
         class SetlistHolder extends RecyclerView.ViewHolder{
 
+            View setlistView;
             LinearLayout setlist;
             LinearLayout layout_tour;
             TextView month;
@@ -144,6 +145,7 @@ public class SearchSetlistsFragment extends Fragment {
 
             public SetlistHolder(View itemView, OnSetlistClickListener onSetlistClickListener) {
                 super(itemView);
+                setlistView = itemView;
                 this.onSetlistClickListener = onSetlistClickListener;
                 setlist = itemView.findViewById(R.id.setlist);
                 layout_tour = itemView.findViewById(R.id.layout_tour);
@@ -188,6 +190,12 @@ public class SearchSetlistsFragment extends Fragment {
             }
 
             String songsSize = String.valueOf(setlist.set.songs.size());
+
+            if (setlist.set.songs.isEmpty()) {
+                holder.setlistView.setBackgroundResource(R.drawable.cell_selector_red);
+            } else {
+                holder.setlistView.setBackgroundResource(R.drawable.cell_selector_green);
+            }
 
             String tourName = " not tour name";
             if (setlist.tour.name!=null) {
