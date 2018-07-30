@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
@@ -127,7 +128,11 @@ public class SearchSetlistsFragment extends Fragment {
         @Override
         public void onSetlistClick(Setlist setlist) {
             Log.d("BMTH", "нажали на сетлист");
-            openSetlist(setlist);
+            if (setlist.set.songs.isEmpty()) {
+                Toast.makeText(getActivity(), "Сетлист неизвестен", Toast.LENGTH_SHORT).show();
+            } else {
+                openSetlist(setlist);
+            }
         }
 
         class SetlistHolder extends RecyclerView.ViewHolder{
