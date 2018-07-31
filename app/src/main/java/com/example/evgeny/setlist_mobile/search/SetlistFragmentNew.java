@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
@@ -161,6 +162,7 @@ public class SetlistFragmentNew extends Fragment {
             LayoutInflater inflater = (LayoutInflater) getActivity().getLayoutInflater();
             childView = inflater.inflate(R.layout.song_layout_item, null);
             TextView songName = (TextView) childView.findViewById(R.id.songName);
+            ImageView tape = (ImageView) childView.findViewById(R.id.tape);
             Song song = setlist.sets.get(group).songs.get(child);
 
             String cover = " ";
@@ -175,6 +177,10 @@ public class SetlistFragmentNew extends Fragment {
             if (song.info!=null) {
                 info = song.info;
                 header = header + " (" + info + " )";
+            }
+
+            if (song.tape==true) {
+                tape.setVisibility(View.VISIBLE);
             }
 
             songName.setText(header);

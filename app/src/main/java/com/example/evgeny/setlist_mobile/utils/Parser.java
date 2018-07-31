@@ -187,6 +187,10 @@ public class Parser {
                 JSONObject jsonCover = jsonObject.getJSONObject("cover");
                 song.cover = getArtist(jsonCover);
             }
+
+            if (jsonObject.has("tape")) {
+                song.tape = jsonObject.getBoolean("tape");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
