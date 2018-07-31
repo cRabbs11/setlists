@@ -52,6 +52,7 @@ public class SearchSetlistsFragment extends Fragment {
     Threader threader;
     private Parser parser;
     private SetlistFragment setlistFragment;
+    private SetlistFragmentNew setlistFragmentNew;
     private FragmentTransaction ftrans;
 
     @SuppressLint("ValidFragment")
@@ -262,8 +263,10 @@ public class SearchSetlistsFragment extends Fragment {
 
     void openSetlist(Setlist setlist) {
         setlistFragment = new SetlistFragment(setlist);
+        setlistFragmentNew = new SetlistFragmentNew(setlist);
         ftrans = getActivity().getSupportFragmentManager().beginTransaction();
-        ftrans.replace(R.id.fragment_container, setlistFragment);
+        //ftrans.replace(R.id.fragment_container, setlistFragment);
+        ftrans.replace(R.id.fragment_container, setlistFragmentNew);
         ftrans.commit();
     }
 }
