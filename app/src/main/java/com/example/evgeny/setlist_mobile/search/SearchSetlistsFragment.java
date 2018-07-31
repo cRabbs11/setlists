@@ -267,6 +267,7 @@ public class SearchSetlistsFragment extends Fragment {
         ftrans = getActivity().getSupportFragmentManager().beginTransaction();
         //ftrans.replace(R.id.fragment_container, setlistFragment);
         ftrans.replace(R.id.fragment_container, setlistFragmentNew);
+        ftrans.addToBackStack("");
         ftrans.commit();
     }
 }

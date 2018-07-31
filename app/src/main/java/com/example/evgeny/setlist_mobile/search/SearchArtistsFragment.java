@@ -197,6 +197,7 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         searchSetlistsFragment = new SearchSetlistsFragment(artist);
         ftrans = getActivity().getSupportFragmentManager().beginTransaction();
         ftrans.replace(R.id.fragment_container, searchSetlistsFragment);
+        ftrans.addToBackStack("");
         ftrans.commit();
     }
 }

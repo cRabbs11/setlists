@@ -258,4 +258,6 @@ public class SetlistFragmentNew extends Fragment {
     interface OnSetlistClickListener {
         void onSetlistClick(Song song);
     }
+
+
 }
