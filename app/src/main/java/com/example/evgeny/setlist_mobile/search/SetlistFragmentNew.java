@@ -163,27 +163,32 @@ public class SetlistFragmentNew extends Fragment {
             childView = inflater.inflate(R.layout.song_layout_item, null);
             TextView songName = (TextView) childView.findViewById(R.id.songName);
             ImageView tape = (ImageView) childView.findViewById(R.id.tape);
+            TextView descriptionView = (TextView) childView.findViewById(R.id.description);
             Song song = setlist.sets.get(group).songs.get(child);
 
             String cover = " ";
             String info = " ";
             String name = song.name;
-            String header = name;
+            String descrition = " ";
             if (song.cover.name!=null) {
                 cover =  song.cover.name;
-                header = header + " (" + cover + " song)";
+                descrition = descrition + " (" + cover + " song)";
             }
 
             if (song.info!=null) {
                 info = song.info;
-                header = header + " (" + info + " )";
+                descrition = descrition + " (" + info + " )";
             }
 
             if (song.tape==true) {
                 tape.setVisibility(View.VISIBLE);
             }
 
-            songName.setText(header);
+            songName.setText(name);
+
+            if (!descriptionView.equals(" ")) {
+                descriptionView.setText(descrition);
+            }
             return childView;
         }
 

@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="40dp"
     android:background="@drawable/cell_selector_white">
 
-    <ImageView
-        android:id="@+id/tape"
-        android:layout_gravity="center_vertical"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:background="@drawable/ic_radio_black_24dp"
-        android:visibility="gone"/>
+    <LinearLayout
+        android:minHeight="20dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/tape"
+            android:layout_gravity="center_vertical"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_radio_black_24dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:id="@+id/songName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <TextView
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:id="@+id/songName"
+        android:minHeight="20dp"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
