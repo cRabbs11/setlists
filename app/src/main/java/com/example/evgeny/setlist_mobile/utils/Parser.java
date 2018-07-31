@@ -158,10 +158,13 @@ public class Parser {
                 }
 
                 if (songs.has("encore")) {
-                    set.encore = songs.getString("encore");
+                    set.encore = "encore " + songs.getString("encore");
+                }
+
+                if (songs.has("name")) {
+                    set.name = songs.getString("name");
                 }
                 mSets.add(set);
-                //Log.d("BMTH", "mSongs.size(): " + mSongs.size());
             }
 
         } catch (JSONException e) {

@@ -67,6 +67,7 @@ public class SetlistFragmentNew extends Fragment {
         //llm.setOrientation(LinearLayoutManager.VERTICAL);
         //recyclerView.setLayoutManager(llm);
         //recyclerView.setAdapter(setlistAdapter);
+        expListView.setGroupIndicator(null);
         expListView.setAdapter(expListAdapter);
         return rootView;
     }
@@ -144,8 +145,13 @@ public class SetlistFragmentNew extends Fragment {
 
             TextView setName = (TextView) groupView.findViewById(R.id.setName);
             Set set = setlist.sets.get(group);
+
+            if (set.name!=null) {
+                setName.setText(set.name);
+            }
+
             if (set.encore!=null) {
-                setName.setText("encore: " + set.encore);
+                setName.setText(set.encore);
             }
             return groupView;
         }
@@ -163,7 +169,7 @@ public class SetlistFragmentNew extends Fragment {
             String header = name;
             if (song.cover.name!=null) {
                 cover =  song.cover.name;
-                header = header + " (" + cover + " cover)";
+                header = header + " (" + cover + " song)";
             }
 
             if (song.info!=null) {
