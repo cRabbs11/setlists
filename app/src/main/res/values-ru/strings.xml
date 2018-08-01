@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">сетлист</string>
+    <string name="app_name">setlist.fm</string>
 
     <string name="artist">Артист: </string>
     <string name="tour">Тур: </string>

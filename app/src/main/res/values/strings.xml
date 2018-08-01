@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">setlist</string>
+    <string name="app_name">setlist.fm</string>
 
     <string name="artist">Artist: </string>
     <string name="tour">Tour: </string>
