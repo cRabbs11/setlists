@@ -4,21 +4,31 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_margin="5dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/cell_search_gray_border">
 
         <EditText
-            android:text="biffy clyro"
             android:id="@+id/edit_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="7dp"
+            android:layout_weight="5"
             android:hint="artist..."
-            android:layout_weight="5"/>
+            android:maxLength="50"
+            android:text="biffy clyro"
+            android:background="@android:color/transparent"
+            android:textCursorDrawable="@color/colorGray"/>
 
-        <Button
-            android:text="search"
+        <ImageButton
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/search_selector_button"
+            android:src="@drawable/ic_search_white_24dp"
             android:id="@+id/btn_search"
             android:layout_width="0dp"
             android:layout_height="match_parent"

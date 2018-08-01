@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
@@ -42,7 +43,8 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
     private RecyclerView recyclerView;
     private TextView emptySearchText;
     private EditText editSearch;
-    private Button btnSearch;
+    //private Button btnSearch;
+    private ImageView btnSearch;
     private List<Artist> mArtists;
     private ArtistsAdapter artistsAdapter;
     private InputMethodManager inputMethodManager;
@@ -64,7 +66,7 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         emptySearchText = (TextView) rootView.findViewById(R.id.emptySearchText);
         editSearch = (EditText) rootView.findViewById(R.id.edit_search);
-        btnSearch = (Button) rootView.findViewById(R.id.btn_search);
+        btnSearch = (ImageView) rootView.findViewById(R.id.btn_search);
         editSearch.setHint("artists...");
         editSearch.setText("roger waters");
         btnSearch.setOnClickListener(this);
