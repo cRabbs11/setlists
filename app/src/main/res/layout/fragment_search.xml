@@ -20,6 +20,7 @@
             android:hint="artist..."
             android:maxLength="50"
             android:text="biffy clyro"
+
             android:background="@android:color/transparent"
             android:textCursorDrawable="@color/colorGray"/>
 
@@ -40,7 +41,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7">
+        android:layout_weight="8">
 
         <android.support.v7.widget.RecyclerView
             xmlns:android="http://schemas.android.com/apk/res/android"

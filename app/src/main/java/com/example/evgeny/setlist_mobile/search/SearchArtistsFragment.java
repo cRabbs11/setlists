@@ -92,7 +92,7 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.menu_search, menu);
+        //menuInflater.inflate(R.menu.menu_search, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
