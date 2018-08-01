@@ -14,4 +14,5 @@
     <color name="colorYellow">#ffff00</color>
     <color name="colorBrown">#973800</color>
     <color name="colorGray">#c8a3a3a3</color>
+    <color name="colorDarkGray">#c85b5b5b</color>
 </resources>
