@@ -197,11 +197,11 @@ public class SearchSetlistsFragment extends Fragment {
 
             String songsSize = String.valueOf(setlist.set.songs.size());
 
-            if (setlist.sets.isEmpty()) {
-                holder.setlistView.setBackgroundResource(R.drawable.cell_selector_red);
-            } else {
-                holder.setlistView.setBackgroundResource(R.drawable.cell_selector_green);
-            }
+            //if (setlist.sets.isEmpty()) {
+            //    holder.setlistView.setBackgroundResource(R.drawable.cell_selector_red);
+            //} else {
+            //    holder.setlistView.setBackgroundResource(R.drawable.cell_selector_green);
+            //}
 
             String tourName = " not tour name";
             if (setlist.tour.name!=null) {

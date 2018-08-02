@@ -5,7 +5,7 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="60dp"
-    android:background="@drawable/cell_selector_white">
+    android:background="@drawable/cell_selector_white_no_border">
 
     <!-- дата -->
     <LinearLayout
