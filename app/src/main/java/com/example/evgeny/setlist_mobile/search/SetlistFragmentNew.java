@@ -70,6 +70,18 @@ public class SetlistFragmentNew extends Fragment {
         //recyclerView.setAdapter(setlistAdapter);
         expListView.setGroupIndicator(null);
         expListView.setAdapter(expListAdapter);
+        for (Set set: setlist.sets) {
+            int groupPosition = setlist.sets.indexOf(set);
+            expListView.expandGroup(groupPosition);
+        }
+
+        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                return true;
+            }
+        });
+
         return rootView;
     }
 
