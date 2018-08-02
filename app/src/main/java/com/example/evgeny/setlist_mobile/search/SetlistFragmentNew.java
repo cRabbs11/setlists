@@ -43,7 +43,6 @@ public class SetlistFragmentNew extends Fragment {
     private ExpandableListView expListView;
     private TextView emptySearchText;
     private List<Setlist> mSetlists;
-    private SetlistAdapter setlistAdapter;
     private ExpListAdapter expListAdapter;
     private InputMethodManager inputMethodManager;
     private String artistName;
@@ -91,7 +90,6 @@ public class SetlistFragmentNew extends Fragment {
         mSetlists = new ArrayList<>();
         parser = Parser.getInstance();
         threader = Threader.getInstance();
-        setlistAdapter = new SetlistAdapter();
         //уведомляем фрагмент, что он работает с optionsMenu
         setHasOptionsMenu(true);
     }
@@ -113,6 +111,8 @@ public class SetlistFragmentNew extends Fragment {
     }
 
     class ExpListAdapter extends BaseExpandableListAdapter {
+
+        private int songNumber=0;
 
         @Override
         public int getGroupCount() {
@@ -154,7 +154,7 @@ public class SetlistFragmentNew extends Fragment {
         public View getGroupView(int group, boolean b, View groupView, ViewGroup viewGroup) {
 
             LayoutInflater inflater = (LayoutInflater) getActivity().getLayoutInflater();
-            groupView = inflater.inflate(R.layout.set_layout_item, null);
+            groupView = inflater.inflate(R.layout.set_group_item, null);
 
             TextView setName = (TextView) groupView.findViewById(R.id.setName);
             Set set = setlist.sets.get(group);
@@ -194,8 +194,12 @@ public class SetlistFragmentNew extends Fragment {
 
             if (song.tape==true) {
                 tape.setVisibility(View.VISIBLE);
+            } else if (song.number==0) {
+                song.number=++songNumber;
+                name = song.number + ". " + name;
+            } else {
+                name = song.number + ". " + name;
             }
-
             songName.setText(name);
 
             if (!descriptionView.equals(" ")) {
@@ -211,70 +215,9 @@ public class SetlistFragmentNew extends Fragment {
 
     }
 
-    class SetlistAdapter extends RecyclerView.Adapter<SetlistAdapter.SetlistHolder> implements OnSetlistClickListener {
 
-        @Override
-        public void onSetlistClick(Song song) {
-            Log.d("BMTH", "нажали на сетлист");
-        }
-
-        class SetlistHolder extends RecyclerView.ViewHolder{
-
-            TextView name;
-            OnSetlistClickListener onSetlistClickListener;
-
-            public SetlistHolder(View itemView, OnSetlistClickListener onSetlistClickListener) {
-                super(itemView);
-                this.onSetlistClickListener = onSetlistClickListener;
-                name = itemView.findViewById(R.id.artistName);
-            }
-        }
-
-        @Override
-        public SetlistHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.artist_layout_item, parent, false);
-            return new SetlistHolder(view, this);
-        }
-
-        @Override
-        public void onBindViewHolder(SetlistHolder holder, int position) {
-            //Song song = setlist.set.songs.get(position);
-            Set set = setlist.sets.get(0);
-            Song song = setlist.sets.get(0).songs.get(position);
-            String encore = " ";
-            String cover = " ";
-            String info = " ";
-            String name = song.name;
-            String header = name;
-            if (song.cover.name!=null) {
-                cover =  song.cover.name;
-                header = header + " (" + cover + " cover)";
-            }
-
-            if (song.info!=null) {
-                info = song.info;
-                header = header + " (" + info + " )";
-            }
-
-            if (set.encore!=null) {
-                encore = set.encore;
-                header = header + " " + encore;
-            }
-
-            holder.name.setText(header);
-            holder.name.setOnClickListener(view -> {
-                holder.onSetlistClickListener.onSetlistClick(song);
-            });
-        }
-
-        @Override
-        public int getItemCount() {return setlist.sets.get(0).songs.size();}
-    }
 
     interface OnSetlistClickListener {
         void onSetlistClick(Song song);
     }
-
-
 }

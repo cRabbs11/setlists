@@ -9,6 +9,7 @@ public class Song extends BaseModel {
     public String info;
     public boolean tape;
     public Artist cover;
+    public int number=0;
 
     public Song() {
         cover = new Artist();
