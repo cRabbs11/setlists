@@ -158,7 +158,7 @@ public class Parser {
                 }
 
                 if (songs.has("encore")) {
-                    set.encore = "encore " + songs.getString("encore");
+                    set.encore = "encore " + songs.getString("encore") + ": ";
                 }
 
                 if (songs.has("name")) {

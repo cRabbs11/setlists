@@ -9,6 +9,5 @@
         android:paddingLeft="10dp"
         android:id="@+id/setName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorLightBlue"/>
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -161,11 +161,16 @@ public class SetlistFragmentNew extends Fragment {
 
             if (set.name!=null) {
                 setName.setText(set.name);
+            } else {
+                setName.setText("");
             }
 
             if (set.encore!=null) {
                 setName.setText(set.encore);
+            } else {
+                setName.setText("");
             }
+
             return groupView;
         }
 
