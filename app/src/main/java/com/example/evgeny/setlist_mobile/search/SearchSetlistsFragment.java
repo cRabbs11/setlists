@@ -42,7 +42,9 @@ public class SearchSetlistsFragment extends Fragment {
 
     private String TAG = "SearchArtistsFragment: " + SearchSetlistsFragment.class.getSimpleName();
     private RecyclerView recyclerView;
-    private TextView emptySearchText;
+    private LinearLayout listLayout;
+    private LinearLayout waitLayout;
+    private TextView waitText;
     private List<Setlist> mSetlists;
     private SetlistsAdapter setlistsAdapter;
     private InputMethodManager inputMethodManager;
@@ -65,12 +67,15 @@ public class SearchSetlistsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_setlists, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        emptySearchText = (TextView) rootView.findViewById(R.id.emptySearchText);
+        listLayout = (LinearLayout) rootView.findViewById(R.id.listLayout);
+        waitLayout = (LinearLayout) rootView.findViewById(R.id.waitLayout);
+        waitText = (TextView) rootView.findViewById(R.id.waitText);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(setlistsAdapter);
+        waitMessage(true, R.string.search);
         getSetlists(artist);
         return rootView;
     }
@@ -109,8 +114,12 @@ public class SearchSetlistsFragment extends Fragment {
         threader.getSetlists(data, new SetlistConnectNew.AnswerListener() {
             @Override
             public void getAnswer(String answer) {
-                mSetlists = parser.parseSetlists(answer);
-                callbackSetlists.addSetlists(mSetlists);
+                if (!answer.equals("0")) {
+                    mSetlists = parser.parseSetlists(answer);
+                    callbackSetlists.addSetlists(mSetlists);
+                } else {
+                    callbackSetlists.error();
+                }
             }
         }, callbackSetlists);
     }
@@ -121,8 +130,25 @@ public class SearchSetlistsFragment extends Fragment {
             Log.d(TAG, "addSetlists... ");
             mSetlists = setlists;
             setlistsAdapter.notifyDataSetChanged();
+            waitMessage(false, R.string.search);
+        }
+
+        @Override
+        public void error() {
+            waitMessage(true, R.string.search_setlist_error);
         }
     };
+
+    private void waitMessage(boolean show, int stringId) {
+        if (show) {
+            waitLayout.setVisibility(View.VISIBLE);
+            waitText.setText(stringId);
+            listLayout.setVisibility(View.GONE);
+        } else {
+            waitLayout.setVisibility(View.GONE);
+            listLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
     class SetlistsAdapter extends RecyclerView.Adapter<SetlistsAdapter.SetlistHolder> implements OnSetlistClickListener {
 

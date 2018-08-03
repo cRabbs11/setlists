@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/listLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,15 +18,26 @@
 
         </android.support.v7.widget.RecyclerView>
 
+    </LinearLayout>
+
+    <!-- область со уведомлений -->
+    <LinearLayout
+        android:id="@+id/waitLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:visibility="gone">
+
         <TextView
-            android:id="@+id/emptySearchText"
+            android:gravity="center"
+            android:id="@+id/waitText"
             android:textSize="24sp"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ничего не найдено"
-            android:visibility="gone" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
 
 </LinearLayout>

@@ -20,6 +20,7 @@ public class Threader {
 
     public interface CallbackSetlists {
         void addSetlists(List<Setlist> setlists);
+        void error();
     }
 
     private Threader() {

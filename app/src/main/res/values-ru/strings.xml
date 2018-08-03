@@ -7,6 +7,7 @@
     <string name="venue">Место: </string>
     <string name="search">поиск...</string>
     <string name="search_error">по вашему запросу ничего не найдено</string>
+    <string name="search_setlist_error">сетлистов для этого исполнителя не найдено</string>
 
     <string name="jan">янв</string>
     <string name="feb">фев</string>
