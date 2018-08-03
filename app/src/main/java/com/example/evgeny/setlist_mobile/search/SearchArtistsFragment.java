@@ -144,8 +144,13 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
             @Override
             public void getAnswer(String answer) {
                 Log.d(TAG, "getAnswer... ");
-                mArtists = parser.parseArtists(answer);
-                callbackArtists.addArtists(mArtists);
+                if (!answer.equals("0")) {
+                    mArtists = parser.parseArtists(answer);
+                    callbackArtists.addArtists(mArtists);
+                } else {
+                    callbackArtists.error();
+                }
+
             }
         }, callbackArtists);
     }
@@ -157,6 +162,11 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
             mArtists = artists;
             artistsAdapter.notifyDataSetChanged();
             waitMessage(false, R.string.search);
+        }
+
+        @Override
+        public void error() {
+            waitMessage(true, R.string.search_error);
         }
     };
 

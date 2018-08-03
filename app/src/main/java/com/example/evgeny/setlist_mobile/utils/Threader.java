@@ -15,6 +15,7 @@ public class Threader {
 
     public interface CallbackArtists {
         void addArtists(List<Artist> artists);
+        void error();
     }
 
     public interface CallbackSetlists {

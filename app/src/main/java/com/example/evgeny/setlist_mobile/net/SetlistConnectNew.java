@@ -148,6 +148,7 @@ public class SetlistConnectNew implements Runnable {
 
             } else {
                 Log.d("BMTH", "responseCode is NOT OK: " + responseCode);
+                Log.d("BMTH", "response: " + response);
             }
             httpURLConnection.disconnect();
         } catch (MalformedURLException e) {

@@ -5,6 +5,7 @@
     <string name="tour">Tour: </string>
     <string name="venue">Venue: </string>
     <string name="search">searching...</string>
+    <string name="search_error">artist not found</string>
 
     <string name="jan">jan</string>
     <string name="feb">feb</string>
