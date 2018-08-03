@@ -5,6 +5,7 @@
     <string name="artist">Артист: </string>
     <string name="tour">Тур: </string>
     <string name="venue">Место: </string>
+    <string name="search">поиск...</string>
 
     <string name="jan">янв</string>
     <string name="feb">фев</string>

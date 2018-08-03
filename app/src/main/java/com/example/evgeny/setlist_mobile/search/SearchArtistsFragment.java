@@ -1,6 +1,7 @@
 package com.example.evgeny.setlist_mobile.search;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
@@ -43,6 +45,9 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
     private RecyclerView recyclerView;
     private TextView emptySearchText;
     private EditText editSearch;
+    private LinearLayout waitLayout;
+    private LinearLayout listLayout;
+    private TextView waitText;
     //private Button btnSearch;
     private ImageView btnSearch;
     private List<Artist> mArtists;
@@ -67,6 +72,9 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         emptySearchText = (TextView) rootView.findViewById(R.id.emptySearchText);
         editSearch = (EditText) rootView.findViewById(R.id.edit_search);
         btnSearch = (ImageView) rootView.findViewById(R.id.btn_search);
+        waitLayout = (LinearLayout) rootView.findViewById(R.id.waitLayout);
+        listLayout = (LinearLayout) rootView.findViewById(R.id.listLayout);
+        waitText = (TextView) rootView.findViewById(R.id.waitText);
         editSearch.setHint("artists...");
         editSearch.setText("roger waters");
         btnSearch.setOnClickListener(this);
@@ -113,10 +121,23 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
             //search(editSearch.getText().toString());
             getArtists(editSearch.getText().toString());
             hideKeyboard(editSearch);
+            waitMessage(true, R.string.search);
+        }
+    }
+
+    private void waitMessage(boolean show, int stringId) {
+        if (show) {
+            waitLayout.setVisibility(View.VISIBLE);
+            waitText.setText(stringId);
+            listLayout.setVisibility(View.GONE);
+        } else {
+            waitLayout.setVisibility(View.GONE);
+            listLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private void getArtists(String artist) {
+
         Bundle data = new Bundle();
         data.putString("artist", artist);
         threader.getArtists(data, new SetlistConnectNew.AnswerListener() {
@@ -135,6 +156,7 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
             Log.d(TAG, "addArtists... ");
             mArtists = artists;
             artistsAdapter.notifyDataSetChanged();
+            waitMessage(false, R.string.search);
         }
     };
 

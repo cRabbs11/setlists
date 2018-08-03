@@ -4,6 +4,7 @@
     <string name="artist">Artist: </string>
     <string name="tour">Tour: </string>
     <string name="venue">Venue: </string>
+    <string name="search">searching...</string>
 
     <string name="jan">jan</string>
     <string name="feb">feb</string>
