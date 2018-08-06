@@ -1,7 +1,6 @@
 package com.example.evgeny.setlist_mobile.search;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +25,7 @@ import android.widget.TextView;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
 import com.example.evgeny.setlist_mobile.model.Artist;
-import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
+import com.example.evgeny.setlist_mobile.net.SetlistConnect;
 import com.example.evgeny.setlist_mobile.utils.Parser;
 import com.example.evgeny.setlist_mobile.utils.Threader;
 
@@ -140,7 +138,7 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
 
         Bundle data = new Bundle();
         data.putString("artist", artist);
-        threader.getArtists(data, new SetlistConnectNew.AnswerListener() {
+        threader.getArtists(data, new SetlistConnect.AnswerListener() {
             @Override
             public void getAnswer(String answer) {
                 Log.d(TAG, "getAnswer... ");

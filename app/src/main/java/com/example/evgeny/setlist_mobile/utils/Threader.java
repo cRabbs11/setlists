@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.model.Setlist;
-import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
+import com.example.evgeny.setlist_mobile.net.SetlistConnect;
 
 import java.util.List;
 
@@ -39,16 +39,16 @@ public class Threader {
     /**
      * получение списка артистов от сервера
      */
-    public void getArtists(Bundle data, SetlistConnectNew.AnswerListener answerListener, CallbackArtists callbackArtists) {
+    public void getArtists(Bundle data, SetlistConnect.AnswerListener answerListener, CallbackArtists callbackArtists) {
         String request = "getArtists";
-        SetlistConnectNew setlistConnectNew = new SetlistConnectNew(request, data, answerListener);
+        SetlistConnect setlistConnect = new SetlistConnect(request, data, answerListener);
     }
 
     /**
      * получение списка сетлистов артиста
      */
-    public void getSetlists(Bundle data, SetlistConnectNew.AnswerListener answerListener, CallbackSetlists callbackSetlists) {
+    public void getSetlists(Bundle data, SetlistConnect.AnswerListener answerListener, CallbackSetlists callbackSetlists) {
         String request = "getSetlists";
-        SetlistConnectNew setlistConnectNew = new SetlistConnectNew(request, data, answerListener);
+        SetlistConnect setlistConnect = new SetlistConnect(request, data, answerListener);
     }
 }

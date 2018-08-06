@@ -18,11 +18,9 @@ import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
-import com.example.evgeny.setlist_mobile.model.Artist;
 import com.example.evgeny.setlist_mobile.model.Set;
 import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.model.Song;
-import com.example.evgeny.setlist_mobile.net.SetlistConnectNew;
 import com.example.evgeny.setlist_mobile.utils.Parser;
 import com.example.evgeny.setlist_mobile.utils.Threader;
 
