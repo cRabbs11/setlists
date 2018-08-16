@@ -5,13 +5,18 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.evgeny.setlist_mobile.model.BaseModel;
 import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.search.SearchArtistsFragment;
 import com.example.evgeny.setlist_mobile.search.SearchSetlistsFragment;
+
+import java.time.temporal.Temporal;
+import java.util.regex.Pattern;
 
 public class BottomNavigationActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
@@ -23,6 +28,7 @@ public class BottomNavigationActivity extends AppCompatActivity
     private SearchSetlistsFragment searchSetlistsFragment;
     public FragmentTransaction ftrans;
     private Setlist setlist;
+    private TextView toSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,9 @@ public class BottomNavigationActivity extends AppCompatActivity
         bottomMenu = (BottomNavigationView) findViewById(R.id.bottomMenu);
         bottomMenu.setOnNavigationItemSelectedListener(this);
         searchArtistsFragment = new SearchArtistsFragment(this);
+        toSource = (TextView) findViewById(R.id.toSource);
+        Pattern pattern = Pattern.compile("www.setlist.fm");
+        Linkify.addLinks(toSource ,pattern,"http://");
         //searchSetlistsFragment = new SearchSetlistsFragment(this);
         //openLaunchFragment();
     }

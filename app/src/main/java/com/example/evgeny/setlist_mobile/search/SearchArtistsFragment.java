@@ -44,7 +44,6 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
     private String TAG = "SearchArtistsFragment: " + SearchArtistsFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private TextView emptySearchText;
-    private TextView toSource;
     private EditText editSearch;
     private LinearLayout waitLayout;
     private LinearLayout listLayout;
@@ -76,7 +75,6 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         waitLayout = (LinearLayout) rootView.findViewById(R.id.waitLayout);
         listLayout = (LinearLayout) rootView.findViewById(R.id.listLayout);
         waitText = (TextView) rootView.findViewById(R.id.waitText);
-        toSource = (TextView) rootView.findViewById(R.id.toSource);
         editSearch.setHint("artists...");
         editSearch.setText("roger waters");
         btnSearch.setOnClickListener(this);
@@ -119,8 +117,6 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        Pattern pattern = Pattern.compile("www.setlist.fm");
-        Linkify.addLinks(toSource ,pattern,"http://");
     }
 
     @Override
