@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">setlist.fm</string>
+    <string name="app_name">setlists</string>
 
     <string name="artist">Artist: </string>
     <string name="tour">Tour: </string>
@@ -20,4 +20,7 @@
     <string name="nov">nov</string>
     <string name="oct">oct</string>
     <string name="dec">dec</string>
+    <string name="info">www.setlist.fm</string>
+
+
 </resources>

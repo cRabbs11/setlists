@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import com.example.evgeny.setlist_mobile.utils.Threader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by Evgeny on 03.07.2018.
@@ -42,6 +44,7 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
     private String TAG = "SearchArtistsFragment: " + SearchArtistsFragment.class.getSimpleName();
     private RecyclerView recyclerView;
     private TextView emptySearchText;
+    private TextView toSource;
     private EditText editSearch;
     private LinearLayout waitLayout;
     private LinearLayout listLayout;
@@ -73,6 +76,7 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         waitLayout = (LinearLayout) rootView.findViewById(R.id.waitLayout);
         listLayout = (LinearLayout) rootView.findViewById(R.id.listLayout);
         waitText = (TextView) rootView.findViewById(R.id.waitText);
+        toSource = (TextView) rootView.findViewById(R.id.toSource);
         editSearch.setHint("artists...");
         editSearch.setText("roger waters");
         btnSearch.setOnClickListener(this);
@@ -112,6 +116,12 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Pattern pattern = Pattern.compile("www.setlist.fm");
+        Linkify.addLinks(toSource ,pattern,"http://");
+    }
 
     @Override
     public void onClick(View view) {
