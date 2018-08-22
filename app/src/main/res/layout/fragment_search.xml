@@ -20,8 +20,6 @@
             android:layout_weight="5"
             android:hint="artist..."
             android:maxLength="50"
-            android:text="biffy clyro"
-
             android:background="@android:color/transparent"
             android:textCursorDrawable="@color/colorGray"/>
 

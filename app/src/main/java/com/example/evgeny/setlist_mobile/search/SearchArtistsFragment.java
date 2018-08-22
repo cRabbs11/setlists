@@ -76,7 +76,6 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         listLayout = (LinearLayout) rootView.findViewById(R.id.listLayout);
         waitText = (TextView) rootView.findViewById(R.id.waitText);
         editSearch.setHint("artists...");
-        editSearch.setText("roger waters");
         btnSearch.setOnClickListener(this);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
