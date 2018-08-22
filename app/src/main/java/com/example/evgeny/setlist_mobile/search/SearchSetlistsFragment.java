@@ -56,6 +56,7 @@ public class SearchSetlistsFragment extends Fragment {
     private Parser parser;
     private SetlistFragment setlistFragment;
     private SetlistFragmentNew setlistFragmentNew;
+    private ArtistInfoFragment artistInfoFragment;
     private FragmentTransaction ftrans;
 
     @SuppressLint("ValidFragment")
@@ -104,11 +105,19 @@ public class SearchSetlistsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_search:
-                //handleSearch(item);
+            case R.id.menu_artist_info:
+                openStatistic(artist.mbid);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openStatistic(String mbid_name) {
+        artistInfoFragment = new ArtistInfoFragment(mbid_name);
+        ftrans = getActivity().getSupportFragmentManager().beginTransaction();
+        ftrans.replace(R.id.fragment_container, artistInfoFragment);
+        ftrans.addToBackStack("");
+        ftrans.commit();
     }
 
     private void getSetlists(Artist artist) {
