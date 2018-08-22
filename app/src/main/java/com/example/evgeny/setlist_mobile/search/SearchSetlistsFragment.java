@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.evgeny.setlist_mobile.MainActivity;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
 import com.example.evgeny.setlist_mobile.model.Artist;
@@ -77,6 +78,9 @@ public class SearchSetlistsFragment extends Fragment {
         recyclerView.setAdapter(setlistsAdapter);
         waitMessage(true, R.string.search);
         getSetlists(artist);
+
+        // Set title bar
+        ((MainActivity) getActivity()).setActionBarTitle(artist.name);
         return rootView;
     }
 
@@ -93,7 +97,7 @@ public class SearchSetlistsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        //menuInflater.inflate(R.menu.menu_search, menu);
+        menuInflater.inflate(R.menu.menu_more_artist, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 

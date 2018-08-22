@@ -12,4 +12,8 @@ public class MainActivity extends BottomNavigationActivity {
         super.onCreate(savedInstanceState);
         openLaunchFragment();
     }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 }

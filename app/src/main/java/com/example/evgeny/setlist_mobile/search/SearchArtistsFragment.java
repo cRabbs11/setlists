@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.evgeny.setlist_mobile.MainActivity;
 import com.example.evgeny.setlist_mobile.R;
 import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
 import com.example.evgeny.setlist_mobile.model.Artist;
@@ -81,6 +82,10 @@ public class SearchArtistsFragment extends Fragment implements View.OnClickListe
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(artistsAdapter);
+
+        // Set title bar
+        ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.app_name));
+
         return rootView;
     }
 
