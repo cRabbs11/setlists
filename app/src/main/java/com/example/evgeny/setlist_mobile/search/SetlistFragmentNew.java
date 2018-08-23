@@ -27,6 +27,7 @@ import com.example.evgeny.setlist_mobile.SelectBottomMenuListener;
 import com.example.evgeny.setlist_mobile.model.Set;
 import com.example.evgeny.setlist_mobile.model.Setlist;
 import com.example.evgeny.setlist_mobile.model.Song;
+import com.example.evgeny.setlist_mobile.model.Venue;
 import com.example.evgeny.setlist_mobile.utils.Parser;
 import com.example.evgeny.setlist_mobile.utils.Threader;
 
@@ -107,14 +108,14 @@ public class SetlistFragmentNew extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_venue_info:
-                openVenue();
+                openVenue(setlist.venue);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void openVenue() {
-        venueInfoFragment = new VenueInfoFragment("venue information");
+    private void openVenue(Venue venue) {
+        venueInfoFragment = new VenueInfoFragment(venue);
         ftrans = getActivity().getSupportFragmentManager().beginTransaction();
         ftrans.replace(R.id.fragment_container, venueInfoFragment);
         ftrans.addToBackStack("");
