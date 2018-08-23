@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -50,6 +51,8 @@ public class SetlistFragmentNew extends Fragment {
     private Setlist setlist;
     Threader threader;
     private Parser parser;
+    private VenueInfoFragment venueInfoFragment;
+    private FragmentTransaction ftrans;
 
     @SuppressLint("ValidFragment")
     public SetlistFragmentNew(Setlist setlist) {
@@ -96,18 +99,26 @@ public class SetlistFragmentNew extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        //menuInflater.inflate(R.menu.menu_search, menu);
+        menuInflater.inflate(R.menu.menu_about_venue, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_search:
-                //handleSearch(item);
+            case R.id.menu_venue_info:
+                openVenue();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openVenue() {
+        venueInfoFragment = new VenueInfoFragment("venue information");
+        ftrans = getActivity().getSupportFragmentManager().beginTransaction();
+        ftrans.replace(R.id.fragment_container, venueInfoFragment);
+        ftrans.addToBackStack("");
+        ftrans.commit();
     }
 
     class ExpListAdapter extends BaseExpandableListAdapter {
