@@ -54,7 +54,6 @@ public class SearchSetlistsFragment extends Fragment {
     private Artist artist;
     Threader threader;
     private Parser parser;
-    private SetlistFragment setlistFragment;
     private SetlistFragmentNew setlistFragmentNew;
     private ArtistInfoFragment artistInfoFragment;
     private FragmentTransaction ftrans;
@@ -98,7 +97,7 @@ public class SearchSetlistsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.menu_more_artist, menu);
+        //menuInflater.inflate(R.menu.menu_more_artist, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
@@ -301,10 +300,8 @@ public class SearchSetlistsFragment extends Fragment {
     }
 
     void openSetlist(Setlist setlist) {
-        setlistFragment = new SetlistFragment(setlist);
         setlistFragmentNew = new SetlistFragmentNew(setlist);
         ftrans = getActivity().getSupportFragmentManager().beginTransaction();
-        //ftrans.replace(R.id.fragment_container, setlistFragment);
         ftrans.replace(R.id.fragment_container, setlistFragmentNew);
         ftrans.addToBackStack("");
         ftrans.commit();
