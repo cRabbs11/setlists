@@ -58,6 +58,24 @@ public class SearchSetlistsFragment extends Fragment {
     private ArtistInfoFragment artistInfoFragment;
     private FragmentTransaction ftrans;
 
+    private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            Log.d("BMTH", "newState: " + newState);
+            LinearLayoutManager layoutManager = ((LinearLayoutManager)recyclerView.getLayoutManager());
+            int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+            int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+            Log.d("BMTH", "mSetlists.size(): " + mSetlists.size());
+            Log.d("BMTH", "lastVisiblePosition: " + lastVisiblePosition);
+
+            if ((mSetlists.size()-1)==lastVisiblePosition) {
+                Log.d("BMTH", "need update! ");
+            }
+
+        }
+    };
+
     @SuppressLint("ValidFragment")
     public SearchSetlistsFragment(Artist artist) {
         this.artist = artist;
@@ -76,6 +94,7 @@ public class SearchSetlistsFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(setlistsAdapter);
+        recyclerView.addOnScrollListener(onScrollListener);
         waitMessage(true, R.string.search);
         getSetlists(artist);
 
@@ -83,6 +102,8 @@ public class SearchSetlistsFragment extends Fragment {
         ((MainActivity) getActivity()).setActionBarTitle(artist.name);
         return rootView;
     }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
