@@ -86,9 +86,9 @@ public class SetlistConnect implements Runnable {
         String URL;
         if (!data.isEmpty()) {
             mbid = data.getString("mbid");
-            //page = data.getString("page");
+            page = data.getString("page");
         }
-        URL = "https://api.setlist.fm/rest/1.0/artist/" + mbid + "/setlists?p=1";
+        URL = "https://api.setlist.fm/rest/1.0/artist/" + mbid + "/setlists?p=" + page;
         return URL;
     }
 

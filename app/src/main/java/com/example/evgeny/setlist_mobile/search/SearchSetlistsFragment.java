@@ -57,6 +57,7 @@ public class SearchSetlistsFragment extends Fragment {
     private SetlistFragmentNew setlistFragmentNew;
     private ArtistInfoFragment artistInfoFragment;
     private FragmentTransaction ftrans;
+    private int page=1;
 
     private RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
@@ -71,10 +72,18 @@ public class SearchSetlistsFragment extends Fragment {
 
             if ((mSetlists.size()-1)==lastVisiblePosition) {
                 Log.d("BMTH", "need update! ");
+                moreSetlists();
             }
 
         }
     };
+
+    /**
+     * подгружает еще список стелистов, если список промотан до конца
+     */
+    private void moreSetlists() {
+        getSetlists(artist);
+    }
 
     @SuppressLint("ValidFragment")
     public SearchSetlistsFragment(Artist artist) {
@@ -144,6 +153,7 @@ public class SearchSetlistsFragment extends Fragment {
         Bundle data = new Bundle();
         String mbid = artist.mbid;
         data.putString("mbid", mbid);
+        data.putString("page", String.valueOf(page));
         threader.getSetlists(data, new SetlistConnect.AnswerListener() {
             @Override
             public void getAnswer(String answer) {
@@ -161,7 +171,12 @@ public class SearchSetlistsFragment extends Fragment {
         @Override
         public void addSetlists(List<Setlist> setlists) {
             Log.d(TAG, "addSetlists... ");
-            mSetlists = setlists;
+//            for (Setlist setlist: setlists) {
+//                mSetlists.add(setlist);
+//            }
+            mSetlists.addAll(setlists);
+            page++;
+            //mSetlists = setlists;
             setlistsAdapter.notifyDataSetChanged();
             waitMessage(false, R.string.search);
         }
