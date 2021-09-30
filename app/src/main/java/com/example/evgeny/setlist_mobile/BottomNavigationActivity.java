@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.example.evgeny.setlist_mobile.artistSearch.ArtistSearchFragment;
 import com.example.evgeny.setlist_mobile.setlists.BaseModel;
 import com.example.evgeny.setlist_mobile.setlists.Setlist;
-import com.example.evgeny.setlist_mobile.search.SearchArtistsFragment;
-import com.example.evgeny.setlist_mobile.search.SearchSetlistsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.regex.Pattern;
@@ -26,9 +24,7 @@ public class BottomNavigationActivity extends AppCompatActivity
 
     //public BottomNavigationView bottomMenu;
 
-    private SearchArtistsFragment searchArtistsFragment;
     private ArtistSearchFragment artistSearchFragment;
-    private SearchSetlistsFragment searchSetlistsFragment;
     public FragmentTransaction ftrans;
     private Setlist setlist;
     private TextView toSource;
@@ -39,7 +35,6 @@ public class BottomNavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         //bottomMenu = (BottomNavigationView) findViewById(R.id.bottomMenu);
         //bottomMenu.setOnNavigationItemSelectedListener(this);
-        searchArtistsFragment = new SearchArtistsFragment(this);
         artistSearchFragment = new ArtistSearchFragment();
         toSource = (TextView) findViewById(R.id.toSource);
         Pattern pattern = Pattern.compile("www.setlist.fm");
@@ -53,7 +48,7 @@ public class BottomNavigationActivity extends AppCompatActivity
         ftrans = getSupportFragmentManager().beginTransaction();
         switch(item.getItemId()) {
             case R.id.menu_bottom_artists:
-                ftrans.replace(R.id.fragment_container, searchArtistsFragment);
+                ftrans.replace(R.id.fragment_container, artistSearchFragment);
                 Log.d("BMTH", " поиск: ");
                 break;
             case R.id.menu_bottom_setlists:
