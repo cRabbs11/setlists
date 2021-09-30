@@ -1,30 +1,33 @@
 package com.example.evgeny.setlist_mobile;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.example.evgeny.setlist_mobile.model.BaseModel;
-import com.example.evgeny.setlist_mobile.model.Setlist;
+
+import com.example.evgeny.setlist_mobile.artistSearch.ArtistSearchFragment;
+import com.example.evgeny.setlist_mobile.setlists.BaseModel;
+import com.example.evgeny.setlist_mobile.setlists.Setlist;
 import com.example.evgeny.setlist_mobile.search.SearchArtistsFragment;
 import com.example.evgeny.setlist_mobile.search.SearchSetlistsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.time.temporal.Temporal;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 public class BottomNavigationActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
         SelectBottomMenuListener {
 
-    public BottomNavigationView bottomMenu;
+    //public BottomNavigationView bottomMenu;
 
     private SearchArtistsFragment searchArtistsFragment;
+    private ArtistSearchFragment artistSearchFragment;
     private SearchSetlistsFragment searchSetlistsFragment;
     public FragmentTransaction ftrans;
     private Setlist setlist;
@@ -34,9 +37,10 @@ public class BottomNavigationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomMenu = (BottomNavigationView) findViewById(R.id.bottomMenu);
-        bottomMenu.setOnNavigationItemSelectedListener(this);
+        //bottomMenu = (BottomNavigationView) findViewById(R.id.bottomMenu);
+        //bottomMenu.setOnNavigationItemSelectedListener(this);
         searchArtistsFragment = new SearchArtistsFragment(this);
+        artistSearchFragment = new ArtistSearchFragment();
         toSource = (TextView) findViewById(R.id.toSource);
         Pattern pattern = Pattern.compile("www.setlist.fm");
         Linkify.addLinks(toSource ,pattern,"http://");
@@ -63,14 +67,15 @@ public class BottomNavigationActivity extends AppCompatActivity
 
     public void openLaunchFragment() {
         ftrans = getSupportFragmentManager().beginTransaction();
-        ftrans.replace(R.id.fragment_container, searchArtistsFragment);
+        //ftrans.replace(R.id.fragment_container, searchArtistsFragment);
+        ftrans.replace(R.id.fragment_container, artistSearchFragment);
         ftrans.commit();
     }
 
     @Override
     public <T extends BaseModel> void setMenuItem(String item, T object) {
         Log.d("BMTH", " нажали: " + item);
-        bottomMenu.setSelectedItemId(R.id.menu_bottom_setlists);
+        //bottomMenu.setSelectedItemId(R.id.menu_bottom_setlists);
         setlist = (Setlist) object;
     }
 
