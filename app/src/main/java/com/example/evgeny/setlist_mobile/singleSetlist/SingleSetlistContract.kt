@@ -10,9 +10,11 @@ interface SingleSetlistContract {
 		fun showSetlist(setlist: Setlist )
 		fun updateSetlist(setlist: Setlist )
         fun showToast(meaasage: String)
+        fun openMap()
     }
  
     interface Presenter: MvpPresenter<View> {
 		fun onListItemClicked(song: Song)
+        fun onMapClicked()
     }
 }

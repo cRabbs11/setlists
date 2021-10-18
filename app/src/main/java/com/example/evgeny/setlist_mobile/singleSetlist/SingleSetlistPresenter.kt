@@ -1,14 +1,9 @@
 package com.example.evgeny.setlist_mobile.singleSetlist
 
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
-import android.util.Log
-import com.ekochkov.intervallearning.mvp.PresenterBase
-import com.example.evgeny.setlist_mobile.setlists.Artist
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+
+
+import com.example.evgeny.setlist_mobile.mvp.PresenterBase
 import com.example.evgeny.setlist_mobile.setlists.Song
-import com.example.evgeny.setlist_mobile.utils.AnswerListener
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 
 
@@ -21,6 +16,10 @@ public class SingleSetlistPresenter(setlistsRepository: SetlistsRepository):
 
 	override fun onListItemClicked(song: Song) {
 
+	}
+
+	override fun onMapClicked() {
+		getView()?.openMap()
 	}
 
 
