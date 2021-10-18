@@ -2,15 +2,15 @@ package com.example.evgeny.setlist_mobile.utils;
 
 import android.util.Log;
 
-import com.example.evgeny.setlist_mobile.model.Artist;
-import com.example.evgeny.setlist_mobile.model.City;
-import com.example.evgeny.setlist_mobile.model.Coords;
-import com.example.evgeny.setlist_mobile.model.Country;
-import com.example.evgeny.setlist_mobile.model.Set;
-import com.example.evgeny.setlist_mobile.model.Setlist;
-import com.example.evgeny.setlist_mobile.model.Song;
-import com.example.evgeny.setlist_mobile.model.Tour;
-import com.example.evgeny.setlist_mobile.model.Venue;
+import com.example.evgeny.setlist_mobile.setlists.Artist;
+import com.example.evgeny.setlist_mobile.setlists.City;
+import com.example.evgeny.setlist_mobile.setlists.Coords;
+import com.example.evgeny.setlist_mobile.setlists.Country;
+import com.example.evgeny.setlist_mobile.setlists.Set;
+import com.example.evgeny.setlist_mobile.setlists.Setlist;
+import com.example.evgeny.setlist_mobile.setlists.Song;
+import com.example.evgeny.setlist_mobile.setlists.Tour;
+import com.example.evgeny.setlist_mobile.setlists.Venue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +28,7 @@ public class Parser {
     private Parser() {}
 
     public static Parser getInstance() {
+
         if (parser==null) {
             parser = new Parser();
         }
@@ -50,7 +51,9 @@ public class Parser {
                 JSONObject artistJson = artists.getJSONObject(i);
                 Artist artist;
                 artist = getArtist(artistJson);
-                mArtists.add(artist);
+                if (artist!=null) {
+                    mArtists.add(artist);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -73,19 +76,17 @@ public class Parser {
             JSONArray setlists = dataJsonObj.getJSONArray("setlist");
             // 2. перебираем и выводим контакты каждого друга
             for (int i = 0; i < setlists.length(); i++) {
-                Setlist setlist = new Setlist();
 
                 JSONObject setlistJson = setlists.getJSONObject(i);
                 JSONObject artistJson = setlistJson.getJSONObject("artist");
                 Artist artist = getArtist(artistJson);
                 JSONObject venueJson = setlistJson.getJSONObject("venue");
                 Venue venue = getVenue(venueJson);
-
+                Tour tour = null;
                 //название тура
                 if (setlistJson.has("tour")) {
                     JSONObject tourJson = setlistJson.getJSONObject("tour");
-                    Tour tour = getTour(tourJson);
-                    setlist.tour = tour;
+                    tour = getTour(tourJson);
                 }
 
                 JSONObject sets = setlistJson.getJSONObject("sets");
@@ -104,13 +105,10 @@ public class Parser {
                 //setlist.id = id;
                 //setlist.versionId = versionId;
                 //setlist.lastFmEventId = lastFmEventId;
-                setlist.eventDate = eventDate;
-                setlist.lastUpdated = lastUpdated;
-                setlist.artist = artist;
-                setlist.venue = venue;
+
                 //setlist.set.songs = mSongs;
-                setlist.sets = mSets;
-                mSetlists.add(setlist);
+
+                mSetlists.add(new Setlist(artist, venue, tour, eventDate, lastUpdated, mSets));
             }
 
         } catch (JSONException e) {
@@ -147,24 +145,27 @@ public class Parser {
 
     private List<Set> getSets1(JSONObject sets) {
         List<Set> mSets = new ArrayList<>();
+
         try {
             JSONArray jsonSet = sets.getJSONArray("set");
             for (int i = 0; i < jsonSet.length(); i++) {
-                Set set = new Set();
+                String encore = "...";
+                String name = "...";
+                List<Song> songs1 = new ArrayList<Song>();
                 JSONObject songs = jsonSet.getJSONObject(i);
                 JSONArray song = songs.getJSONArray("song");
                 for (int x = 0; x < song.length(); x++) {
-                    set.songs.add(getSong(song.getJSONObject(x)));
+                    songs1.add(getSong(song.getJSONObject(x)));
                 }
 
                 if (songs.has("encore")) {
-                    set.encore = "encore " + songs.getString("encore") + ": ";
+                    encore = "encore " + songs.getString("encore") + ": ";
                 }
 
                 if (songs.has("name")) {
-                    set.name = songs.getString("name");
+                    name = songs.getString("name");
                 }
-                mSets.add(set);
+                mSets.add(new Set(name, "numder", encore, songs1));
             }
 
         } catch (JSONException e) {
@@ -174,126 +175,152 @@ public class Parser {
     }
 
     private Song getSong(JSONObject jsonObject) {
-        Song song = new Song();
+        String name = "null";
+        String info = null;
+        Boolean tape = false;
+        Artist cover = null;
         try {
-            String name = jsonObject.getString("name");
-            song.name = name;
+            name = jsonObject.getString("name");
 
             if (jsonObject.has("info")) {
-                song.info = jsonObject.getString("info");
+                info = jsonObject.getString("info");
             }
 
             if (jsonObject.has("cover")) {
                 JSONObject jsonCover = jsonObject.getJSONObject("cover");
-                song.cover = getArtist(jsonCover);
+                cover = getArtist(jsonCover);
             }
 
             if (jsonObject.has("tape")) {
-                song.tape = jsonObject.getBoolean("tape");
+                tape = jsonObject.getBoolean("tape");
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return song;
+        return new Song(name, info, tape, cover, 0);
     }
 
+    //private Artist getArtist(JSONObject jsonObject) {
+    //    Artist artist = new Artist();
+    //    try {
+    //    String mbid = jsonObject.getString("mbid");
+    //    String name = jsonObject.getString("name");
+    //    String sortName = jsonObject.getString("sortName");
+    //    String url = jsonObject.getString("url");
+    //    String error = jsonObject.getString("error");
+    //    artist.mbid = mbid;
+    //    artist.name = name;
+    //    artist.sortName = sortName;
+    //    artist.url = url;
+    //    } catch (JSONException e) {
+    //        e.printStackTrace();
+    //    }
+    //    return artist;
+    //}
+
     private Artist getArtist(JSONObject jsonObject) {
-        Artist artist = new Artist();
+        String mbid = null;
+        String name = null;
+        String sortName = null;
+        String url = null;
         try {
-        String mbid = jsonObject.getString("mbid");
-        String name = jsonObject.getString("name");
-        String sortName = jsonObject.getString("sortName");
-        String url = jsonObject.getString("url");
-        artist.mbid = mbid;
-        artist.name = name;
-        artist.sortName = sortName;
-        artist.url = url;
+            mbid = jsonObject.getString("mbid");
+            name = jsonObject.getString("name");
+            sortName = jsonObject.getString("sortName");
+            url = jsonObject.getString("url");
+            //String error = jsonObject.getString("error");
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return artist;
+        //artist.mbid = mbid;
+        //artist.name = name;
+        //artist.sortName = sortName;
+        //artist.url = url;
+        return new Artist(mbid, name, sortName, url);
     }
 
     private Tour getTour(JSONObject jsonObject) {
-        Tour tour = new Tour();
+        String name = null;
         try {
-            String name = jsonObject.getString("name");
-            tour.name = name;
+            name = jsonObject.getString("name");
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return tour;
+        return new Tour(name);
     }
 
     private Venue getVenue(JSONObject jsonObject) {
-        Venue venue = new Venue();
+        String id = null;
+        String name = null;
+        String url = null;
+        City city = null;
         try {
 
             JSONObject cityJson = jsonObject.getJSONObject("city");
-            City city = getCity(cityJson);
+            city = getCity(cityJson);
 
-            String id = jsonObject.getString("id");
-            String name = jsonObject.getString("name");
-            String url = jsonObject.getString("url");
-            venue.id = id;
-            venue.name = name;
-            venue.url = url;
-            venue.city = city;
+            id = jsonObject.getString("id");
+            name = jsonObject.getString("name");
+            url = jsonObject.getString("url");
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return venue;
+        return new Venue(id, name, url, city);
     }
 
     private City getCity(JSONObject jsonObject) {
-        City city = new City();
-        try {
+        String id = null;
+        String name = null;
+        String state = null;
+        String stateCode = null;
+        Country country = null;
+        Coords coords = null;
 
+        try {
             JSONObject countryJson = jsonObject.getJSONObject("country");
-            Country country = getCountry(countryJson);
+            country = getCountry(countryJson);
 
             JSONObject coordsJson = jsonObject.getJSONObject("coords");
-            Coords coords = getCoords(coordsJson);
+            coords = getCoords(coordsJson);
 
-            String id = jsonObject.getString("id");
-            String name = jsonObject.getString("name");
-            String state = jsonObject.getString("state");
-            String stateCode = jsonObject.getString("stateCode");
-            city.id = id;
-            city.name = name;
-            city.state = state;
-            city.stateCode = stateCode;
-            city.country = country;
-            city.coords = coords;
+            id = jsonObject.getString("id");
+            name = jsonObject.getString("name");
+            state = jsonObject.getString("state");
+            stateCode = jsonObject.getString("stateCode");
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return city;
+        return new City(id, name, state, stateCode, coords, country);
     }
 
     private Coords getCoords(JSONObject jsonObject) {
-        Coords coords = new Coords();
+        String coord_lat = null;
+        String coord_long = null;
         try {
-            String coord_lat = jsonObject.getString("lat");
-            String coord_long = jsonObject.getString("long");
-            coords.coord_lat = coord_lat;
-            coords.coord_long = coord_long;
+            coord_lat = jsonObject.getString("lat");
+            coord_long = jsonObject.getString("long");
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return coords;
+        return new Coords(coord_lat, coord_long);
     }
 
     private Country getCountry(JSONObject jsonObject) {
-        Country country = new Country();
+        String code = null;
+        String name = null;
         try {
-            String code = jsonObject.getString("code");
-            String name = jsonObject.getString("name");
-            country.code = code;
-            country.name = name;
+            code = jsonObject.getString("code");
+            name = jsonObject.getString("name");
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-        return country;
+        return new Country(code, name);
     }
 }
