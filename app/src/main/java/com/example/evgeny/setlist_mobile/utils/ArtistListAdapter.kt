@@ -28,7 +28,7 @@ class ArtistListAdapter(clickListener: OnItemClickListener<Artist>) : RecyclerVi
         Log.d(TAG, "onCreateViewHolder")
         val inflater = LayoutInflater.from(parent.getContext())
         context = parent.context
-        val view = inflater.inflate(R.layout.artist_layout_item, parent, false)
+        val view = inflater.inflate(R.layout.artist_item_constraint, parent, false)
         return ArtistHolder(view)
     }
 
