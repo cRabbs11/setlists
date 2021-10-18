@@ -11,6 +11,12 @@ class SetlistsAPI {
 
     private val TAG = SetlistsAPI::class.simpleName + " BMTH"
 
+    private val URL_BASE = "https://api.setlist.fm/rest/1.0/"
+
+
+            //"https://api.setlist.fm/rest/1.0/artist/$artistMbid/setlists?p=$page"
+            //"https://api.setlist.fm/rest/1.0/search/artists?artistName=$artistName&p=1&sort=sortName"
+
     /**
      * Создание нового потока для запроса на сервер setlist
      * @param request тип запроса
@@ -26,7 +32,7 @@ class SetlistsAPI {
     //    thread.start();
     //}
 
-    fun searchArtists(artistName: String) : List<Artist> {
+    fun getArtists(artistName: String) : List<Artist> {
         Log.d(TAG, "searchArtists...")
         val response = setRequestToSetlistsAPI(getArtistsURL(artistName))
         //Log.d(TAG, response)
@@ -34,9 +40,9 @@ class SetlistsAPI {
         return parserKotlin.parseArtists(response)
     }
 
-    fun searchSetlists(artistMbid: String) : List<Setlist> {
+    fun getSetlists(artistMbid: String, page: Int = 1) : List<Setlist> {
         Log.d(TAG, "searchArtists...")
-        val response = setRequestToSetlistsAPI(getSetlistsURL(artistMbid))
+        val response = setRequestToSetlistsAPI(getSetlistsURL(artistMbid, page))
         //Log.d(TAG, response)
         val parserKotlin = ParserKotlin()
         return parserKotlin.parseSetlists(response)
@@ -131,7 +137,7 @@ class SetlistsAPI {
     /**
      * Строит URL для поиска сетлистов
      */
-    private fun getSetlistsURL(artistMbid: String, page: String = "1"): URL {
+    private fun getSetlistsURL(artistMbid: String, page: Int = 1): URL {
         Log.d(TAG, "getSetlists... ")
         //the Musicbrainz MBID of the artist
         //var mbid="b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d" //default
@@ -142,13 +148,15 @@ class SetlistsAPI {
         //    mbid = setlistsData.getString("mbid")
         //    page = setlistsData.getString("page")
         //}
-        return URL("https://api.setlist.fm/rest/1.0/artist/$artistMbid/setlists?p=$page")
+        return URL(URL_BASE + "artist/$artistMbid/setlists?p=$page")
     }
 
     /**
      * Строит URL для поиска artist
      */
     private fun getArtistsURL(artistName: String): URL {
+        val page = 1
+        val sort = "sortName"
         // the artist's Musicbrainz Identifier (mbid)
         //String artistMbid = "b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d";
 //
@@ -170,7 +178,7 @@ class SetlistsAPI {
         //if (!data.isEmpty()) {
         //    artist = data.getString("artist");
         //    URL =
-        return URL("https://api.setlist.fm/rest/1.0/search/artists?artistName=$artistName&p=1&sort=sortName")
+        return URL(URL_BASE + "search/artists?artistName=$artistName&p=$page&sort=$sort")
     }
 
 }
