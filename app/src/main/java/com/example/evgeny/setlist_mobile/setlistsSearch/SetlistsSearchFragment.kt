@@ -83,6 +83,19 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
         var dividerItemDecoration = DividerItemDecoration(recyclerView!!.getContext(),
             LinearLayoutManager.VERTICAL)
         recyclerView!!.addItemDecoration(dividerItemDecoration)
+        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val layoutManager = (recyclerView.getLayoutManager() as LinearLayoutManager)
+                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+                presenter.onRecyclerViewScrolled(lastVisiblePosition)
+
+            }
+        })
 
         presenter = SetlistsSearchPresenter(setlistsRepository)
         presenter.attachView(this)
