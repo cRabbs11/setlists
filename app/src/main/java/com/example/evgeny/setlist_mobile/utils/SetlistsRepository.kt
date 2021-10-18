@@ -9,13 +9,13 @@ object SetlistsRepository {
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
     private val lastSearchArtists = ArrayList<Artist>()
-    private val setlists = ArrayList<Setlist>()
+    private var setlists = ArrayList<Setlist>()
     private lateinit var currentArtist : Artist
     private lateinit var currentSetlist: Setlist
 
     fun newSearchArtists(artistName: String) : List<Artist> {
         val setlistsAPI = SetlistsAPI()
-        val artists = setlistsAPI.searchArtists(artistName)
+        val artists = setlistsAPI.getArtists(artistName)
         lastSearchArtists.clear()
         artists.forEach {
             lastSearchArtists.add(it)
@@ -31,14 +31,17 @@ object SetlistsRepository {
         return currentArtist
     }
 
-    fun searchSetlists(artistMbid: String) : List<Setlist> {
+    fun searchSetlists(artistMbid: String, page: Int = 1) : List<Setlist> {
         val setlistsAPI = SetlistsAPI()
-        val setlists = setlistsAPI.searchSetlists(artistMbid)
-        this.setlists.clear()
-        setlists.forEach {
-            this.setlists.add(it)
-        }
-        return getSetlists()
+        return setlistsAPI.getSetlists(artistMbid, page)
+    }
+
+    fun setNewSetlists(setlists: ArrayList<Setlist>) {
+        this.setlists = setlists
+    }
+
+    fun addToSetlists(setlists: ArrayList<Setlist>) {
+        this.setlists.addAll(setlists)
     }
 
     fun getLastSearchArtists(): ArrayList<Artist> {
