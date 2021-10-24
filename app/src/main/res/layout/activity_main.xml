@@ -30,13 +30,6 @@
         android:layout_weight="1"
         android:visibility="gone">
 
-        <android.support.design.widget.BottomNavigationView
-            app:menu="@menu/menu_bottom"
-            android:id="@+id/bottomMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </android.support.design.widget.BottomNavigationView>
-
     </LinearLayout>
 
 </LinearLayout>
