@@ -18,7 +18,7 @@ class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : Recycler
 
     private val TAG = ArtistListAdapter::class.simpleName + " BMTH"
     private var clickListener: OnItemClickListener<Setlist>
-    private var setlists = arrayListOf<Setlist>()
+    val setlists = arrayListOf<Setlist>()
 
     private lateinit var context: Context
 
