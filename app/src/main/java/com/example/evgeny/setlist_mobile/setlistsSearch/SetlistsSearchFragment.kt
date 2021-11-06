@@ -56,10 +56,10 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
 
     val TAG = SetlistsSearchFragment::class.java.name + " BMTH "
 
-    lateinit var recyclerView: RecyclerView
     lateinit var presenter: SetlistsSearchPresenter
     lateinit var adapter: SetlistListAdapter
     //lateinit var emptyRecyclerMessageLayout: TextView
+    private lateinit var binding: FragmentSetlistsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,24 +67,23 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_setlists, container, false)
-        initView(rootView)
-        return rootView
+        binding = FragmentSetlistsBinding.inflate(inflater, container, false)
+        initView()
+        return binding.root
     }
 
-    fun initView(rootView: View ) {
-        recyclerView = rootView.findViewById(R.id.recyclerView)
+    fun initView() {
         Log.d(TAG, " запустили")
 
         val setlistsAPI = SetlistsAPI()
 
         val setlistsRepository = SetlistsRepository
         adapter = SetlistListAdapter(this)
-        recyclerView!!.setAdapter(adapter)
-        var dividerItemDecoration = DividerItemDecoration(recyclerView!!.getContext(),
+        binding.recyclerView.adapter = adapter
+        var dividerItemDecoration = DividerItemDecoration(binding.recyclerView.getContext(),
             LinearLayoutManager.VERTICAL)
-        recyclerView!!.addItemDecoration(dividerItemDecoration)
-        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        binding.recyclerView.addItemDecoration(dividerItemDecoration)
+        binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
