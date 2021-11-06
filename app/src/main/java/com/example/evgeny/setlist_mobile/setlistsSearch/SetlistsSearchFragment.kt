@@ -28,14 +28,20 @@ import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, SetlistsSearchContract.View {
 
     override fun showSetlistList(list: List<Setlist>) {
-        Log.d(TAG, "artists count: ${list.size} ")
-        adapter.clearItems()
-        adapter.setItems(list)
+        Log.d(TAG, "setlists count: ${list.size} ")
+        if (list.isNotEmpty()) {
+            val diff = SetlistDiff(adapter.setlists, list as ArrayList<Setlist>)
+            val scrollPosition = adapter.setlists.size
+            val diffResult = DiffUtil.calculateDiff(diff)
+            adapter.addUniqItems(list)
+            diffResult.dispatchUpdatesTo(adapter)
 
-        if (list.isEmpty()) {
-            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
-        } else {
+            if (scrollPosition<adapter.setlists.size) {
+                binding.recyclerView.scrollToPosition(scrollPosition)
+            }
             //emptyRecyclerMessageLayout.visibility= View.GONE
+        } else {
+            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
         }
     }
 
