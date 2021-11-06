@@ -91,7 +91,7 @@ class SetlistsAPI {
 
                 response = getStringFromInputStream(inputStream)
 
-                Log.d(TAG, "response: $response")
+                //Log.d(TAG, "response: $response")
 
             } else {
                 Log.d(TAG, "responseCode is NOT OK:$responseCode")
