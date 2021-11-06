@@ -64,8 +64,8 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
     fun initView(rootView: View ) {
         Log.d(TAG, " запустили")
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.layoutManager = linearLayoutManager
+        //val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        //binding.recyclerView.layoutManager = linearLayoutManager
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
