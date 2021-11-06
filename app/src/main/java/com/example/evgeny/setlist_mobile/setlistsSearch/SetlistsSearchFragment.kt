@@ -9,13 +9,17 @@ import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.animators.SetlistListAnimator
+import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
+import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistListAdapter
