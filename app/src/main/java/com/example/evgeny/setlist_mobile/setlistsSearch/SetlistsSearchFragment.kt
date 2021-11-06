@@ -91,10 +91,10 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                val layoutManager = (recyclerView.getLayoutManager() as LinearLayoutManager)
-                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
-                presenter.onRecyclerViewScrolled(lastVisiblePosition)
-
+                val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
+                val totalItemsCount = layoutManager.itemCount
+                val lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                presenter.onRecyclerViewScrolled(lastVisiblePosition, totalItemsCount)
             }
         })
 
