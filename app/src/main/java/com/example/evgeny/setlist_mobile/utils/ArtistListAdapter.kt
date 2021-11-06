@@ -20,9 +20,7 @@ class ArtistListAdapter(clickListener: OnItemClickListener<Artist>) : RecyclerVi
 
     private val TAG = ArtistListAdapter::class.simpleName + " BMTH"
     private var clickListener: OnItemClickListener<Artist>
-    private var artists = arrayListOf<Artist>()
-
-    private lateinit var context: Context
+    val artists = arrayListOf<Artist>()
 
     init {
         Log.d(TAG, "init")
@@ -31,8 +29,8 @@ class ArtistListAdapter(clickListener: OnItemClickListener<Artist>) : RecyclerVi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHolder {
         Log.d(TAG, "onCreateViewHolder")
-        val inflater = LayoutInflater.from(parent.getContext())
-        context = parent.context
+        val inflater = LayoutInflater.from(parent.context)
+
         val view = inflater.inflate(R.layout.artist_item_constraint, parent, false)
         return ArtistHolder(view)
     }
