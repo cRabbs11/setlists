@@ -23,7 +23,7 @@ public class SetlistsSearchPresenter(setlistsRepository: SetlistsRepository):
 		getView()?.openSetlist()
 	}
 
-	override fun onRecyclerViewScrolled(lastVisiblePos: Int) {
+	override fun onRecyclerViewScrolled(lastVisiblePos: Int, totalPosCount: Int) {
 		//Log.d(TAG, "onRecyclerViewScrolled")
 		//Log.d(TAG, "lastVisiblePos=$lastVisiblePos, size= ${setlistsRepository.getSetlists().size}")
 		if (lastVisiblePos>=setlistsRepository.getSetlists().size-1) {
