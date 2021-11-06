@@ -70,9 +70,6 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
 
     fun initView(rootView: View ) {
         recyclerView = rootView.findViewById(R.id.recyclerView)
-        var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView!!.setLayoutManager(linearLayoutManager)
-        //emptyRecyclerMessageLayout = rootView.findViewById(R.id.emptySearchText)
         Log.d(TAG, " запустили")
 
         val setlistsAPI = SetlistsAPI()
