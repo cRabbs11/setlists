@@ -2,11 +2,16 @@ package com.example.evgeny.setlist_mobile.utils
 
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.setlists.Artist
@@ -57,6 +62,28 @@ class ArtistListAdapter(clickListener: OnItemClickListener<Artist>) : RecyclerVi
         holder.mainText.setOnClickListener {
             clickListener.onItemClick(artist)
         }
+    }
+}
+
+class ArtistItemDecoration(private val context: Context): RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        super.getItemOffsets(outRect, view, parent, state)
+        val hSide = context.resources.getDimension(R.dimen.h_side).toInt()
+        val vSide = context.resources.getDimension(R.dimen.v_side).toInt()
+        outRect.set(hSide, vSide, hSide, vSide)
+    }
+
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        super.onDraw(c, parent, state)
+        val paint = Paint()
+        paint.color = context.getColor(R.color.colorBlue)
+        paint.strokeWidth= 40F
+        c.drawLine(0F, 0F, 1000F, 1000F, paint)
+        paint.color = context.getColor(R.color.colorRed)
+        paint.strokeWidth= 40F
+        c.drawLine(0F, 60F, 1000F, 1060F, paint)
+
+
     }
 }
 
