@@ -40,15 +40,27 @@ class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : Recycler
     }
 
     fun setItems(list: List<Setlist>) {
+        clearItems()
         list.forEach {
             setlists.add(it)
         }
-        notifyDataSetChanged()
+    }
+
+    fun addItem(setlist: Setlist) {
+        setlists.add(setlist)
+    }
+
+    fun addUniqItems(list: List<Setlist>) {
+        list.forEach {
+            if(!setlists.contains(it)) {
+                setlists.add(it)
+                Log.d(TAG, "add: ${it.eventDate}")
+            }
+        }
     }
 
     fun clearItems() {
         setlists.clear()
-        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: SetlistHolder, position: Int) {
