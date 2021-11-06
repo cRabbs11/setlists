@@ -105,3 +105,24 @@ class ArtistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //rightLayout = itemView.findViewById(R.id.right_layout)
     }
 }
+
+class ArtistItemAnimator(val context: Context): DefaultItemAnimator() {
+    val animAdd = AnimationUtils.loadAnimation(context, R.anim.slide_from_top_left)
+    val animRemove = AnimationUtils.loadAnimation(context, R.anim.slide_to_right)
+
+    override fun onAddStarting(item: RecyclerView.ViewHolder?) {
+        item?.itemView?.startAnimation(animAdd)
+    }
+
+    override fun getAddDuration(): Long {
+        return animAdd.duration
+    }
+
+    override fun onRemoveStarting(item: RecyclerView.ViewHolder?) {
+        item?.itemView?.startAnimation(animRemove)
+    }
+
+    override fun getRemoveDuration(): Long {
+        return animRemove.duration
+    }
+}
