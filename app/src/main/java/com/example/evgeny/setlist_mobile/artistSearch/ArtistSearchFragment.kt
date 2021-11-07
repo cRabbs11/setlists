@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
 
 import com.example.evgeny.setlist_mobile.setlists.Artist
@@ -65,6 +66,8 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
     fun initView(rootView: View ) {
         Log.d(TAG, " запустили")
+        binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
+        binding.recyclerView.adapter = adapter
         //val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         //binding.recyclerView.layoutManager = linearLayoutManager
 
