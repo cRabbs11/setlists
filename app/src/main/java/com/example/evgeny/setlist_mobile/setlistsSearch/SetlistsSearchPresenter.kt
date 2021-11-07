@@ -37,16 +37,21 @@ public class SetlistsSearchPresenter(setlistsRepository: SetlistsRepository):
 
 
 	override fun viewIsReady() {
-		val artist = setlistsRepository.getCurrentArtist()
-		if (artist!=null) {
-			searchSetlists(artist.mbid, object : AnswerListener<List<Setlist>> {
-				override fun getAnswer(t: List<Setlist>) {
-					getView()?.showSetlistList(t)
-					if (t.isEmpty()) {
-						getView()?.showToast("сетлистов для ${artist.name} не найдено")
+		if (setlistsRepository.getSetlists().size!=0 &&
+				setlistsRepository.getSetlists()[0].artist==setlistsRepository.getCurrentArtist()) {
+			getView()?.showSetlistList(setlistsRepository.getSetlists())
+		} else {
+			val artist = setlistsRepository.getCurrentArtist()
+			if (artist!=null) {
+				searchSetlists(artist.mbid, object : AnswerListener<List<Setlist>> {
+					override fun getAnswer(t: List<Setlist>) {
+						getView()?.showSetlistList(t)
+						if (t.isEmpty()) {
+							getView()?.showToast("сетлистов для ${artist.name} не найдено")
+						}
 					}
-				}
-			})
+				})
+			}
 		}
     }
 
