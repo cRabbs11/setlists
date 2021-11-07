@@ -43,12 +43,10 @@ class ArtistListAdapter(clickListener: OnItemClickListener<Artist>) : RecyclerVi
         list.forEach {
             artists.add(it)
         }
-        notifyDataSetChanged()
     }
 
     fun clearItems() {
         artists.clear()
-        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ArtistHolder, position: Int) {
@@ -60,6 +58,14 @@ class ArtistListAdapter(clickListener: OnItemClickListener<Artist>) : RecyclerVi
         holder.mainText.setOnClickListener {
             clickListener.onItemClick(artist)
         }
+    }
+
+    override fun onBindViewHolder(holder: ArtistHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return artists.get(position).hashCode().toLong()
     }
 }
 
