@@ -67,7 +67,6 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
     fun initView(rootView: View ) {
         Log.d(TAG, " запустили")
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
-        binding.recyclerView.adapter = adapter
         //val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         //binding.recyclerView.layoutManager = linearLayoutManager
 
@@ -86,6 +85,7 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         })
         val setlistsRepository = SetlistsRepository
         adapter = ArtistListAdapter(this)
+        binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
