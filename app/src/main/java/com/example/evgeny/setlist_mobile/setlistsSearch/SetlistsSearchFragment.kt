@@ -11,7 +11,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
 import com.example.evgeny.setlist_mobile.R
-import com.example.evgeny.setlist_mobile.animators.SetlistListAnimator
+import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
@@ -20,7 +20,6 @@ import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistListAdapter
-import com.example.evgeny.setlist_mobile.utils.SetlistTouchHelperCallback
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 
 class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, SetlistsSearchContract.View {
@@ -87,7 +86,7 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
         var dividerItemDecoration = DividerItemDecoration(binding.recyclerView.getContext(),
             LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
-        binding.recyclerView.itemAnimator = SetlistListAnimator(requireContext())
+        binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
         //val itemTouchHelper = ItemTouchHelper(SetlistTouchHelperCallback(adapter))
         //itemTouchHelper.attachToRecyclerView(binding.recyclerView)
         //val linearSnapHelper = LinearSnapHelper()

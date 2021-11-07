@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
 
-class SetlistListAnimator(private val context: Context): DefaultItemAnimator() {
+class ItemListAnimator(private val context: Context): DefaultItemAnimator() {
 
     private val animAdd = AnimationUtils.loadAnimation(context, R.anim.slide_from_top_left)
     private val animRemove = AnimationUtils.loadAnimation(context, R.anim.slide_to_right)
