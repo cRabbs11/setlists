@@ -1,38 +1,40 @@
 package com.example.evgeny.setlist_mobile.artistSearch
 
-
 import android.os.Bundle
 import android.util.Log
 
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
 
-
 import com.example.evgeny.setlist_mobile.setlists.Artist
+import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.setlistsSearch.SetlistsSearchFragment
-import com.example.evgeny.setlist_mobile.utils.ArtistListAdapter
-import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.utils.*
 
 class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickListener<Artist> {
 
     override fun showArtistList(list: List<Artist>) {
         Log.d(TAG, "artists count: ${list.size} ")
-        adapter.clearItems()
-        adapter.setItems(list)
-
-        if (list.isEmpty()) {
-            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
-        } else {
+        if (list.isNotEmpty()) {
+            val diff = ArtistDiff(adapter.artists, list as ArrayList<Artist>)
+            val diffResult = DiffUtil.calculateDiff(diff)
+            adapter.clearItems()
+            adapter.setItems(list)
+            diffResult.dispatchUpdatesTo(adapter)
             //emptyRecyclerMessageLayout.visibility= View.GONE
+        } else {
+            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
         }
     }
 
@@ -64,8 +66,14 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
     fun initView(rootView: View ) {
         Log.d(TAG, " запустили")
-        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.layoutManager = linearLayoutManager
+        binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
+        binding.recyclerView.adapter = adapter
+        //val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        //binding.recyclerView.layoutManager = linearLayoutManager
+
+        //val anim = AnimationUtils.loadLayoutAnimation(requireContext(), R.anim.layout_animation_slide_from_top_left)
+        //binding.recyclerView.layoutAnimation=anim
+        //binding.recyclerView.scheduleLayoutAnimation()
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -78,13 +86,13 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         })
         val setlistsRepository = SetlistsRepository
         adapter = ArtistListAdapter(this)
-        binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
         presenter = ArtistSearchPresenter(setlistsRepository)
         presenter.attachView(this)
         presenter.viewIsReady()
+        //presenter.onSearchArtistClicked("bring me the")
     }
 
     override fun openSetlists() {

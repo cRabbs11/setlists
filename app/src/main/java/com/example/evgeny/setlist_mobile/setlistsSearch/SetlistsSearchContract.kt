@@ -15,6 +15,6 @@ interface SetlistsSearchContract {
  
     interface Presenter: MvpPresenter<View> {
 		fun onListItemClicked(setlist: Setlist)
-		fun onRecyclerViewScrolled(lastVisiblePos: Int)
+		fun onRecyclerViewScrolled(lastVisiblePos: Int, totalPosCount: Int)
     }
 }

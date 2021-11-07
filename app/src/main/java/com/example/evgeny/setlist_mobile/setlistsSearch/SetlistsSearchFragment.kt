@@ -9,13 +9,14 @@ import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
+import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
+import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistListAdapter
@@ -24,14 +25,20 @@ import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, SetlistsSearchContract.View {
 
     override fun showSetlistList(list: List<Setlist>) {
-        Log.d(TAG, "artists count: ${list.size} ")
-        adapter.clearItems()
-        adapter.setItems(list)
+        Log.d(TAG, "setlists count: ${list.size} ")
+        if (list.isNotEmpty()) {
+            val diff = SetlistDiff(adapter.setlists, list as ArrayList<Setlist>)
+            val scrollPosition = adapter.setlists.size
+            val diffResult = DiffUtil.calculateDiff(diff)
+            adapter.addUniqItems(list)
+            diffResult.dispatchUpdatesTo(adapter)
 
-        if (list.isEmpty()) {
-            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
-        } else {
+            if (scrollPosition<adapter.setlists.size) {
+                binding.recyclerView.scrollToPosition(scrollPosition)
+            }
             //emptyRecyclerMessageLayout.visibility= View.GONE
+        } else {
+            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
         }
     }
 
@@ -52,10 +59,10 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
 
     val TAG = SetlistsSearchFragment::class.java.name + " BMTH "
 
-    lateinit var recyclerView: RecyclerView
     lateinit var presenter: SetlistsSearchPresenter
     lateinit var adapter: SetlistListAdapter
     //lateinit var emptyRecyclerMessageLayout: TextView
+    private lateinit var binding: FragmentSetlistsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,37 +70,36 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_setlists, container, false)
-        initView(rootView)
-        return rootView
+        binding = FragmentSetlistsBinding.inflate(inflater, container, false)
+        initView()
+        return binding.root
     }
 
-    fun initView(rootView: View ) {
-        recyclerView = rootView.findViewById(R.id.recyclerView)
-        var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView!!.setLayoutManager(linearLayoutManager)
-        //emptyRecyclerMessageLayout = rootView.findViewById(R.id.emptySearchText)
+    fun initView() {
         Log.d(TAG, " запустили")
 
         val setlistsAPI = SetlistsAPI()
 
         val setlistsRepository = SetlistsRepository
         adapter = SetlistListAdapter(this)
-        recyclerView!!.setAdapter(adapter)
-        var dividerItemDecoration = DividerItemDecoration(recyclerView!!.getContext(),
+        binding.recyclerView.adapter = adapter
+        var dividerItemDecoration = DividerItemDecoration(binding.recyclerView.getContext(),
             LinearLayoutManager.VERTICAL)
-        recyclerView!!.addItemDecoration(dividerItemDecoration)
-        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-            }
-
+        binding.recyclerView.addItemDecoration(dividerItemDecoration)
+        binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
+        //val itemTouchHelper = ItemTouchHelper(SetlistTouchHelperCallback(adapter))
+        //itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        //val linearSnapHelper = LinearSnapHelper()
+        //linearSnapHelper.attachToRecyclerView(binding.recyclerView)
+        //val pageSnapHelper = PagerSnapHelper()
+        //pageSnapHelper.attachToRecyclerView(binding.recyclerView)
+        binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                val layoutManager = (recyclerView.getLayoutManager() as LinearLayoutManager)
-                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
-                presenter.onRecyclerViewScrolled(lastVisiblePosition)
-
+                val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
+                val totalItemsCount = layoutManager.itemCount
+                val lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                presenter.onRecyclerViewScrolled(lastVisiblePosition, totalItemsCount)
             }
         })
 

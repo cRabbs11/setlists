@@ -16,17 +16,18 @@ public class SetlistsSearchPresenter(setlistsRepository: SetlistsRepository):
 
 	private val TAG = SetlistsSearchPresenter::class.java.name + " BMTH "
 	private val setlistsRepository: SetlistsRepository
-	private var setlistsPage: Int = 1
+	private var setlistsPage: Int = 2
+	private var isLoading = false
 
 	override fun onListItemClicked(setlist: Setlist) {
 		setlistsRepository.setCurrentSetlist(setlist)
 		getView()?.openSetlist()
 	}
 
-	override fun onRecyclerViewScrolled(lastVisiblePos: Int) {
+	override fun onRecyclerViewScrolled(lastVisiblePos: Int, totalPosCount: Int) {
 		//Log.d(TAG, "onRecyclerViewScrolled")
 		//Log.d(TAG, "lastVisiblePos=$lastVisiblePos, size= ${setlistsRepository.getSetlists().size}")
-		if (lastVisiblePos>=setlistsRepository.getSetlists().size-1) {
+		if (!isLoading && lastVisiblePos>=totalPosCount-1) {
   			addMoreSetlists(setlistsRepository.getCurrentArtist()!!.mbid, object: AnswerListener<List<Setlist>> {
 				override fun getAnswer(t: List<Setlist>) {
 					getView()?.showSetlistList(t)
@@ -77,10 +78,12 @@ public class SetlistsSearchPresenter(setlistsRepository: SetlistsRepository):
 	}
 
 	private fun addMoreSetlists(artistMbid: String, answerListener: AnswerListener<List<Setlist>>) {
+		isLoading=true
 		val handler = object : Handler(Looper.getMainLooper()) {
 			override fun handleMessage(msg: Message) {
 				answerListener.getAnswer(setlistsRepository.getSetlists())
 				setlistsPage++
+				isLoading=false
 			}
 		}
 
