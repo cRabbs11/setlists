@@ -90,6 +90,10 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
         binding.recyclerView.itemAnimator = SetlistListAnimator(requireContext())
         //val itemTouchHelper = ItemTouchHelper(SetlistTouchHelperCallback(adapter))
         //itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+        //val linearSnapHelper = LinearSnapHelper()
+        //linearSnapHelper.attachToRecyclerView(binding.recyclerView)
+        //val pageSnapHelper = PagerSnapHelper()
+        //pageSnapHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
