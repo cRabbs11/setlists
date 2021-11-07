@@ -71,6 +71,10 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         //val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         //binding.recyclerView.layoutManager = linearLayoutManager
 
+        //val anim = AnimationUtils.loadLayoutAnimation(requireContext(), R.anim.layout_animation_slide_from_top_left)
+        //binding.recyclerView.layoutAnimation=anim
+        //binding.recyclerView.scheduleLayoutAnimation()
+
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 presenter.onSearchArtistClicked(binding.searchView.query.toString())
