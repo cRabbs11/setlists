@@ -12,6 +12,7 @@ object SetlistsRepository {
     private var setlists = ArrayList<Setlist>()
     private lateinit var currentArtist : Artist
     private lateinit var currentSetlist: Setlist
+    private var setlistPage = 2
 
     fun newSearchArtists(artistName: String) : List<Artist> {
         val setlistsAPI = SetlistsAPI()
@@ -58,5 +59,13 @@ object SetlistsRepository {
 
     fun getCurrentSetlist(): Setlist? {
         return currentSetlist
+    }
+
+    fun getSetlistPage(): Int {
+        return setlistPage
+    }
+
+    fun increaseSetlistPage() {
+        setlistPage++
     }
 }

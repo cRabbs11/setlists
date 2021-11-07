@@ -16,7 +16,6 @@ public class SetlistsSearchPresenter(setlistsRepository: SetlistsRepository):
 
 	private val TAG = SetlistsSearchPresenter::class.java.name + " BMTH "
 	private val setlistsRepository: SetlistsRepository
-	private var setlistsPage: Int = 2
 	private var isLoading = false
 
 	override fun onListItemClicked(setlist: Setlist) {
@@ -82,7 +81,7 @@ public class SetlistsSearchPresenter(setlistsRepository: SetlistsRepository):
 		val handler = object : Handler(Looper.getMainLooper()) {
 			override fun handleMessage(msg: Message) {
 				answerListener.getAnswer(setlistsRepository.getSetlists())
-				setlistsPage++
+				setlistsRepository.increaseSetlistPage()
 				isLoading=false
 			}
 		}
@@ -90,7 +89,7 @@ public class SetlistsSearchPresenter(setlistsRepository: SetlistsRepository):
 		val runnable = Runnable {
 			val setlists = ArrayList<Setlist>()
 			kotlin.run {
-				setlistsRepository.searchSetlists(artistMbid, setlistsPage).forEach {
+				setlistsRepository.searchSetlists(artistMbid, setlistsRepository.getSetlistPage()).forEach {
 					setlists.add(it)
 				}
 				setlistsRepository.addToSetlists(setlists)
