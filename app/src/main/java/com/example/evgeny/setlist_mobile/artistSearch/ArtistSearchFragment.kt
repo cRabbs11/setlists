@@ -1,26 +1,25 @@
 package com.example.evgeny.setlist_mobile.artistSearch
 
-
 import android.os.Bundle
 import android.util.Log
 
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
 
-
 import com.example.evgeny.setlist_mobile.setlists.Artist
+import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.setlistsSearch.SetlistsSearchFragment
-import com.example.evgeny.setlist_mobile.utils.ArtistListAdapter
-import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.utils.*
 
 class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickListener<Artist> {
 
