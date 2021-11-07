@@ -25,13 +25,15 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
     override fun showArtistList(list: List<Artist>) {
         Log.d(TAG, "artists count: ${list.size} ")
-        adapter.clearItems()
-        adapter.setItems(list)
-
-        if (list.isEmpty()) {
-            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
-        } else {
+        if (list.isNotEmpty()) {
+            val diff = ArtistDiff(adapter.artists, list as ArrayList<Artist>)
+            val diffResult = DiffUtil.calculateDiff(diff)
+            adapter.clearItems()
+            adapter.setItems(list)
+            diffResult.dispatchUpdatesTo(adapter)
             //emptyRecyclerMessageLayout.visibility= View.GONE
+        } else {
+            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
         }
     }
 
