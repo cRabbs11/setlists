@@ -86,13 +86,13 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         })
         val setlistsRepository = SetlistsRepository
         adapter = ArtistListAdapter(this)
-        binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
         presenter = ArtistSearchPresenter(setlistsRepository)
         presenter.attachView(this)
         presenter.viewIsReady()
+        //presenter.onSearchArtistClicked("bring me the")
     }
 
     override fun openSetlists() {
