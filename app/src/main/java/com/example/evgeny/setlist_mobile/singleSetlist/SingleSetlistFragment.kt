@@ -11,6 +11,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.databinding.FragmentSingleSetlistBinding
 import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 
 
@@ -23,17 +24,17 @@ import com.example.evgeny.setlist_mobile.utils.SongListAdapter
 
 class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSetlistContract.View {
     override fun showSetlist(setlist: Setlist) {
-        adapter = SongListAdapter(context!!, setlist)
-        expListView.setGroupIndicator(null)
-        expListView.setAdapter(adapter)
+        adapter = SongListAdapter(requireContext(), setlist)
+        binding.expListView.setGroupIndicator(null)
+        binding.expListView.setAdapter(adapter)
         setlist.sets.forEach {
             val groupPosition = setlist.sets.indexOf(it)
-            expListView.expandGroup(groupPosition)
+            binding.expListView.expandGroup(groupPosition)
         }
 
-        artistName.text = setlist.artist?.name
+        binding.artistName.text = setlist.artist?.name
         val placeNameText = setlist.venue?.name + setlist.venue?.city?.name
-        placeName.text = placeNameText
+        binding.placeName.text = placeNameText
     }
 
     override fun updateSetlist(setlist: Setlist) {
@@ -59,10 +60,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
 
     lateinit var presenter: SingleSetlistPresenter
     lateinit var adapter: SongListAdapter
-    lateinit var expListView: ExpandableListView
-    lateinit var artistName: TextView
-    lateinit var placeName: TextView
-    lateinit var toMapView: TextView
+    lateinit var binding: FragmentSingleSetlistBinding
     //lateinit var emptyRecyclerMessageLayout: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,20 +69,14 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_single_setlist, container, false)
-        initView(rootView)
-        return rootView
+        binding = FragmentSingleSetlistBinding.inflate(inflater, container, false)
+        initView()
+        return binding.root
     }
 
-    fun initView(rootView: View ) {
-        //recyclerView = rootView.findViewById(R.id.recyclerView)
+    fun initView() {
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
-        //recyclerView!!.setLayoutManager(linearLayoutManager)
-        expListView = rootView.findViewById(R.id.expListView) as ExpandableListView
-        artistName = rootView.findViewById(R.id.artist_name) as TextView
-        placeName = rootView.findViewById(R.id.place_name) as TextView
-        toMapView = rootView.findViewById(R.id.to_map_view) as TextView
-        toMapView.setOnClickListener {
+        binding.toMapView.setOnClickListener {
             presenter.onMapClicked()
         }
 
