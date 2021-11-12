@@ -1,8 +1,17 @@
 package com.example.evgeny.setlist_mobile.utils
 
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.setlists.Artist
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
+import com.example.evgeny.setlist_mobile.setlists.SongListItem
 
 object SetlistsRepository {
 
@@ -12,6 +21,7 @@ object SetlistsRepository {
     private var setlists = ArrayList<Setlist>()
     private lateinit var currentArtist : Artist
     private lateinit var currentSetlist: Setlist
+    private var songlist =  ArrayList<SongListItem>()
     private var setlistPage = 2
 
     fun newSearchArtists(artistName: String) : List<Artist> {
@@ -67,5 +77,25 @@ object SetlistsRepository {
 
     fun increaseSetlistPage() {
         setlistPage++
+    }
+
+    fun setSongList(setlist: Setlist) {
+        val newSongList = arrayListOf<SongListItem>()
+
+        setlist.sets.forEach {
+            if (it.name!="") {
+                newSongList.add(it)
+            } else if (it.encore!="") {
+                newSongList.add(it)
+            }
+            it.songs.forEach {
+                newSongList.add(it)
+            }
+        }
+        this.songlist = newSongList
+    }
+
+    fun getSongList(): ArrayList<SongListItem> {
+        return songlist
     }
 }

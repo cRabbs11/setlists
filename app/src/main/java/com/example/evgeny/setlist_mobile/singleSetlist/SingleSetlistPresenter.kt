@@ -10,7 +10,7 @@ import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 public class SingleSetlistPresenter(setlistsRepository: SetlistsRepository):
         PresenterBase<SingleSetlistContract.View>(), SingleSetlistContract.Presenter {
 
-	val LOG_TAG = SingleSetlistPresenter::class.java.name + " BMTH "
+	val TAG = SingleSetlistPresenter::class.java.name + " BMTH "
 	val setlistsRepository: SetlistsRepository
 
 
@@ -26,7 +26,9 @@ public class SingleSetlistPresenter(setlistsRepository: SetlistsRepository):
 	override fun viewIsReady() {
 		val setlist = setlistsRepository.getCurrentSetlist()
 		if (setlist!=null) {
-			getView()?.showSetlist(setlist)
+			setlistsRepository.setSongList(setlist)
+			getView()?.showSetlist(setlistsRepository.getSongList())
+			getView()?.showSetlistInfo(setlist)
 		}
     }
 
