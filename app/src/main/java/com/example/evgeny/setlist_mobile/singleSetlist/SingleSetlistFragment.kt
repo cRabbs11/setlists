@@ -47,8 +47,31 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         binding.placeName.text = placeNameText
     }
 
-    override fun updateSetlist(setlist: Setlist) {
+    override fun showSetlistInfo(setlist: Setlist) {
+        binding.setlistInfoLayout.artistName.text = setlist.artist?.name
+        val placeNameText = "at ${setlist.venue?.name}, ${setlist.venue?.city?.name}"
+        val tour = "Tour: ${setlist.tour?.name}"
+        binding.setlistInfoLayout.placeName.text = placeNameText
+        binding.setlistInfoLayout.tourName.text = tour
+        //binding.toolbar.title = setlist.artist?.name
 
+        val dt = SimpleDateFormat("dd-mm-yyyy")
+
+        try {
+            val date = dt.parse(setlist.eventDate);
+            val month = SimpleDateFormat("mm")
+            val sMonth = identMonth(month.format(date))
+            val day = SimpleDateFormat("dd")
+            val sDay = day.format(date)
+            val year = SimpleDateFormat("yyyy")
+            val sYear = year.format(date)
+
+            binding.setlistInfoLayout.date.month.setText(sMonth)
+            binding.setlistInfoLayout.date.day.setText(sDay)
+            binding.setlistInfoLayout.date.year.setText(sYear)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
     }
 
     private fun identMonth(format: String): String? {
