@@ -83,7 +83,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         fragmentTransaction.commit()
     }
 
-    val LOG_TAG = SingleSetlistFragment::class.java.name + " BMTH "
+    val TAG = SingleSetlistFragment::class.java.name + " BMTH "
 
     lateinit var presenter: SingleSetlistPresenter
     lateinit var adapter: SongListAdapter
@@ -119,7 +119,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         //    }
         //})
 
-        Log.d(LOG_TAG, " запустили")
+        Log.d(TAG, " запустили")
 
         val setlistsRepository = SetlistsRepository
 
