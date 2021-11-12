@@ -51,6 +51,23 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
 
     }
 
+    private fun identMonth(format: String): String? {
+        return when (format) {
+            "01" -> requireContext().resources.getString(R.string.jan)
+            "02" -> requireContext().resources.getString(R.string.feb)
+            "03" -> requireContext().resources.getString(R.string.mar)
+            "04" -> requireContext().resources.getString(R.string.apr)
+            "05" -> requireContext().resources.getString(R.string.may)
+            "06" -> requireContext().resources.getString(R.string.jun)
+            "07" -> requireContext().resources.getString(R.string.jul)
+            "08" -> requireContext().resources.getString(R.string.aug)
+            "09" -> requireContext().resources.getString(R.string.sep)
+            "10" -> requireContext().resources.getString(R.string.oct)
+            "11" -> requireContext().resources.getString(R.string.nov)
+            "12" -> requireContext().resources.getString(R.string.nov)
+            else -> requireContext().resources.getString(R.string.jan)
+        }
+    }
 
     override fun showToast(message: String) {
         Toast.makeText(context, message, LENGTH_SHORT).show()
