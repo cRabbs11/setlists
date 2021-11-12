@@ -10,7 +10,7 @@ import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 public class SingleSetlistPresenter(setlistsRepository: SetlistsRepository):
         PresenterBase<SingleSetlistContract.View>(), SingleSetlistContract.Presenter {
 
-	val LOG_TAG = SingleSetlistPresenter::class.java.name + " BMTH "
+	val TAG = SingleSetlistPresenter::class.java.name + " BMTH "
 	val setlistsRepository: SetlistsRepository
 
 
