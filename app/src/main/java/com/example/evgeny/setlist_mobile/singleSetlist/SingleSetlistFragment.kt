@@ -103,9 +103,9 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
 
     fun initView() {
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
-        binding.toMapView.setOnClickListener {
-            presenter.onMapClicked()
-        }
+        //binding.toMapView.setOnClickListener {
+        //    presenter.onMapClicked()
+        //}
 
         //for (Set set: setlist.getSets()) {
         //    int groupPosition = setlist.getSets().indexOf(set);
