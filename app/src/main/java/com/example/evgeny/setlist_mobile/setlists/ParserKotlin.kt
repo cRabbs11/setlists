@@ -183,8 +183,12 @@ class ParserKotlin {
                 getArtist(jsonObject.getJSONObject("cover"))
             } else { null }
 
+            val with = if (jsonObject.has("with")) {
+                getArtist(jsonObject.getJSONObject("with"))
+            } else { null }
 
-            return Song(name, info, tape, cover, 0)
+
+            return Song(name, info, tape, cover, with,0)
         } catch (e: JSONException) {
             e.printStackTrace()
             return null
