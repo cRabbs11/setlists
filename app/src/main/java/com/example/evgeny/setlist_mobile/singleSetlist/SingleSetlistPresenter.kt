@@ -26,7 +26,9 @@ public class SingleSetlistPresenter(setlistsRepository: SetlistsRepository):
 	override fun viewIsReady() {
 		val setlist = setlistsRepository.getCurrentSetlist()
 		if (setlist!=null) {
-			getView()?.showSetlist(setlist)
+			setlistsRepository.setSongList(setlist)
+			getView()?.showSetlist(setlistsRepository.getSongList())
+			getView()?.showSetlistInfo(setlist)
 		}
     }
 
