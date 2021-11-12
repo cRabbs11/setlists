@@ -9,18 +9,28 @@ import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
+import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
+import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
+import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistCoordinatorBinding
 import com.example.evgeny.setlist_mobile.databinding.FragmentSingleSetlistBinding
 import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
+import com.example.evgeny.setlist_mobile.setlists.SongListItem
+import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
 import com.example.evgeny.setlist_mobile.setlistsSearch.SetlistsSearchFragment
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 import com.example.evgeny.setlist_mobile.utils.SongListAdapter
+import com.example.evgeny.setlist_mobile.utils.SongListAdapterNew
+import java.text.ParseException
+import java.text.SimpleDateFormat
 
 class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSetlistContract.View {
     override fun showSetlist(setlist: Setlist) {
