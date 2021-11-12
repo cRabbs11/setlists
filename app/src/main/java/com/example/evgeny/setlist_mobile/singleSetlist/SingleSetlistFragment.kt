@@ -33,18 +33,16 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 
 class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSetlistContract.View {
-    override fun showSetlist(setlist: Setlist) {
-        adapter = SongListAdapter(requireContext(), setlist)
-        binding.expListView.setGroupIndicator(null)
-        binding.expListView.setAdapter(adapter)
-        setlist.sets.forEach {
-            val groupPosition = setlist.sets.indexOf(it)
-            binding.expListView.expandGroup(groupPosition)
+    override fun showSetlist(songList: ArrayList<SongListItem>) {
+        if (songList.isNotEmpty()) {
+            val diff = SongListItemDiff(adapter.songList, songList)
+            val diffResult = DiffUtil.calculateDiff(diff)
+            adapter.songList.clear()
+            songList.forEach {
+                adapter.songList.add(it)
+            }
+            diffResult.dispatchUpdatesTo(adapter)
         }
-
-        binding.artistName.text = setlist.artist?.name
-        val placeNameText = setlist.venue?.name + setlist.venue?.city?.name
-        binding.placeName.text = placeNameText
     }
 
     override fun showSetlistInfo(setlist: Setlist) {
