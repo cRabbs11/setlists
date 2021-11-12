@@ -2,4 +2,8 @@
 <resources>
     <dimen name="h_side">10dp</dimen>
     <dimen name="v_side">10dp</dimen>
+
+    <dimen name="margin_medium">15dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_smallest">5dp</dimen>
 </resources>
