@@ -86,8 +86,8 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
     val TAG = SingleSetlistFragment::class.java.name + " BMTH "
 
     lateinit var presenter: SingleSetlistPresenter
-    lateinit var adapter: SongListAdapter
-    lateinit var binding: FragmentSingleSetlistBinding
+    lateinit var adapter: SongListAdapterNew
+    lateinit var binding: FragmentSetlistBinding
     //lateinit var emptyRecyclerMessageLayout: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,12 +96,15 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSingleSetlistBinding.inflate(inflater, container, false)
+        binding = FragmentSetlistBinding.inflate(inflater, container, false)
         initView()
         return binding.root
     }
 
     fun initView() {
+        adapter = SongListAdapterNew()
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         //binding.toMapView.setOnClickListener {
         //    presenter.onMapClicked()
