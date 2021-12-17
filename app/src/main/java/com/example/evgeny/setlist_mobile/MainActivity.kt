@@ -5,6 +5,8 @@ import android.text.util.Linkify
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.evgeny.setlist_mobile.artistSearch.ArtistSearchFragment
+import com.example.evgeny.setlist_mobile.setlistsSearch.SetlistsSearchFragment
+import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
 import java.util.regex.Pattern
 
 class MainActivity: AppCompatActivity() {
@@ -26,6 +28,24 @@ class MainActivity: AppCompatActivity() {
     fun openArtistSearchFragment() {
 
         val fragment = ArtistSearchFragment()
+
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+    }
+
+    fun openSetlistsSearchFragment() {
+        val fragment = SetlistsSearchFragment()
+
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+    }
+
+    fun openSingleSetlistFragment() {
+        val fragment = SingleSetlistFragment()
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)

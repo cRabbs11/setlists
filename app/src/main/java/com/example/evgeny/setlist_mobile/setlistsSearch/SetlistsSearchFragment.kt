@@ -10,6 +10,7 @@ import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
+import com.example.evgeny.setlist_mobile.MainActivity
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
@@ -48,13 +49,7 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
 
     override fun openSetlist() {
         Log.d(TAG, "openSetlist")
-        var singleSetlistFragment = SingleSetlistFragment()
-
-        var fragmentManager = getFragmentManager()
-        var fragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, singleSetlistFragment)
-        fragmentTransaction.addToBackStack("")
-        fragmentTransaction.commit()
+        (activity as MainActivity).openSingleSetlistFragment()
     }
 
     val TAG = SetlistsSearchFragment::class.java.name + " BMTH "
