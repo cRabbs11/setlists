@@ -134,7 +134,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
 
-        binding.artist.transitionName = arguments?.getString("transition")
+        binding.setlistInfoLayout.artistName.transitionName = arguments?.getString("transition")
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         //binding.toMapView.setOnClickListener {
         //    presenter.onMapClicked()

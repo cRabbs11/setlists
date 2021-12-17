@@ -72,6 +72,11 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+    }
+
     fun initView() {
         Log.d(TAG, " запустили")
 
@@ -99,6 +104,10 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
                 presenter.onRecyclerViewScrolled(lastVisiblePosition, totalItemsCount)
             }
         })
+
+        binding.recyclerView.post {
+            startPostponedEnterTransition()
+        }
 
         presenter = SetlistsSearchPresenter(setlistsRepository)
         presenter.attachView(this)
