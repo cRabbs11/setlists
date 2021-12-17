@@ -20,10 +20,11 @@ import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
 import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
+import com.example.evgeny.setlist_mobile.utils.OnSharedTransitionClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistListAdapter
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 
-class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, SetlistsSearchContract.View {
+class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setlist>, SetlistsSearchContract.View {
 
     override fun showSetlistList(list: List<Setlist>) {
         Log.d(TAG, "setlists count: ${list.size} ")
@@ -49,7 +50,7 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
 
     override fun openSetlist() {
         Log.d(TAG, "openSetlist")
-        (activity as MainActivity).openSingleSetlistFragment()
+        (activity as MainActivity).openSingleSetlistFragment(sharedView)
     }
 
     val TAG = SetlistsSearchFragment::class.java.name + " BMTH "
@@ -58,6 +59,7 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
     lateinit var adapter: SetlistListAdapter
     //lateinit var emptyRecyclerMessageLayout: TextView
     private lateinit var binding: FragmentSetlistsBinding
+    lateinit var sharedView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +109,8 @@ class SetlistsSearchFragment : Fragment(), OnItemClickListener<Setlist>, Setlist
 
     }
 
-    override fun onItemClick(t: Setlist) {
+    override fun onItemClick(t: Setlist, sharedView: View) {
+        this.sharedView = sharedView
         presenter.onListItemClicked(t)
     }
 }

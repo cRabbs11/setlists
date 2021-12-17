@@ -2,6 +2,7 @@ package com.example.evgeny.setlist_mobile
 
 import android.os.Bundle
 import android.text.util.Linkify
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.evgeny.setlist_mobile.artistSearch.ArtistSearchFragment
@@ -44,12 +45,17 @@ class MainActivity: AppCompatActivity() {
                 .commit()
     }
 
-    fun openSingleSetlistFragment() {
+    fun openSingleSetlistFragment(sharedView: View) {
+        val bundle = Bundle()
+        bundle.putString("transition", sharedView.transitionName)
+
         val fragment = SingleSetlistFragment()
+        fragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
+                .addSharedElement(sharedView, sharedView.transitionName)
                 .commit()
     }
 }

@@ -14,10 +14,10 @@ import com.example.evgeny.setlist_mobile.setlists.Setlist
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : RecyclerView.Adapter<SetlistHolder>() {
+class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>) : RecyclerView.Adapter<SetlistHolder>() {
 
     private val TAG = ArtistListAdapter::class.simpleName + " BMTH"
-    private var clickListener: OnItemClickListener<Setlist>
+    private var clickListener: OnSharedTransitionClickListener<Setlist>
     val setlists = arrayListOf<Setlist>()
 
     private lateinit var context: Context
@@ -97,8 +97,10 @@ class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : Recycler
         val venue = setlist.venue?.name + ": " + setlist.venue?.city?.name + ", " + setlist.venue?.city?.country?.name
         val header = "$name at: $venue"
         holder.artist.setText(name)
+        holder.artist.transitionName = "trans${position}"
+
         holder.setlist.setOnClickListener {
-            clickListener.onItemClick(setlist)
+            clickListener.onItemClick(setlist, holder.artist)
         }
         holder.tour.setText(tour);
         holder.venue.setText(venue);
@@ -123,9 +125,12 @@ class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : Recycler
     }
 }
 
+interface OnSharedTransitionClickListener<T> {
+    fun onItemClick(t: T, sharedView: View)
+}
+
 class SetlistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var mainText: TextView
     var month: TextView
     var day: TextView
     var year: TextView
@@ -138,7 +143,6 @@ class SetlistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var layout_tour: LinearLayout
 
     init {
-        mainText = itemView.findViewById(R.id.artist);
         month = itemView.findViewById(R.id.month)
         day = itemView.findViewById(R.id.day)
         year = itemView.findViewById(R.id.year)

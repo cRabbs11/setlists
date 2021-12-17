@@ -11,6 +11,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionInflater
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
@@ -122,10 +123,18 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+
+    }
+
     fun initView() {
         adapter = SongListAdapterNew()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
+
+        binding.artist.transitionName = arguments?.getString("transition")
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         //binding.toMapView.setOnClickListener {
         //    presenter.onMapClicked()
