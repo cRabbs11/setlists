@@ -8,41 +8,13 @@
     android:background="@drawable/cell_selector_white_no_border">
 
     <!-- дата -->
-    <LinearLayout
+    <include
+        android:id="@+id/date_layout"
+        layout="@layout/layout_setlist_date"
         android:layout_margin="5dp"
-        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:background="@drawable/cell_shape_blue">
-
-        <TextView
-            android:textColor="@color/colorWhite"
-            android:text="july"
-            android:id="@+id/month"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-        <TextView
-            android:textColor="@color/colorWhite"
-            android:text="24"
-            android:id="@+id/day"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-        <TextView
-            android:textColor="@color/colorWhite"
-            android:text="2018"
-            android:id="@+id/year"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
     <!-- подробности -->
     <RelativeLayout

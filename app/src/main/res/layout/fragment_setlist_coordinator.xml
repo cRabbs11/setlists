@@ -24,7 +24,7 @@
 
             <include
                 android:id="@+id/setlist_info_layout"
-                layout="@layout/setlist_info_layout"
+                layout="@layout/layout_setlist_info"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -51,8 +51,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/info_barrier"/>
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.core.widget.NestedScrollView>
 
 

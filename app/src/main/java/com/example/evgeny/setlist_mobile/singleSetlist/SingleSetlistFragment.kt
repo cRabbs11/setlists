@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
-import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
-import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistCoordinatorBinding
-import com.example.evgeny.setlist_mobile.databinding.FragmentSingleSetlistBinding
 import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 
 
@@ -65,9 +62,9 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
             val year = SimpleDateFormat("yyyy")
             val sYear = year.format(date)
 
-            binding.setlistInfoLayout.date.month.setText(sMonth)
-            binding.setlistInfoLayout.date.day.setText(sDay)
-            binding.setlistInfoLayout.date.year.setText(sYear)
+            binding.setlistInfoLayout.dateLayout.month.setText(sMonth)
+            binding.setlistInfoLayout.dateLayout.day.setText(sDay)
+            binding.setlistInfoLayout.dateLayout.year.setText(sYear)
         } catch (e: ParseException) {
             e.printStackTrace()
         }
@@ -134,7 +131,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
 
-        binding.setlistInfoLayout.artistName.transitionName = arguments?.getString("transition")
+        binding.setlistInfoLayout.dateLayout.dateLayout.transitionName = arguments?.getString("transition")
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         //binding.toMapView.setOnClickListener {
         //    presenter.onMapClicked()
