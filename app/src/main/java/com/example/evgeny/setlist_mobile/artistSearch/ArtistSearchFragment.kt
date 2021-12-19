@@ -1,6 +1,9 @@
 package com.example.evgeny.setlist_mobile.artistSearch
 
+import android.database.Cursor
+import android.database.MatrixCursor
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.util.Log
 
 import android.view.*
@@ -10,6 +13,7 @@ import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
+import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -51,6 +55,7 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
     lateinit var presenter: ArtistSearchPresenter
     lateinit var adapter: ArtistListAdapter
+    lateinit var suggestionAdapter: SimpleCursorAdapter
     lateinit var binding: FragmentSearchConstraintBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,15 +80,44 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         //binding.recyclerView.layoutAnimation=anim
         //binding.recyclerView.scheduleLayoutAnimation()
 
+        val from = arrayOf("items")
+        var to = intArrayOf(android.R.id.text1)
+
+        suggestionAdapter = SimpleCursorAdapter(requireContext(),
+                android.R.layout.simple_list_item_1,
+        null,
+        from,
+        to,
+        CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER)
+
+        binding.searchView.suggestionsAdapter = suggestionAdapter
+
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 presenter.onSearchArtistClicked(binding.searchView.query.toString())
                 return true
             }
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                if (newText!=null) populateAdapter(newText)
+                return true
             }
         })
+
+        binding.searchView.setOnSuggestionListener(object: SearchView.OnSuggestionListener {
+            override fun onSuggestionSelect(position: Int): Boolean {
+                return true
+            }
+
+            override fun onSuggestionClick(position: Int): Boolean {
+                val cursor = suggestionAdapter.getItem(position) as Cursor
+                val txt = cursor.getString(cursor.getColumnIndex("items"))
+                binding.searchView.setQuery(txt, true)
+                binding.searchView.clearFocus()
+                return true
+            }
+
+        })
+
         val setlistsRepository = SetlistsRepository
         adapter = ArtistListAdapter(this)
         binding.recyclerView.adapter = adapter
@@ -103,5 +137,15 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
     override fun onItemClick(t: Artist) {
         Log.d(TAG, "onItemClick")
         presenter.onListItemClicked(t)
+    }
+
+    private fun populateAdapter(query: String) {
+        val c = MatrixCursor(arrayOf(BaseColumns._ID, "items"))
+        val suggestions = presenter.getHistorySearchList()
+        for (i in suggestions.indices) {
+            if (suggestions[i].toLowerCase().contains(query.toLowerCase())) c.addRow(arrayOf(i, suggestions[i]))
+        }
+
+        suggestionAdapter.changeCursor(c)
     }
 }
