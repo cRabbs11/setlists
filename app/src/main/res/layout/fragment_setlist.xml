@@ -10,15 +10,16 @@
         layout="@layout/layout_setlist_info"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/margin_medium"
+        android:layout_margin="@dimen/margin_small"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/setlist_info_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
