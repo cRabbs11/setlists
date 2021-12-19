@@ -15,6 +15,9 @@ class SearchHistoryHelper(val context: Context) {
 
     private fun readLinesFromFile(filename: String): List<String> {
         val file = File(context.filesDir, filename)
+        if (!file.exists()) {
+            file.createNewFile()
+        }
         return  file.readLines()
     }
 
