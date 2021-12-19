@@ -85,12 +85,13 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
             }
         })
         val setlistsRepository = SetlistsRepository
+        val searchHistoryHelper = SearchHistoryHelper(requireContext())
         adapter = ArtistListAdapter(this)
         binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
-        presenter = ArtistSearchPresenter(setlistsRepository)
+        presenter = ArtistSearchPresenter(setlistsRepository, searchHistoryHelper)
         presenter.attachView(this)
         presenter.viewIsReady()
         //presenter.onSearchArtistClicked("bring me the")
