@@ -72,7 +72,11 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 						}
 
 						if (artists.isNotEmpty()) {
-							searchHistoryHelper.saveSearchQuery(artistName)
+							var isInHistory = false
+							searchHistoryHelper.getHistorySearchList().forEach {
+								if (it == artistName) { isInHistory = true }
+							}
+							if (!isInHistory) { searchHistoryHelper.saveSearchQuery(artistName) }
 						}
 						handler.sendEmptyMessage(1)
 			}
