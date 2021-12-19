@@ -82,6 +82,10 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 		thread.start()
 	}
 
+	override fun getHistorySearchList(): List<String> {
+		return searchHistoryHelper.getHistorySearchList()
+	}
+
 
 
 }
