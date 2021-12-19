@@ -20,11 +20,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".BottomNavigationActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDZmIU5Grn_36UxJdo7oz7aT-_8kDtJuXk"/>

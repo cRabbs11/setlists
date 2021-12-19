@@ -13,6 +13,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.evgeny.setlist_mobile.MainActivity
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
@@ -96,22 +97,7 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
     }
 
     override fun openSetlists() {
-        Log.d(TAG, "openSetlists")
-        var setlistsSearchFragment = SetlistsSearchFragment()
-        //var mapFragment = MapOnSetlistFragment()
-
-        var fragmentManager = getFragmentManager()
-        var fragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, setlistsSearchFragment)
-        fragmentTransaction.addToBackStack("")
-        fragmentTransaction.commit()
-
-
-        //searchSetlistsFragment = new SearchSetlistsFragment(artist);
-        //ftrans = getActivity().getSupportFragmentManager().beginTransaction();
-        //ftrans.replace(R.id.fragment_container, searchSetlistsFragment);
-        //ftrans.addToBackStack("");
-        //ftrans.commit();
+        (activity as MainActivity).openSetlistsSearchFragment()
     }
 
     override fun onItemClick(t: Artist) {

@@ -11,12 +11,10 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionInflater
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
-import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
-import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistCoordinatorBinding
-import com.example.evgeny.setlist_mobile.databinding.FragmentSingleSetlistBinding
 import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 
 
@@ -64,9 +62,9 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
             val year = SimpleDateFormat("yyyy")
             val sYear = year.format(date)
 
-            binding.setlistInfoLayout.date.month.setText(sMonth)
-            binding.setlistInfoLayout.date.day.setText(sDay)
-            binding.setlistInfoLayout.date.year.setText(sYear)
+            binding.setlistInfoLayout.dateLayout.month.setText(sMonth)
+            binding.setlistInfoLayout.dateLayout.day.setText(sDay)
+            binding.setlistInfoLayout.dateLayout.year.setText(sYear)
         } catch (e: ParseException) {
             e.printStackTrace()
         }
@@ -122,10 +120,18 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+
+    }
+
     fun initView() {
         adapter = SongListAdapterNew()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
+
+        binding.setlistInfoLayout.dateLayout.dateLayout.transitionName = arguments?.getString("transition")
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         //binding.toMapView.setOnClickListener {
         //    presenter.onMapClicked()

@@ -8,16 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : RecyclerView.Adapter<SetlistHolder>() {
+class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>) : RecyclerView.Adapter<SetlistHolder>() {
 
     private val TAG = ArtistListAdapter::class.simpleName + " BMTH"
-    private var clickListener: OnItemClickListener<Setlist>
+    private var clickListener: OnSharedTransitionClickListener<Setlist>
     val setlists = arrayListOf<Setlist>()
 
     private lateinit var context: Context
@@ -31,7 +32,7 @@ class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : Recycler
         Log.d(TAG, "onCreateViewHolder")
         val inflater = LayoutInflater.from(parent.getContext())
         context = parent.context
-        val view = inflater.inflate(R.layout.setlist_layout_item, parent, false)
+        val view = inflater.inflate(R.layout.item_setlist_layout, parent, false)
         return SetlistHolder(view)
     }
 
@@ -97,8 +98,10 @@ class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : Recycler
         val venue = setlist.venue?.name + ": " + setlist.venue?.city?.name + ", " + setlist.venue?.city?.country?.name
         val header = "$name at: $venue"
         holder.artist.setText(name)
+        holder.dateLayout.transitionName = "trans${position}"
+
         holder.setlist.setOnClickListener {
-            clickListener.onItemClick(setlist)
+            clickListener.onItemClick(setlist, holder.dateLayout)
         }
         holder.tour.setText(tour);
         holder.venue.setText(venue);
@@ -123,9 +126,12 @@ class SetlistListAdapter(clickListener: OnItemClickListener<Setlist>) : Recycler
     }
 }
 
+interface OnSharedTransitionClickListener<T> {
+    fun onItemClick(t: T, sharedView: View)
+}
+
 class SetlistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var mainText: TextView
     var month: TextView
     var day: TextView
     var year: TextView
@@ -136,17 +142,20 @@ class SetlistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var setlistView: View
     var setlist: LinearLayout
     var layout_tour: LinearLayout
+    val dateLayout: ConstraintLayout
 
     init {
-        mainText = itemView.findViewById(R.id.artist);
-        month = itemView.findViewById(R.id.month)
-        day = itemView.findViewById(R.id.day)
-        year = itemView.findViewById(R.id.year)
         artist = itemView.findViewById(R.id.artist)
         tour = itemView.findViewById(R.id.tour)
         venue = itemView.findViewById(R.id.venue)
         setlist = itemView.findViewById(R.id.setlist)
         layout_tour = itemView.findViewById(R.id.layout_tour)
+
+        dateLayout = itemView.findViewById(R.id.date_layout)
+        month = dateLayout.findViewById(R.id.month)
+        day = dateLayout.findViewById(R.id.day)
+        year = dateLayout.findViewById(R.id.year)
+
         setlistView = itemView
     }
 }

@@ -7,29 +7,20 @@
 
     <include
         android:id="@+id/setlist_info_layout"
-        layout="@layout/setlist_info_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/info_barrier"/>
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/info_barrier"
-        android:layout_width="wrap_content"
+        layout="@layout/layout_setlist_info"
         android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="setlist_info_layout" />
-
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/margin_small"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/setlist_info_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/info_barrier"/>
-
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

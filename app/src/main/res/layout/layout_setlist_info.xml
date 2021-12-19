@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
 
     <include
-        android:id="@+id/date"
-        layout="@layout/setlist_date_layout"
+        android:id="@+id/date_layout"
+        layout="@layout/layout_setlist_date"
         android:layout_height="80dp"
         android:layout_width="60dp"
         android:layout_margin="@dimen/margin_medium"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/place_name"
-        app:layout_constraintStart_toEndOf="@id/date"
+        app:layout_constraintStart_toEndOf="@id/date_layout"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/margin_medium"/>
 
