@@ -48,10 +48,6 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 		}
 	}
 
-	override fun getHistorySearchList(): List<String> {
-		return searchHistoryHelper.getHistorySearchList()
-	}
-
 
 	override fun viewIsReady() {
 
@@ -76,15 +72,22 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 						}
 
 						if (artists.isNotEmpty()) {
-							searchHistoryHelper.saveSearchQuery(artistName)
+							var isInHistory = false
+							searchHistoryHelper.getHistorySearchList().forEach {
+								if (it == artistName) { isInHistory = true }
+							}
+							if (!isInHistory) { searchHistoryHelper.saveSearchQuery(artistName) }
 						}
-
 						handler.sendEmptyMessage(1)
 			}
 		}
 
 		val thread = Thread(runnable)
 		thread.start()
+	}
+
+	override fun getHistorySearchList(): List<String> {
+		return searchHistoryHelper.getHistorySearchList()
 	}
 
 

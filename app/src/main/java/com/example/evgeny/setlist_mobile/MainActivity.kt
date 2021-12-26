@@ -58,4 +58,13 @@ class MainActivity: AppCompatActivity() {
                 .addSharedElement(sharedView, sharedView.transitionName)
                 .commit()
     }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount<=1) {
+            super.onBackPressed()
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
