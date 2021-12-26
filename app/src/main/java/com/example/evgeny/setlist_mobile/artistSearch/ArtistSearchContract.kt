@@ -15,5 +15,6 @@ interface ArtistSearchContract {
     interface Presenter: MvpPresenter<View> {
 		fun onListItemClicked(artist: Artist)
         fun onSearchArtistClicked(artistName: String)
+        fun getHistorySearchList(): List<String>
     }
 }

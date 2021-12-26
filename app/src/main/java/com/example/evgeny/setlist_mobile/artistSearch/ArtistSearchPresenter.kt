@@ -12,10 +12,11 @@ import com.example.evgeny.setlist_mobile.setlists.Artist
 import com.example.evgeny.setlist_mobile.setlists.ParserKotlin
 import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
 import com.example.evgeny.setlist_mobile.utils.AnswerListener
+import com.example.evgeny.setlist_mobile.utils.SearchHistoryHelper
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 
 
-public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository):
+public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper):
         PresenterBase<ArtistSearchContract.View>(), ArtistSearchContract.Presenter {
 
 	private fun showAddWordDialog() {
@@ -69,12 +70,24 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository):
 						setlistsRepository.newSearchArtists(artistName).forEach {
 							artists.add(it)
 						}
+
+						if (artists.isNotEmpty()) {
+							var isInHistory = false
+							searchHistoryHelper.getHistorySearchList().forEach {
+								if (it == artistName) { isInHistory = true }
+							}
+							if (!isInHistory) { searchHistoryHelper.saveSearchQuery(artistName) }
+						}
 						handler.sendEmptyMessage(1)
 			}
 		}
 
 		val thread = Thread(runnable)
 		thread.start()
+	}
+
+	override fun getHistorySearchList(): List<String> {
+		return searchHistoryHelper.getHistorySearchList()
 	}
 
 
