@@ -37,9 +37,6 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
             adapter.clearItems()
             adapter.setItems(list)
             diffResult.dispatchUpdatesTo(adapter)
-            //emptyRecyclerMessageLayout.visibility= View.GONE
-        } else {
-            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
         }
     }
 
@@ -128,7 +125,6 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         presenter = ArtistSearchPresenter(setlistsRepository, searchHistoryHelper)
         presenter.attachView(this)
         presenter.viewIsReady()
-        //presenter.onSearchArtistClicked("bring me the")
     }
 
     override fun openSetlists() {
