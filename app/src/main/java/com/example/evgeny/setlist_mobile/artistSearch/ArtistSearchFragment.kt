@@ -63,11 +63,11 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSearchConstraintBinding.inflate(inflater, container, false)
         val rootView = binding.root
-        initView(rootView)
+        initView()
         return rootView
     }
 
-    fun initView(rootView: View ) {
+    fun initView() {
         Log.d(TAG, " запустили")
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
         //val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -131,9 +131,9 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         (activity as MainActivity).openSetlistsSearchFragment()
     }
 
-    override fun onItemClick(t: Artist) {
+    override fun onItemClick(artist: Artist) {
         Log.d(TAG, "onItemClick")
-        presenter.onListItemClicked(t)
+        presenter.onListItemClicked(artist)
     }
 
     private fun populateAdapter(query: String) {
