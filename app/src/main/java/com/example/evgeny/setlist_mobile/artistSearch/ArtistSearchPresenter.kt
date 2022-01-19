@@ -52,7 +52,6 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 		return searchHistoryHelper.getHistorySearchList()
 	}
 
-
 	override fun viewIsReady() {
 
     }
@@ -88,10 +87,6 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 
 		val thread = Thread(runnable)
 		thread.start()
-	}
-
-	override fun getHistorySearchList(): List<String> {
-		return searchHistoryHelper.getHistorySearchList()
 	}
 
 
