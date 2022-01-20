@@ -16,8 +16,8 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toSource = findViewById<TextView>(R.id.toSource)
-        val pattern = Pattern.compile("www.setlist.fm")
-        Linkify.addLinks(toSource ,pattern,"http://")
+        val pattern = Pattern.compile(this.resources.getString(R.string.setlist_link))
+        Linkify.addLinks(toSource ,pattern, this.resources.getString(R.string.setlist_link_prefix))
 
         openArtistSearchFragment()
     }
