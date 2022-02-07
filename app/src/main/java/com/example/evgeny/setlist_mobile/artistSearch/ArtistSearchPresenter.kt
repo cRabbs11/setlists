@@ -10,6 +10,7 @@ import android.util.Log
 import com.example.evgeny.setlist_mobile.mvp.PresenterBase
 import com.example.evgeny.setlist_mobile.setlists.Artist
 import com.example.evgeny.setlist_mobile.setlists.ParserKotlin
+import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
 import com.example.evgeny.setlist_mobile.utils.AnswerListener
 import com.example.evgeny.setlist_mobile.utils.SearchHistoryHelper
@@ -28,8 +29,16 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 	val setlistsRepository: SetlistsRepository
 
 	override fun onListItemClicked(artist: Artist) {
-		setlistsRepository.setCurrentArtist(artist)
-		getView()?.openSetlists()
+		searchSetlists(artist.mbid, object : AnswerListener<List<Setlist>> {
+			override fun getAnswer(t: List<Setlist>) {
+				if (t.isEmpty()) {
+					getView()?.showToast("сетлистов для ${artist.name} не найдено")
+				} else {
+					setlistsRepository.setCurrentArtist(artist)
+					getView()?.openSetlists()
+				}
+			}
+		})
 	}
 
 	override fun onSearchArtistClicked(artistName: String) {
@@ -48,6 +57,9 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 		}
 	}
 
+	override fun getHistorySearchList(): List<String> {
+		return searchHistoryHelper.getHistorySearchList()
+	}
 
 	override fun viewIsReady() {
 
@@ -86,10 +98,27 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 		thread.start()
 	}
 
-	override fun getHistorySearchList(): List<String> {
-		return searchHistoryHelper.getHistorySearchList()
-	}
+	private fun searchSetlists(artistMbid: String, answerListener: AnswerListener<List<Setlist>>) {
+		val handler = object : Handler(Looper.getMainLooper()) {
+			override fun handleMessage(msg: Message) {
+				answerListener.getAnswer(setlistsRepository.getSetlists())
+			}
+		}
 
+		val runnable = Runnable {
+			val setlists = ArrayList<Setlist>()
+			kotlin.run {
+				setlistsRepository.searchSetlists(artistMbid).forEach {
+					setlists.add(it)
+				}
+				setlistsRepository.setNewSetlists(setlists)
+				handler.sendEmptyMessage(1)
+			}
+		}
+
+		val thread = Thread(runnable)
+		thread.start()
+	}
 
 
 }
