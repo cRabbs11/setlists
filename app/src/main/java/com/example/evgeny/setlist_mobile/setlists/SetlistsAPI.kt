@@ -1,6 +1,7 @@
 package com.example.evgeny.setlist_mobile.setlists
 
 import android.util.Log
+import com.example.evgeny.setlist_mobile.utils.API
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -80,7 +81,7 @@ class SetlistsAPI {
         try {
 
             val httpURLConnection = url.openConnection() as HttpURLConnection
-            httpURLConnection.setRequestProperty ("x-api-key", "5f26897a-5ead-4985-8c6e-b8d427eb757e")
+            httpURLConnection.setRequestProperty ("x-api-key", API.KEY)
             httpURLConnection.setRequestProperty ("Accept", "application/json")
             val responseCode = httpURLConnection.getResponseCode()
 
