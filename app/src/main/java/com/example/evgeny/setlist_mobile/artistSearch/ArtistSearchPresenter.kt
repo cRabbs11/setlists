@@ -41,11 +41,7 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 				override fun onSuccessResponse(t: List<Artist>) {
 					if (t.isNotEmpty()) {
 						setlistsRepository.setLastSearchArtists(t)
-						var isInHistory = false
-						searchHistoryHelper.getHistorySearchList().forEach {
-							if (it == artistName) { isInHistory = true }
-						}
-						if (!isInHistory) { searchHistoryHelper.saveSearchQuery(artistName) }
+						if (!isArtistInHistory(artistName)) { searchHistoryHelper.saveSearchQuery(artistName) }
 						getView()?.showArtistList(t)
 					} else {
 						getView()?.showToast("артистов не найдено")
@@ -58,6 +54,17 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 		} else {
 			getView()?.showToast("поле пустое")
 		}
+	}
+
+	private fun isArtistInHistory(artistName: String): Boolean {
+		var isInHistory = false
+		val searchList = searchHistoryHelper.getHistorySearchList()
+		var size = searchList.size
+		do {
+			size-=1
+			if (searchList[size] == artistName) { isInHistory = true }
+		} while (isInHistory || size==0)
+		return isInHistory
 	}
 
 	override fun getHistorySearchList(): List<String> {
