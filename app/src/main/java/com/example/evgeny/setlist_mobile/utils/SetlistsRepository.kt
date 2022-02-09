@@ -59,6 +59,13 @@ object SetlistsRepository {
         return lastSearchArtists
     }
 
+    fun setLastSearchArtists(list: List<Artist>) {
+        lastSearchArtists.clear()
+        list.forEach {
+            lastSearchArtists.add(it)
+        }
+    }
+
     fun getSetlists(): ArrayList<Setlist> {
         return setlists
     }

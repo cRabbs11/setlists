@@ -40,6 +40,7 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 			retrofitSetlists.searchArtists(artistName, object: RequestListener<List<Artist>> {
 				override fun onSuccessResponse(t: List<Artist>) {
 					if (t.isNotEmpty()) {
+						setlistsRepository.setLastSearchArtists(t)
 						var isInHistory = false
 						searchHistoryHelper.getHistorySearchList().forEach {
 							if (it == artistName) { isInHistory = true }
