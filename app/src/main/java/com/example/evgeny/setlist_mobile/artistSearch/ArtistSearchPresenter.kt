@@ -8,10 +8,7 @@ import android.util.Log
 import com.example.evgeny.setlist_mobile.mvp.PresenterBase
 import com.example.evgeny.setlist_mobile.setlists.Artist
 import com.example.evgeny.setlist_mobile.setlists.Setlist
-import com.example.evgeny.setlist_mobile.utils.AnswerListener
-import com.example.evgeny.setlist_mobile.utils.RetrofitSetlists
-import com.example.evgeny.setlist_mobile.utils.SearchHistoryHelper
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.utils.*
 
 class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper):
         PresenterBase<ArtistSearchContract.View>(), ArtistSearchContract.Presenter {
@@ -40,8 +37,8 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 	override fun onSearchArtistClicked(artistName: String) {
 		if (artistName != "") {
 			val retrofitSetlists = RetrofitSetlists()
-			retrofitSetlists.searchArtists(artistName, object: AnswerListener<List<Artist>> {
-				override fun getAnswer(t: List<Artist>) {
+			retrofitSetlists.searchArtists(artistName, object: RequestListener<List<Artist>> {
+				override fun onSuccessResponse(t: List<Artist>) {
 					if (t.isNotEmpty()) {
 						var isInHistory = false
 						searchHistoryHelper.getHistorySearchList().forEach {
@@ -52,6 +49,9 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 					} else {
 						getView()?.showToast("артистов не найдено")
 					}
+				}
+				override fun onNullResponse() {
+					getView()?.showToast("артистов не найдено")
 				}
 			})
 		} else {
