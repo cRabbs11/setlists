@@ -18,7 +18,7 @@ class RetrofitSetlists {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-        val service = retrofit.create(RetrofitInterface::class.java)
+        val service = retrofit.create(SetlistsAPIInterface::class.java)
 
         service.searchArtists(SetlistAPI.KEY, "application/json", artistName, 1, "sortName").enqueue(object: Callback<ArtistData> {
             override fun onResponse(call: Call<ArtistData>, response: Response<ArtistData>) {
