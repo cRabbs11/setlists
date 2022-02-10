@@ -20,8 +20,8 @@ class RetrofitSetlists {
 
         val service = retrofit.create(SetlistsAPIInterface::class.java)
 
-        service.searchArtists(SetlistAPI.KEY, "application/json", artistName, 1, "sortName").enqueue(object: Callback<ArtistData> {
-            override fun onResponse(call: Call<ArtistData>, response: Response<ArtistData>) {
+        service.searchArtists(SetlistAPI.KEY, "application/json", artistName, 1, "sortName").enqueue(object: Callback<ArtistDataDTO> {
+            override fun onResponse(call: Call<ArtistDataDTO>, response: Response<ArtistDataDTO>) {
                 if (response.body()!=null) {
                     listener.onSuccessResponse(response.body()!!.artist)
                 } else {
@@ -29,7 +29,7 @@ class RetrofitSetlists {
                 }
             }
 
-            override fun onFailure(call: Call<ArtistData>, t: Throwable) {
+            override fun onFailure(call: Call<ArtistDataDTO>, t: Throwable) {
                 t.printStackTrace()
                 listener.onNullResponse()
             }

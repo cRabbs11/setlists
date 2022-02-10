@@ -14,5 +14,5 @@ interface SetlistsAPIInterface {
             @Query("artistName") artistName: String,
             @Query("page") page: Int,
             @Query("sort") sort: String
-    ): Call<ArtistData>
+    ): Call<ArtistDataDTO>
 }
