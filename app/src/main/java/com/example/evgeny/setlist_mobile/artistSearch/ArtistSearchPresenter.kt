@@ -70,11 +70,13 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 	private fun isArtistInHistory(artistName: String): Boolean {
 		var isInHistory = false
 		val searchList = searchHistoryHelper.getHistorySearchList()
-		var size = searchList.size
-		do {
-			size-=1
-			if (searchList[size] == artistName) { isInHistory = true }
-		} while (isInHistory || size==0)
+		if (searchList.isNotEmpty()) {
+			var size = searchList.size
+			do {
+				size-=1
+				if (searchList[size] == artistName) { isInHistory = true }
+			} while (!isInHistory && size>0)
+		}
 		return isInHistory
 	}
 
