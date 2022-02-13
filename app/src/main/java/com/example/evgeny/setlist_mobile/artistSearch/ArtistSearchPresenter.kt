@@ -4,13 +4,17 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
+import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.data.entity.ArtistDataDTO
 
 import com.example.evgeny.setlist_mobile.mvp.PresenterBase
-import com.example.evgeny.setlist_mobile.setlists.Artist
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.utils.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper):
+class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper, val setlistsAPI: SetlistsRetrofitInterface):
         PresenterBase<ArtistSearchContract.View>(), ArtistSearchContract.Presenter {
 
 	private fun showAddWordDialog() {
@@ -20,6 +24,7 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 
 	val LOG_TAG = ArtistSearchPresenter::class.java.name + " BMTH "
 	val setlistsRepository: SetlistsRepository
+	private val emptySearchText = ""
 
 	override fun onListItemClicked(artist: Artist) {
 		searchSetlists(artist.mbid, object : AnswerListener<List<Setlist>> {
@@ -35,20 +40,26 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 	}
 
 	override fun onSearchArtistClicked(artistName: String) {
-		if (artistName != "") {
-			val retrofitSetlists = RetrofitSetlists()
-			retrofitSetlists.searchArtists(artistName, object: RequestListener<List<Artist>> {
-				override fun onSuccessResponse(t: List<Artist>) {
-					if (t.isNotEmpty()) {
-						setlistsRepository.setLastSearchArtists(t)
+		if (artistName != emptySearchText) {
+			setlistsAPI.searchArtists(
+					apiKey = RetrofitApiKeys.SETLISTS_API_KEY,
+					accept = SetlistsAPIConstants.ACCEPT_HEADER,
+					artistName = artistName, 1,
+					sort = SetlistsAPIConstants.SORT_TYPE_NAME).enqueue(object: Callback<ArtistDataDTO> {
+
+				override fun onResponse(call: Call<ArtistDataDTO>, response: Response<ArtistDataDTO>) {
+					val artistList = Converter.convertArtistDTOListToArtistList(response.body()?.artist)
+					if (artistList.isNotEmpty()) {
+						setlistsRepository.setLastSearchArtists(artistList)
 						if (!isArtistInHistory(artistName)) { searchHistoryHelper.saveSearchQuery(artistName) }
-						getView()?.showArtistList(t)
+						getView()?.showArtistList(artistList)
 					} else {
 						getView()?.showToast("артистов не найдено")
 					}
 				}
-				override fun onNullResponse() {
-					getView()?.showToast("артистов не найдено")
+
+				override fun onFailure(call: Call<ArtistDataDTO>, t: Throwable) {
+					getView()?.showToast("поиск не удался")
 				}
 			})
 		} else {
