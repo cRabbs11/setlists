@@ -1,7 +1,7 @@
 package com.example.evgeny.setlist_mobile.artistSearch
+import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.mvp.MVPView
 import com.example.evgeny.setlist_mobile.mvp.MvpPresenter
-import com.example.evgeny.setlist_mobile.setlists.Artist
 
 interface ArtistSearchContract {
  

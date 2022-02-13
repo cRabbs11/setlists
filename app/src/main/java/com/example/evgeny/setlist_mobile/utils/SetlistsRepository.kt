@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.evgeny.setlist_mobile.R
-import com.example.evgeny.setlist_mobile.setlists.Artist
+import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
 import com.example.evgeny.setlist_mobile.setlists.SongListItem

@@ -9,12 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.TextView
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
-import com.example.evgeny.setlist_mobile.setlists.Artist
+import com.example.evgeny.setlist_mobile.data.Artist
 
 class ArtistListAdapter(clickListener: OnItemClickListener<Artist>) : RecyclerView.Adapter<ArtistHolder>() {
 
