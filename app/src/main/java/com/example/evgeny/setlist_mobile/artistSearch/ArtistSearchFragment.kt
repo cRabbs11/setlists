@@ -23,6 +23,8 @@ import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBin
 
 import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.utils.*
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -121,9 +123,18 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val okHttpCLient = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
+
         val retrofit = Retrofit.Builder()
                 .baseUrl(SetlistsAPIConstants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpCLient)
                 .build()
         val service = retrofit.create(SetlistsRetrofitInterface::class.java)
 

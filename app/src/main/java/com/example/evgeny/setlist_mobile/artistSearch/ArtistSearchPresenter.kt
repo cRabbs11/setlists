@@ -1,20 +1,17 @@
 package com.example.evgeny.setlist_mobile.artistSearch
 
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.Log
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.entity.ArtistDataDTO
+import com.example.evgeny.setlist_mobile.data.entity.SetlistsDataDTO
 
 import com.example.evgeny.setlist_mobile.mvp.PresenterBase
-import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper, val setlistsAPI: SetlistsRetrofitInterface):
+class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper, val setlistsRetrofit: SetlistsRetrofitInterface):
         PresenterBase<ArtistSearchContract.View>(), ArtistSearchContract.Presenter {
 
 	private fun showAddWordDialog() {
@@ -27,26 +24,40 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
 	private val emptySearchText = ""
 
 	override fun onListItemClicked(artist: Artist) {
-		searchSetlists(artist.mbid, object : AnswerListener<List<Setlist>> {
-			override fun getAnswer(t: List<Setlist>) {
-				if (t.isEmpty()) {
-					getView()?.showToast("сетлистов для ${artist.name} не найдено")
-				} else {
+		setlistsRetrofit.getArtistSetlists(
+				artistMbid = artist.mbid,
+				apiKey = ApiKeys.SETLISTS_API_KEY,
+				accept = SetlistsAPIConstants.ACCEPT_HEADER,
+				page = 1
+		).enqueue(object: Callback<SetlistsDataDTO> {
+			override fun onResponse(call: Call<SetlistsDataDTO>, response: Response<SetlistsDataDTO>) {
+				val setlistList = Converter.convertSetlistDTOListToSetlistList(response.body()?.setlist)
+				println(response.body())
+				if (setlistList.isNotEmpty()) {
 					setlistsRepository.setCurrentArtist(artist)
+					setlistsRepository.setNewSetlists(setlistList)
 					getView()?.openSetlists()
+				} else {
+					getView()?.showToast("сетлистов для ${artist.name} не найдено")
 				}
+			}
+
+			override fun onFailure(call: Call<SetlistsDataDTO>, t: Throwable) {
+				t.printStackTrace()
+				getView()?.showToast("поиск не удался")
 			}
 		})
 	}
 
 	override fun onSearchArtistClicked(artistName: String) {
 		if (artistName != emptySearchText) {
-			setlistsAPI.searchArtists(
-					apiKey = RetrofitApiKeys.SETLISTS_API_KEY,
+			setlistsRetrofit.searchArtists(
+					apiKey = ApiKeys.SETLISTS_API_KEY,
 					accept = SetlistsAPIConstants.ACCEPT_HEADER,
-					artistName = artistName, 1,
-					sort = SetlistsAPIConstants.SORT_TYPE_NAME).enqueue(object: Callback<ArtistDataDTO> {
-
+					artistName = artistName,
+					page = 1,
+					sort = SetlistsAPIConstants.SORT_TYPE_NAME
+			).enqueue(object: Callback<ArtistDataDTO> {
 				override fun onResponse(call: Call<ArtistDataDTO>, response: Response<ArtistDataDTO>) {
 					val artistList = Converter.convertArtistDTOListToArtistList(response.body()?.artist)
 					if (artistList.isNotEmpty()) {
@@ -91,28 +102,4 @@ class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHi
     init {
 		this.setlistsRepository = setlistsRepository
     }
-
-	private fun searchSetlists(artistMbid: String, answerListener: AnswerListener<List<Setlist>>) {
-		val handler = object : Handler(Looper.getMainLooper()) {
-			override fun handleMessage(msg: Message) {
-				answerListener.getAnswer(setlistsRepository.getSetlists())
-			}
-		}
-
-		val runnable = Runnable {
-			val setlists = ArrayList<Setlist>()
-			kotlin.run {
-				setlistsRepository.searchSetlists(artistMbid).forEach {
-					setlists.add(it)
-				}
-				setlistsRepository.setNewSetlists(setlists)
-				handler.sendEmptyMessage(1)
-			}
-		}
-
-		val thread = Thread(runnable)
-		thread.start()
-	}
-
-
 }
