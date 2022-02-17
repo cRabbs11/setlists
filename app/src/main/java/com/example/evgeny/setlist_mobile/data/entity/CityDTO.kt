@@ -14,5 +14,5 @@ data class CityDTO(
         @SerializedName("state")
         val state: String?,
         @SerializedName("stateCode")
-        val stateCode: String
+        val stateCode: String?
 )
