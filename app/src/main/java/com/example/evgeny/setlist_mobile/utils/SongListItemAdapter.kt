@@ -13,7 +13,7 @@ import com.example.evgeny.setlist_mobile.setlists.Set
 const val SONGLIST_ITEM_SONG = 0
 const val SONGLIST_ITEM_SET = 1
 
-class SongListAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SongListItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val TAG = ArtistListAdapter::class.simpleName + " BMTH"
     val songList = ArrayList<SongListItem>()

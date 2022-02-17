@@ -10,7 +10,6 @@ import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
@@ -23,7 +22,7 @@ import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
-import com.example.evgeny.setlist_mobile.utils.SongListAdapterNew
+import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
@@ -102,7 +101,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
     val TAG = SingleSetlistFragment::class.java.name + " BMTH "
 
     lateinit var presenter: SingleSetlistPresenter
-    lateinit var adapter: SongListAdapterNew
+    lateinit var adapter: SongListItemAdapter
     lateinit var binding: FragmentSetlistBinding
     //lateinit var emptyRecyclerMessageLayout: TextView
 
@@ -124,7 +123,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
     }
 
     fun initView() {
-        adapter = SongListAdapterNew()
+        adapter = SongListItemAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
 
