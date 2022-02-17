@@ -11,18 +11,14 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
 import com.example.evgeny.setlist_mobile.MainActivity
-import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
-import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
 import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
-import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
-import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
-import com.example.evgeny.setlist_mobile.utils.OnSharedTransitionClickListener
-import com.example.evgeny.setlist_mobile.utils.SetlistListAdapter
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.utils.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setlist>, SetlistsSearchContract.View {
 
@@ -80,8 +76,6 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
     fun initView() {
         Log.d(TAG, " запустили")
 
-        val setlistsAPI = SetlistsAPI()
-
         val setlistsRepository = SetlistsRepository
         adapter = SetlistListAdapter(this)
         binding.recyclerView.adapter = adapter
@@ -109,7 +103,13 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
             startPostponedEnterTransition()
         }
 
-        presenter = SetlistsSearchPresenter(setlistsRepository)
+        val retrofit = Retrofit.Builder()
+                .baseUrl(SetlistsAPIConstants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        val service = retrofit.create(SetlistsRetrofitInterface::class.java)
+
+        presenter = SetlistsSearchPresenter(setlistsRepository, service)
         presenter.attachView(this)
         presenter.viewIsReady()
     }

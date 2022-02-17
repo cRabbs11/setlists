@@ -1,5 +1,7 @@
 package com.example.evgeny.setlist_mobile.setlists
 
+import com.example.evgeny.setlist_mobile.data.Artist
+
 data class Setlist(val artist: Artist?,
                    val venue: Venue?,
                    val tour: Tour?,

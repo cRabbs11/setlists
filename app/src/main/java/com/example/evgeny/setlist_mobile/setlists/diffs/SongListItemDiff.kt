@@ -26,7 +26,6 @@ data class SongListItemDiff(val oldList: ArrayList<SongListItem>, val newList: A
                     oldSongListItem.number == newSongListItem.number
         } else if(oldSongListItem is Set && newSongListItem is Set) {
             return oldSongListItem.name == newSongListItem.name &&
-                    oldSongListItem.number == newSongListItem.number &&
                     oldSongListItem.encore == newSongListItem.encore
         } else {
             return false

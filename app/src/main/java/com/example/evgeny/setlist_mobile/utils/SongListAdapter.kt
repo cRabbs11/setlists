@@ -102,7 +102,7 @@ class SongListAdapter(context: Context, setlist: Setlist) : ExpandableListAdapte
             descrition = "$descrition ($cover song)"
         }
 
-        if (!song.info.equals("")) {
+        if (!song.info.isNullOrEmpty()) {
             info = song.info
             descrition = "$descrition ($info )"
         }

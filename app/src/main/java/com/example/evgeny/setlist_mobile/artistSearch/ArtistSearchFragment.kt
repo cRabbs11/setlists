@@ -7,7 +7,6 @@ import android.provider.BaseColumns
 import android.util.Log
 
 import android.view.*
-import android.view.animation.AnimationUtils
 import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
@@ -18,14 +17,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.evgeny.setlist_mobile.MainActivity
-import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
+import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBinding
 
-import com.example.evgeny.setlist_mobile.setlists.Artist
 import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
-import com.example.evgeny.setlist_mobile.setlistsSearch.SetlistsSearchFragment
 import com.example.evgeny.setlist_mobile.utils.*
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickListener<Artist> {
 
@@ -122,7 +123,22 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
-        presenter = ArtistSearchPresenter(setlistsRepository, searchHistoryHelper)
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val okHttpCLient = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
+
+        val retrofit = Retrofit.Builder()
+                .baseUrl(SetlistsAPIConstants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpCLient)
+                .build()
+        val service = retrofit.create(SetlistsRetrofitInterface::class.java)
+
+        presenter = ArtistSearchPresenter(setlistsRepository, searchHistoryHelper, service)
         presenter.attachView(this)
         presenter.viewIsReady()
     }

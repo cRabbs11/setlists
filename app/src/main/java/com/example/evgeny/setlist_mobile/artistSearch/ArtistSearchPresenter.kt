@@ -1,23 +1,17 @@
 package com.example.evgeny.setlist_mobile.artistSearch
 
-import android.content.ContentValues.TAG
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.Log
+import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.data.entity.ArtistDataDTO
+import com.example.evgeny.setlist_mobile.data.entity.SetlistsDataDTO
 
 import com.example.evgeny.setlist_mobile.mvp.PresenterBase
-import com.example.evgeny.setlist_mobile.setlists.Artist
-import com.example.evgeny.setlist_mobile.setlists.ParserKotlin
-import com.example.evgeny.setlist_mobile.setlists.Setlist
-import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
-import com.example.evgeny.setlist_mobile.utils.AnswerListener
-import com.example.evgeny.setlist_mobile.utils.SearchHistoryHelper
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.utils.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-
-public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper):
+class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val searchHistoryHelper: SearchHistoryHelper, val setlistsRetrofit: SetlistsRetrofitInterface):
         PresenterBase<ArtistSearchContract.View>(), ArtistSearchContract.Presenter {
 
 	private fun showAddWordDialog() {
@@ -27,34 +21,74 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
 
 	val LOG_TAG = ArtistSearchPresenter::class.java.name + " BMTH "
 	val setlistsRepository: SetlistsRepository
+	private val emptySearchText = ""
 
 	override fun onListItemClicked(artist: Artist) {
-		searchSetlists(artist.mbid, object : AnswerListener<List<Setlist>> {
-			override fun getAnswer(t: List<Setlist>) {
-				if (t.isEmpty()) {
-					getView()?.showToast("сетлистов для ${artist.name} не найдено")
-				} else {
+		setlistsRetrofit.getArtistSetlists(
+				artistMbid = artist.mbid,
+				apiKey = ApiKeys.SETLISTS_API_KEY,
+				accept = SetlistsAPIConstants.ACCEPT_HEADER,
+				page = 1
+		).enqueue(object: Callback<SetlistsDataDTO> {
+			override fun onResponse(call: Call<SetlistsDataDTO>, response: Response<SetlistsDataDTO>) {
+				val setlistList = Converter.convertSetlistDTOListToSetlistList(response.body()?.setlist)
+				println(response.body())
+				if (setlistList.isNotEmpty()) {
 					setlistsRepository.setCurrentArtist(artist)
+					setlistsRepository.setNewSetlists(setlistList)
 					getView()?.openSetlists()
+				} else {
+					getView()?.showToast("сетлистов для ${artist.name} не найдено")
 				}
+			}
+
+			override fun onFailure(call: Call<SetlistsDataDTO>, t: Throwable) {
+				t.printStackTrace()
+				getView()?.showToast("поиск не удался")
 			}
 		})
 	}
 
 	override fun onSearchArtistClicked(artistName: String) {
-		if (artistName != "") {
-			searchArtists(artistName, object : AnswerListener<List<Artist>> {
-				override fun getAnswer(t: List<Artist>) {
-					Log.d(TAG, "пришли")
-					getView()?.showArtistList(t)
-					if (t.isEmpty()) {
+		if (artistName != emptySearchText) {
+			setlistsRetrofit.searchArtists(
+					apiKey = ApiKeys.SETLISTS_API_KEY,
+					accept = SetlistsAPIConstants.ACCEPT_HEADER,
+					artistName = artistName,
+					page = 1,
+					sort = SetlistsAPIConstants.SORT_TYPE_NAME
+			).enqueue(object: Callback<ArtistDataDTO> {
+				override fun onResponse(call: Call<ArtistDataDTO>, response: Response<ArtistDataDTO>) {
+					val artistList = Converter.convertArtistDTOListToArtistList(response.body()?.artist)
+					if (artistList.isNotEmpty()) {
+						setlistsRepository.setLastSearchArtists(artistList)
+						if (!isArtistInHistory(artistName)) { searchHistoryHelper.saveSearchQuery(artistName) }
+						getView()?.showArtistList(artistList)
+					} else {
 						getView()?.showToast("артистов не найдено")
 					}
+				}
+
+				override fun onFailure(call: Call<ArtistDataDTO>, t: Throwable) {
+					getView()?.showToast("поиск не удался")
 				}
 			})
 		} else {
 			getView()?.showToast("поле пустое")
 		}
+	}
+
+	private fun isArtistInHistory(artistName: String): Boolean {
+		var isInHistory = false
+		val searchList = searchHistoryHelper.getHistorySearchList()
+		if (searchList.isNotEmpty()) {
+			var size = searchList.size
+			do {
+				size-=1
+				if (searchList[size] == artistName) { isInHistory = true }
+			} while (!isInHistory && size>0)
+		}
+		return isInHistory
 	}
 
 	override fun getHistorySearchList(): List<String> {
@@ -68,57 +102,4 @@ public class ArtistSearchPresenter(setlistsRepository: SetlistsRepository, val s
     init {
 		this.setlistsRepository = setlistsRepository
     }
-
-	private fun searchArtists(artistName: String, answerListener: AnswerListener<List<Artist>>) {
-		val artists = ArrayList<Artist>()
-		val handler = object : Handler(Looper.getMainLooper()) {
-			override fun handleMessage(msg: Message) {
-				answerListener.getAnswer(artists)
-			}
-		}
-
-		val runnable = Runnable {
-			        kotlin.run {
-						setlistsRepository.newSearchArtists(artistName).forEach {
-							artists.add(it)
-						}
-
-						if (artists.isNotEmpty()) {
-							var isInHistory = false
-							searchHistoryHelper.getHistorySearchList().forEach {
-								if (it == artistName) { isInHistory = true }
-							}
-							if (!isInHistory) { searchHistoryHelper.saveSearchQuery(artistName) }
-						}
-						handler.sendEmptyMessage(1)
-			}
-		}
-
-		val thread = Thread(runnable)
-		thread.start()
-	}
-
-	private fun searchSetlists(artistMbid: String, answerListener: AnswerListener<List<Setlist>>) {
-		val handler = object : Handler(Looper.getMainLooper()) {
-			override fun handleMessage(msg: Message) {
-				answerListener.getAnswer(setlistsRepository.getSetlists())
-			}
-		}
-
-		val runnable = Runnable {
-			val setlists = ArrayList<Setlist>()
-			kotlin.run {
-				setlistsRepository.searchSetlists(artistMbid).forEach {
-					setlists.add(it)
-				}
-				setlistsRepository.setNewSetlists(setlists)
-				handler.sendEmptyMessage(1)
-			}
-		}
-
-		val thread = Thread(runnable)
-		thread.start()
-	}
-
-
 }
