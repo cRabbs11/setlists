@@ -12,7 +12,6 @@ import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.setlists.Coords
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
-import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -70,9 +69,6 @@ class SetlistOnMapFragment : Fragment(), OnItemClickListener<Setlist>, SetlistOn
         Log.d(TAG, " запустили")
         val mapFragment = childFragmentManager!!.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
-        val setlistsAPI = SetlistsAPI()
 
         val setlistsRepository = SetlistsRepository
 
