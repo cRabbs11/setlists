@@ -61,11 +61,10 @@ object SetlistsRepository {
 
     fun setSongList(setlist: Setlist) {
         val newSongList = arrayListOf<SongListItem>()
-
         setlist.sets.forEach {
             if (it.name!="") {
                 newSongList.add(it)
-            } else if (it.encore!="") {
+            } else if (it.encore>0) {
                 newSongList.add(it)
             }
             it.songs.forEach {
