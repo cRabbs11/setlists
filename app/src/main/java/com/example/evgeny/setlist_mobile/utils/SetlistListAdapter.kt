@@ -24,12 +24,12 @@ class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>
     private lateinit var context: Context
 
     init {
-        Log.d(TAG, "init")
+        //Log.d(TAG, "init")
         this.clickListener=clickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SetlistHolder {
-        Log.d(TAG, "onCreateViewHolder")
+        //Log.d(TAG, "onCreateViewHolder")
         val inflater = LayoutInflater.from(parent.getContext())
         context = parent.context
         val view = inflater.inflate(R.layout.item_setlist_layout, parent, false)
@@ -55,7 +55,7 @@ class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>
         list.forEach {
             if(!setlists.contains(it)) {
                 setlists.add(it)
-                Log.d(TAG, "add: ${it.eventDate}")
+                //Log.d(TAG, "add: ${it.eventDate}")
             }
         }
     }
@@ -65,7 +65,7 @@ class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>
     }
 
     override fun onBindViewHolder(holder: SetlistHolder, position: Int) {
-        Log.d(TAG, "onBindViewHolder")
+        //Log.d(TAG, "onBindViewHolder")
         val setlist = setlists.get(position)
         val name = setlist.artist?.name
         val eventDate = setlist.eventDate
