@@ -58,7 +58,7 @@ object Converter {
                 id = item.id,
                 name = item.name,
                 state = item.state ?: "",
-                stateCode = item.stateCode,
+                stateCode = item.stateCode?: "",
                 coords = convertCoordsDtoToCoords(item.coords),
                 country = convertCountryDtoToCountry(item.country)
         )
@@ -96,7 +96,7 @@ object Converter {
     private fun convertSetDtoToSet(item: SetDTO): Set {
         return Set(
                 name = item.name?: "",
-                encore = item.encore.toString(),
+                encore = item.encore,
                 songs = convertSongListDTOtoSongList(item.song)
         )
     }
