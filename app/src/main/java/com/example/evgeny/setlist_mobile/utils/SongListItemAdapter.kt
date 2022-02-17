@@ -17,6 +17,7 @@ class SongListAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val TAG = ArtistListAdapter::class.simpleName + " BMTH"
     val songList = ArrayList<SongListItem>()
+    private val SET_ENCORE_NAME = "Encore: "
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -67,11 +68,14 @@ class SongListAdapterNew : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         } else if(songListItem is Set) {
             holder as SetHolder
-            if (songListItem.name!="") {
-                holder.setName.text=songListItem.name
-            } else if (songListItem.encore!=""){
-                holder.setName.text=songListItem.encore
+            val setName = if (songListItem.name!="") {
+                songListItem.name
+            } else if (songListItem.encore==1) {
+                SET_ENCORE_NAME
+            } else {
+                "$SET_ENCORE_NAME ${songListItem.encore}"
             }
+            holder.setName.text = setName
         }
     }
 
