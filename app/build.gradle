@@ -56,6 +56,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //json converter
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    //okhttp logging
+    implementation "com.squareup.okhttp3:logging-interceptor:3.12.6"
 
 
     //firebase
