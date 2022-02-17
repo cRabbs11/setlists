@@ -1,16 +1,7 @@
 package com.example.evgeny.setlist_mobile.utils
 
-import android.content.Context
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.setlists.Setlist
-import com.example.evgeny.setlist_mobile.setlists.SetlistsAPI
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 
 object SetlistsRepository {
@@ -24,16 +15,6 @@ object SetlistsRepository {
     private var songlist =  ArrayList<SongListItem>()
     private var setlistPage = 2
 
-    fun newSearchArtists(artistName: String) : List<Artist> {
-        val setlistsAPI = SetlistsAPI()
-        val artists = setlistsAPI.getArtists(artistName)
-        lastSearchArtists.clear()
-        artists.forEach {
-            lastSearchArtists.add(it)
-        }
-        return getLastSearchArtists()
-    }
-
     fun setCurrentArtist(artist: Artist) {
         currentArtist = artist
     }
@@ -42,21 +23,13 @@ object SetlistsRepository {
         return currentArtist
     }
 
-    fun searchSetlists(artistMbid: String, page: Int = 1) : List<Setlist> {
-        val setlistsAPI = SetlistsAPI()
-        return setlistsAPI.getSetlists(artistMbid, page)
+    fun setNewSetlists(setlists: List<Setlist>) {
+        this.setlists.clear()
+        addToSetlists(setlists)
     }
 
-    fun setNewSetlists(setlists: ArrayList<Setlist>) {
-        this.setlists = setlists
-    }
-
-    fun addToSetlists(setlists: ArrayList<Setlist>) {
+    fun addToSetlists(setlists: List<Setlist>) {
         this.setlists.addAll(setlists)
-    }
-
-    fun getLastSearchArtists(): ArrayList<Artist> {
-        return lastSearchArtists
     }
 
     fun setLastSearchArtists(list: List<Artist>) {
