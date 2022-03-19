@@ -11,6 +11,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.transition.TransitionInflater
+import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
@@ -25,6 +26,7 @@ import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import javax.inject.Inject
 
 class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSetlistContract.View {
     override fun showSetlist(songList: ArrayList<SongListItem>) {
@@ -105,6 +107,9 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
     lateinit var binding: FragmentSetlistBinding
     //lateinit var emptyRecyclerMessageLayout: TextView
 
+    @Inject
+    lateinit var setlistsRepository: SetlistsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -147,7 +152,7 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
 
         Log.d(TAG, " запустили")
 
-        val setlistsRepository = SetlistsRepository
+        App.instance.dagger.inject(this)
 
         presenter = SingleSetlistPresenter(setlistsRepository)
         presenter.attachView(this)

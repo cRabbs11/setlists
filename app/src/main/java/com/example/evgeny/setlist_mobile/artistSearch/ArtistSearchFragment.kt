@@ -16,6 +16,7 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.MainActivity
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.data.Artist
@@ -23,10 +24,7 @@ import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBin
 
 import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.utils.*
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickListener<Artist> {
 
@@ -55,6 +53,15 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
     lateinit var adapter: ArtistListAdapter
     lateinit var suggestionAdapter: SimpleCursorAdapter
     lateinit var binding: FragmentSearchConstraintBinding
+
+    @Inject
+    lateinit var setlistsRepository : SetlistsRepository
+
+    @Inject
+    lateinit var searchHistoryHelper: SearchHistoryHelper
+
+    @Inject
+    lateinit var setlistsRetrofitInterface: SetlistsRetrofitInterface
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,29 +123,14 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
         })
 
-        val setlistsRepository = SetlistsRepository
-        val searchHistoryHelper = SearchHistoryHelper(requireContext())
         adapter = ArtistListAdapter(this)
         binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
-        val interceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+        App.instance.dagger.inject(this)
 
-        val okHttpCLient = OkHttpClient.Builder()
-                .addInterceptor(interceptor)
-                .build()
-
-        val retrofit = Retrofit.Builder()
-                .baseUrl(SetlistsAPIConstants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpCLient)
-                .build()
-        val service = retrofit.create(SetlistsRetrofitInterface::class.java)
-
-        presenter = ArtistSearchPresenter(setlistsRepository, searchHistoryHelper, service)
+        presenter = ArtistSearchPresenter(setlistsRepository, searchHistoryHelper, setlistsRetrofitInterface)
         presenter.attachView(this)
         presenter.viewIsReady()
     }

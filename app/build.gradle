@@ -4,6 +4,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -64,6 +65,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.4.1')
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     //implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    //Dagger
+    implementation 'com.google.dagger:dagger:2.30.1'
+    kapt 'com.google.dagger:dagger-compiler:2.30.1'
 }
 repositories {
     mavenCentral()

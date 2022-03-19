@@ -1,6 +1,5 @@
 package com.example.evgeny.setlist_mobile.setlistsSearch
 
-
 import android.os.Bundle
 import android.util.Log
 
@@ -10,6 +9,7 @@ import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
+import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.MainActivity
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
@@ -17,8 +17,7 @@ import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.utils.*
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setlist>, SetlistsSearchContract.View {
 
@@ -57,6 +56,12 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
     private lateinit var binding: FragmentSetlistsBinding
     lateinit var sharedView: View
 
+    @Inject
+    lateinit var retrofitInterface: SetlistsRetrofitInterface
+
+    @Inject
+    lateinit var setlistsRepository: SetlistsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -76,7 +81,6 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
     fun initView() {
         Log.d(TAG, " запустили")
 
-        val setlistsRepository = SetlistsRepository
         adapter = SetlistListAdapter(this)
         binding.recyclerView.adapter = adapter
         var dividerItemDecoration = DividerItemDecoration(binding.recyclerView.getContext(),
@@ -103,13 +107,9 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
             startPostponedEnterTransition()
         }
 
-        val retrofit = Retrofit.Builder()
-                .baseUrl(SetlistsAPIConstants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        val service = retrofit.create(SetlistsRetrofitInterface::class.java)
+        App.instance.dagger.inject(this)
 
-        presenter = SetlistsSearchPresenter(setlistsRepository, service)
+        presenter = SetlistsSearchPresenter(setlistsRepository, retrofitInterface)
         presenter.attachView(this)
         presenter.viewIsReady()
     }
