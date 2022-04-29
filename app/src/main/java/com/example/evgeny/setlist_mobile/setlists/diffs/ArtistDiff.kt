@@ -3,7 +3,7 @@ package com.example.evgeny.setlist_mobile.setlists.diffs
 import androidx.recyclerview.widget.DiffUtil
 import com.example.evgeny.setlist_mobile.data.Artist
 
-class ArtistDiff(val oldList: ArrayList<Artist>, val newList: ArrayList<Artist>): DiffUtil.Callback() {
+class ArtistDiff(val oldList: List<Artist>, val newList: List<Artist>): DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }

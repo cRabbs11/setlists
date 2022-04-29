@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.widget.SearchView
 import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.evgeny.setlist_mobile.App
@@ -24,6 +25,7 @@ import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBin
 
 import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.utils.*
+import com.example.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
 import javax.inject.Inject
 
 class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickListener<Artist> {
@@ -49,23 +51,22 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
     val TAG = ArtistSearchFragment::class.java.name + "BMTH"
 
-    lateinit var presenter: ArtistSearchPresenter
     lateinit var adapter: ArtistListAdapter
     lateinit var suggestionAdapter: SimpleCursorAdapter
     lateinit var binding: FragmentSearchConstraintBinding
 
-    @Inject
-    lateinit var setlistsRepository : SetlistsRepository
-
-    @Inject
-    lateinit var searchHistoryHelper: SearchHistoryHelper
-
-    @Inject
-    lateinit var setlistsRetrofitInterface: SetlistsRetrofitInterface
+    private val viewModel: ArtistSearchFragmentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.artistsLiveData.observe(viewLifecycleOwner, {
+            updateRecyclerView(it)
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -98,8 +99,8 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         binding.searchView.suggestionsAdapter = suggestionAdapter
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                presenter.onSearchArtistClicked(binding.searchView.query.toString())
+            override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.searchArtist(query)
                 return true
             }
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -127,12 +128,6 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
-
-        App.instance.dagger.inject(this)
-
-        presenter = ArtistSearchPresenter(setlistsRepository, searchHistoryHelper, setlistsRetrofitInterface)
-        presenter.attachView(this)
-        presenter.viewIsReady()
     }
 
     override fun openSetlists() {
@@ -141,12 +136,20 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
     override fun onItemClick(artist: Artist) {
         Log.d(TAG, "onItemClick")
-        presenter.onListItemClicked(artist)
+        viewModel.onListItemClicked(artist)
+    }
+
+    private fun updateRecyclerView(artists: List<Artist>) {
+        val diff = ArtistDiff(adapter.artists, artists)
+        val diffResult = DiffUtil.calculateDiff(diff)
+        adapter.artists.clear()
+        adapter.artists.addAll(artists)
+        diffResult.dispatchUpdatesTo(adapter)
     }
 
     private fun populateAdapter(query: String) {
         val c = MatrixCursor(arrayOf(BaseColumns._ID, "items"))
-        val suggestions = presenter.getHistorySearchList()
+        val suggestions = viewModel.getHistorySearchList()
         for (i in suggestions.indices) {
             if (suggestions[i].toLowerCase().contains(query.toLowerCase())) c.addRow(arrayOf(i, suggestions[i]))
         }
