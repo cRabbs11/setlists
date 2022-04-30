@@ -46,6 +46,10 @@ class ArtistSearchFragment : Fragment() {
         viewModel.artistsLiveData.observe(viewLifecycleOwner, {
             updateRecyclerView(it)
         })
+
+        viewModel.selectedArtistLiveData.observe(viewLifecycleOwner, {
+            (activity as MainActivity).openSetlistsSearchFragment()
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -105,8 +109,7 @@ class ArtistSearchFragment : Fragment() {
 
         adapter = ArtistListAdapter(object: OnItemClickListener<Artist> {
             override fun onItemClick(t: Artist) {
-                TODO() //сделать проверку на наличие сетлистов во вью модели
-                (activity as MainActivity).openSetlistsSearchFragment()
+                viewModel.getSetlists(t)
             }
         })
         binding.recyclerView.adapter = adapter

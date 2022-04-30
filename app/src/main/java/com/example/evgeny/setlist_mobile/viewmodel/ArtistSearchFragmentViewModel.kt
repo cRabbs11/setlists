@@ -15,6 +15,7 @@ import javax.inject.Inject
 class ArtistSearchFragmentViewModel: ViewModel() {
 
     val artistsLiveData = MutableLiveData<List<Artist>>()
+    val selectedArtistLiveData = MutableLiveData<Artist>()
 
     @Inject
     lateinit var setlistsRepository: SetlistsRepository
@@ -59,7 +60,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
         }
     }
 
-    fun onListItemClicked(artist: Artist) {
+    fun getSetlists(artist: Artist) {
         setlistsRetrofit.getArtistSetlists(
                 artistMbid = artist.mbid,
                 apiKey = ApiKeys.SETLISTS_API_KEY,
@@ -73,6 +74,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
                     setlistsRepository.setCurrentArtist(artist)
                     setlistsRepository.setNewSetlists(setlistList)
                     //getView()?.openSetlists()
+                    selectedArtistLiveData.postValue(artist)
                 } else {
                     //getView()?.showToast("сетлистов для ${artist.name} не найдено")
                 }
