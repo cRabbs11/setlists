@@ -10,7 +10,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
 import com.example.evgeny.setlist_mobile.App
-import com.example.evgeny.setlist_mobile.MainActivity
+import com.example.evgeny.setlist_mobile.view.activities.MainActivity
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
