@@ -1,4 +1,4 @@
-package com.example.evgeny.setlist_mobile.artistSearch
+package com.example.evgeny.setlist_mobile.view.fragments
 
 import android.database.Cursor
 import android.database.MatrixCursor
@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.MainActivity
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.data.Artist
@@ -26,28 +25,8 @@ import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBin
 import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
-import javax.inject.Inject
 
-class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickListener<Artist> {
-
-    override fun showArtistList(list: List<Artist>) {
-        Log.d(TAG, "artists count: ${list.size} ")
-        if (list.isNotEmpty()) {
-            val diff = ArtistDiff(adapter.artists, list as ArrayList<Artist>)
-            val diffResult = DiffUtil.calculateDiff(diff)
-            adapter.clearItems()
-            adapter.setItems(list)
-            diffResult.dispatchUpdatesTo(adapter)
-        }
-    }
-
-    override fun updateArtistList(words: List<Artist>) {
-
-    }
-
-    override fun showToast(message: String) {
-        Toast.makeText(context, message, LENGTH_SHORT).show()
-    }
+class ArtistSearchFragment : Fragment() {
 
     val TAG = ArtistSearchFragment::class.java.name + "BMTH"
 
@@ -124,19 +103,15 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
 
         })
 
-        adapter = ArtistListAdapter(this)
+        adapter = ArtistListAdapter(object: OnItemClickListener<Artist> {
+            override fun onItemClick(t: Artist) {
+                TODO() //сделать проверку на наличие сетлистов во вью модели
+                (activity as MainActivity).openSetlistsSearchFragment()
+            }
+        })
         binding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(binding.recyclerView.context, LinearLayoutManager.VERTICAL)
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
-    }
-
-    override fun openSetlists() {
-        (activity as MainActivity).openSetlistsSearchFragment()
-    }
-
-    override fun onItemClick(artist: Artist) {
-        Log.d(TAG, "onItemClick")
-        viewModel.onListItemClicked(artist)
     }
 
     private fun updateRecyclerView(artists: List<Artist>) {
@@ -155,5 +130,9 @@ class ArtistSearchFragment : Fragment(), ArtistSearchContract.View, OnItemClickL
         }
 
         suggestionAdapter.changeCursor(c)
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(context, text, LENGTH_SHORT).show()
     }
 }

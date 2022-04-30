@@ -5,7 +5,7 @@ import android.text.util.Linkify
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.evgeny.setlist_mobile.artistSearch.ArtistSearchFragment
+import com.example.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
 import com.example.evgeny.setlist_mobile.setlistsSearch.SetlistsSearchFragment
 import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
 import java.util.regex.Pattern
