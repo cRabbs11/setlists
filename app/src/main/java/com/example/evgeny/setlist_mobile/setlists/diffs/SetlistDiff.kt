@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 
-class SetlistDiff(val oldList: ArrayList<Setlist>, val newList: ArrayList<Setlist>): DiffUtil.Callback() {
+class SetlistDiff(val oldList: List<Setlist>, val newList: List<Setlist>): DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }
