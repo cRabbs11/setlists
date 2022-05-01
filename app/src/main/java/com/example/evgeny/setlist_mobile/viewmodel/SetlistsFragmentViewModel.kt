@@ -1,5 +1,6 @@
 package com.example.evgeny.setlist_mobile.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
@@ -31,6 +32,7 @@ class SetlistsFragmentViewModel : ViewModel() {
         if (setlistsRepository.getSetlists().size!=0 &&
                 setlistsRepository.getSetlists()[0].artist==setlistsRepository.getCurrentArtist()) {
             //getView()?.showSetlistList(setlistsRepository.getSetlists())
+            setlistsLiveData.postValue(setlistsRepository.getSetlists())
         } else {
             val artist = setlistsRepository.getCurrentArtist()
             if (artist!=null) {
@@ -94,7 +96,7 @@ class SetlistsFragmentViewModel : ViewModel() {
         }
     }
 
-    fun onListItemClicked(setlist: Setlist) {
+    fun setCurrentSetlist(setlist: Setlist) {
         setlistsRepository.setCurrentSetlist(setlist)
     }
 }

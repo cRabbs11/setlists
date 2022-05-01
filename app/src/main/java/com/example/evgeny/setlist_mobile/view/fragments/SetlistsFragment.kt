@@ -89,6 +89,7 @@ class SetlistsFragment : Fragment() {
 
         adapter = SetlistListAdapter(object: OnSharedTransitionClickListener<Setlist> {
             override fun onItemClick(t: Setlist, shared: View) {
+                viewModel.setCurrentSetlist(t)
                 sharedView = shared
                 (activity as MainActivity).openSingleSetlistFragment(shared)
             }
