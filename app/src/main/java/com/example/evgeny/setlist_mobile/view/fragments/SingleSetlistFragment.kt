@@ -9,6 +9,7 @@ import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.transition.TransitionInflater
 import com.example.evgeny.setlist_mobile.App
@@ -20,30 +21,29 @@ import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
+import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
 import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistContract
 import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistPresenter
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
+import com.example.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSetlistContract.View {
-    override fun showSetlist(songList: ArrayList<SongListItem>) {
-        if (songList.isNotEmpty()) {
-            val diff = SongListItemDiff(adapter.songList, songList)
-            val diffResult = DiffUtil.calculateDiff(diff)
-            adapter.songList.clear()
-            songList.forEach {
-                adapter.songList.add(it)
-            }
-            diffResult.dispatchUpdatesTo(adapter)
-        }
+class SingleSetlistFragment : Fragment() {
+
+    private fun updateRecyclerView(songList: List<SongListItem>) {
+        val diff = SongListItemDiff(adapter.songList, songList)
+        val diffResult = DiffUtil.calculateDiff(diff)
+        adapter.songList.clear()
+        adapter.songList.addAll(songList)
+        diffResult.dispatchUpdatesTo(adapter)
     }
 
-    override fun showSetlistInfo(setlist: Setlist) {
+    private fun showSetlistInfo(setlist: Setlist) {
         binding.setlistInfoLayout.artistName.text = setlist.artist?.name
         val placeNameText = "at ${setlist.venue?.name}, ${setlist.venue?.city?.name}"
         val tour = "Tour: ${setlist.tour?.name}"
@@ -88,11 +88,11 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         }
     }
 
-    override fun showToast(message: String) {
+    fun showToast(message: String) {
         Toast.makeText(context, message, LENGTH_SHORT).show()
     }
 
-    override fun openMap() {
+    private fun openMap() {
         var mapFragment = SetlistOnMapFragment()
 
         var fragmentManager = getFragmentManager()
@@ -104,13 +104,11 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
 
     val TAG = SingleSetlistFragment::class.java.name + " BMTH "
 
-    lateinit var presenter: SingleSetlistPresenter
     lateinit var adapter: SongListItemAdapter
     lateinit var binding: FragmentSetlistBinding
     //lateinit var emptyRecyclerMessageLayout: TextView
+    private val viewModel: SingleSetlistFragmentViewModel by viewModels()
 
-    @Inject
-    lateinit var setlistsRepository: SetlistsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +123,14 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.songListItemLiveData.observe(viewLifecycleOwner, {
+            updateRecyclerView(it)
+        })
+
+        viewModel.setlistInfoLiveData.observe(viewLifecycleOwner, {
+            showSetlistInfo(it)
+        })
+
         sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
 
     }
@@ -153,15 +159,5 @@ class SingleSetlistFragment : Fragment(), OnItemClickListener<Setlist>, SingleSe
         //})
 
         Log.d(TAG, " запустили")
-
-        App.instance.dagger.inject(this)
-
-        presenter = SingleSetlistPresenter(setlistsRepository)
-        presenter.attachView(this)
-        presenter.viewIsReady()
-    }
-
-    override fun onItemClick(t: Setlist) {
-
     }
 }

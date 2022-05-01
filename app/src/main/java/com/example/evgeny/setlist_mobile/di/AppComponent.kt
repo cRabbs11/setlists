@@ -5,6 +5,7 @@ import com.example.evgeny.setlist_mobile.di.modules.RemoteModule
 import com.example.evgeny.setlist_mobile.view.fragments.SingleSetlistFragment
 import com.example.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
 import com.example.evgeny.setlist_mobile.viewmodel.SetlistsFragmentViewModel
+import com.example.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -15,6 +16,6 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(setlistsFragmentViewModel: SetlistsFragmentViewModel)
-    fun inject(singleSetlistFragment: SingleSetlistFragment)
+    fun inject(singleSetlistFragmentViewModel: SingleSetlistFragmentViewModel)
     fun inject(artistSearchFragmentViewModel: ArtistSearchFragmentViewModel)
 }
