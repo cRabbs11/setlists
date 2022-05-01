@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ArtistSearchFragmentViewModel: ViewModel() {
 
     val artistsLiveData = MutableLiveData<List<Artist>>()
-    val selectedArtistLiveData = MutableLiveData<Artist>()
+    val selectedArtistLiveData = SingleLiveEvent<Artist>()
 
     @Inject
     lateinit var setlistsRepository: SetlistsRepository
