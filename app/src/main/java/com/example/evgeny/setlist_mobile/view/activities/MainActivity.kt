@@ -1,13 +1,14 @@
-package com.example.evgeny.setlist_mobile
+package com.example.evgeny.setlist_mobile.view.activities
 
 import android.os.Bundle
 import android.text.util.Linkify
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.evgeny.setlist_mobile.artistSearch.ArtistSearchFragment
-import com.example.evgeny.setlist_mobile.setlistsSearch.SetlistsSearchFragment
-import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
+import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
+import com.example.evgeny.setlist_mobile.view.fragments.SetlistsFragment
+import com.example.evgeny.setlist_mobile.view.fragments.SingleSetlistFragment
 import java.util.regex.Pattern
 
 class MainActivity: AppCompatActivity() {
@@ -37,7 +38,7 @@ class MainActivity: AppCompatActivity() {
     }
 
     fun openSetlistsSearchFragment() {
-        val fragment = SetlistsSearchFragment()
+        val fragment = SetlistsFragment()
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)

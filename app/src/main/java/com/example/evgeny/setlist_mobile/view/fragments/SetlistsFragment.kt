@@ -1,4 +1,4 @@
-package com.example.evgeny.setlist_mobile.setlistsSearch
+package com.example.evgeny.setlist_mobile.view.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,20 +8,20 @@ import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
-import com.example.evgeny.setlist_mobile.App
-import com.example.evgeny.setlist_mobile.MainActivity
+import com.example.evgeny.setlist_mobile.view.activities.MainActivity
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.utils.*
-import javax.inject.Inject
+import com.example.evgeny.setlist_mobile.viewmodel.SetlistsFragmentViewModel
 
-class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setlist>, SetlistsSearchContract.View {
+class SetlistsFragment : Fragment() {
 
-    override fun showSetlistList(list: List<Setlist>) {
+    private fun oldUpdateRecyclerView(list: List<Setlist>) {
         Log.d(TAG, "setlists count: ${list.size} ")
         if (list.isNotEmpty()) {
             val diff = SetlistDiff(adapter.setlists, list as ArrayList<Setlist>)
@@ -39,28 +39,30 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
         }
     }
 
-    override fun showToast(message: String) {
+    private fun updateRecyclerView(setlists: List<Setlist>) {
+        val diff = SetlistDiff(adapter.setlists, setlists)
+        val diffResult = DiffUtil.calculateDiff(diff)
+        val scrollPosition = adapter.setlists.size
+        adapter.setlists.clear()
+        adapter.setlists.addAll(setlists)
+        diffResult.dispatchUpdatesTo(adapter)
+
+        if (scrollPosition<adapter.setlists.size) {
+            binding.recyclerView.scrollToPosition(scrollPosition)
+        }
+    }
+
+    fun showToast(message: String) {
         Toast.makeText(context, message, LENGTH_SHORT).show()
     }
 
-    override fun openSetlist() {
-        Log.d(TAG, "openSetlist")
-        (activity as MainActivity).openSingleSetlistFragment(sharedView)
-    }
+    val TAG = SetlistsFragment::class.java.name + " BMTH "
 
-    val TAG = SetlistsSearchFragment::class.java.name + " BMTH "
-
-    lateinit var presenter: SetlistsSearchPresenter
     lateinit var adapter: SetlistListAdapter
     //lateinit var emptyRecyclerMessageLayout: TextView
     private lateinit var binding: FragmentSetlistsBinding
     lateinit var sharedView: View
-
-    @Inject
-    lateinit var retrofitInterface: SetlistsRetrofitInterface
-
-    @Inject
-    lateinit var setlistsRepository: SetlistsRepository
+    private val viewModel: SetlistsFragmentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,13 +77,23 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setlistsLiveData.observe(viewLifecycleOwner, {
+            updateRecyclerView(it)
+        })
+
         postponeEnterTransition()
     }
 
     fun initView() {
         Log.d(TAG, " запустили")
 
-        adapter = SetlistListAdapter(this)
+        adapter = SetlistListAdapter(object: OnSharedTransitionClickListener<Setlist> {
+            override fun onItemClick(t: Setlist, shared: View) {
+                viewModel.setCurrentSetlist(t)
+                sharedView = shared
+                (activity as MainActivity).openSingleSetlistFragment(shared)
+            }
+        })
         binding.recyclerView.adapter = adapter
         var dividerItemDecoration = DividerItemDecoration(binding.recyclerView.getContext(),
             LinearLayoutManager.VERTICAL)
@@ -99,27 +111,12 @@ class SetlistsSearchFragment : Fragment(), OnSharedTransitionClickListener<Setli
                 val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
                 val totalItemsCount = layoutManager.itemCount
                 val lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition()
-                presenter.onRecyclerViewScrolled(lastVisiblePosition, totalItemsCount)
+                viewModel.onRecyclerViewScrolled(lastVisiblePosition, totalItemsCount)
             }
         })
 
         binding.recyclerView.post {
             startPostponedEnterTransition()
         }
-
-        App.instance.dagger.inject(this)
-
-        presenter = SetlistsSearchPresenter(setlistsRepository, retrofitInterface)
-        presenter.attachView(this)
-        presenter.viewIsReady()
-    }
-
-    override fun updateSetlistList(words: List<Setlist>) {
-
-    }
-
-    override fun onItemClick(t: Setlist, sharedView: View) {
-        this.sharedView = sharedView
-        presenter.onListItemClicked(t)
     }
 }

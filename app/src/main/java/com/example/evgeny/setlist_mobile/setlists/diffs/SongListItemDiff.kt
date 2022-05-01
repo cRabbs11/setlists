@@ -5,7 +5,7 @@ import com.example.evgeny.setlist_mobile.setlists.Song
 import com.example.evgeny.setlist_mobile.setlists.Set
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 
-data class SongListItemDiff(val oldList: ArrayList<SongListItem>, val newList: ArrayList<SongListItem>): DiffUtil.Callback() {
+data class SongListItemDiff(val oldList: List<SongListItem>, val newList: List<SongListItem>): DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }
