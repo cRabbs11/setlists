@@ -1,4 +1,4 @@
-package com.example.evgeny.setlist_mobile.singleSetlist
+package com.example.evgeny.setlist_mobile.view.fragments
 
 
 import android.os.Bundle
@@ -21,6 +21,8 @@ import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
+import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistContract
+import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistPresenter
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter

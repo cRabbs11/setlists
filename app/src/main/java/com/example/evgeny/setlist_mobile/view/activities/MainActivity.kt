@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SetlistsFragment
-import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistFragment
+import com.example.evgeny.setlist_mobile.view.fragments.SingleSetlistFragment
 import java.util.regex.Pattern
 
 class MainActivity: AppCompatActivity() {
