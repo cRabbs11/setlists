@@ -12,26 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.transition.TransitionInflater
-import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
 import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
-
-
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
-import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
-import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistContract
-import com.example.evgeny.setlist_mobile.singleSetlist.SingleSetlistPresenter
-import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
 import com.example.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import javax.inject.Inject
 
 class SingleSetlistFragment : Fragment() {
 
