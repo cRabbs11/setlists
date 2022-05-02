@@ -33,8 +33,6 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     fun searchArtist(artistName: String) {
         if (artistName.isNotEmpty()) {
             setlistsRetrofit.searchArtists(
-                    apiKey = ApiKeys.SETLISTS_API_KEY,
-                    accept = SetlistsAPIConstants.ACCEPT_HEADER,
                     artistName = artistName,
                     page = 1,
                     sort = SetlistsAPIConstants.SORT_TYPE_NAME
@@ -63,8 +61,6 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     fun getSetlists(artist: Artist) {
         setlistsRetrofit.getArtistSetlists(
                 artistMbid = artist.mbid,
-                apiKey = ApiKeys.SETLISTS_API_KEY,
-                accept = SetlistsAPIConstants.ACCEPT_HEADER,
                 page = 1
         ).enqueue(object: Callback<SetlistsDataDTO> {
             override fun onResponse(call: Call<SetlistsDataDTO>, response: Response<SetlistsDataDTO>) {

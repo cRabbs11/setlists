@@ -38,8 +38,6 @@ class SetlistsFragmentViewModel : ViewModel() {
             if (artist!=null) {
                 retrofitInterface.getArtistSetlists(
                         artistMbid = artist.mbid,
-                        apiKey = ApiKeys.SETLISTS_API_KEY,
-                        accept = SetlistsAPIConstants.ACCEPT_HEADER,
                         page = setlistsRepository.getSetlistPage()
                 ).enqueue(object: Callback<SetlistsDataDTO> {
                     override fun onResponse(call: Call<SetlistsDataDTO>, response: Response<SetlistsDataDTO>) {
@@ -70,8 +68,6 @@ class SetlistsFragmentViewModel : ViewModel() {
             isLoading=true
             retrofitInterface.getArtistSetlists(
                     artistMbid = setlistsRepository.getCurrentArtist()!!.mbid,
-                    apiKey = ApiKeys.SETLISTS_API_KEY,
-                    accept = SetlistsAPIConstants.ACCEPT_HEADER,
                     page = setlistsRepository.getSetlistPage()
             ).enqueue(object: Callback<SetlistsDataDTO> {
                 override fun onResponse(call: Call<SetlistsDataDTO>, response: Response<SetlistsDataDTO>) {
