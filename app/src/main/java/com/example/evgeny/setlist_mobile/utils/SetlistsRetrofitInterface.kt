@@ -12,8 +12,6 @@ interface SetlistsRetrofitInterface {
 
     @GET("search/artists")
     fun searchArtists(
-            @Header("x-api-key") apiKey: String,
-            @Header("Accept") accept: String,
             @Query("artistName") artistName: String,
             @Query("page") page: Int,
             @Query("sort") sort: String
@@ -22,8 +20,6 @@ interface SetlistsRetrofitInterface {
     @GET("artist/{artistMbid}/setlists")
     fun getArtistSetlists(
             @Path("artistMbid") artistMbid: String,
-            @Header("x-api-key") apiKey: String,
-            @Header("Accept") accept: String,
             @Query("p") page: Int
 
     ): Call<SetlistsDataDTO>
