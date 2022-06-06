@@ -43,13 +43,13 @@ class ArtistSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.artistsLiveData.observe(viewLifecycleOwner, {
+        viewModel.artistsLiveData.observe(viewLifecycleOwner) {
             updateRecyclerView(it)
-        })
+        }
 
-        viewModel.selectedArtistLiveData.observe(viewLifecycleOwner, {
+        viewModel.selectedArtistLiveData.observe(viewLifecycleOwner) {
             (activity as MainActivity).openSetlistsSearchFragment()
-        })
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,9 +62,6 @@ class ArtistSearchFragment : Fragment() {
     fun initView() {
         Log.d(TAG, " запустили")
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
-        //val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        //binding.recyclerView.layoutManager = linearLayoutManager
-
         //val anim = AnimationUtils.loadLayoutAnimation(requireContext(), R.anim.layout_animation_slide_from_top_left)
         //binding.recyclerView.layoutAnimation=anim
         //binding.recyclerView.scheduleLayoutAnimation()

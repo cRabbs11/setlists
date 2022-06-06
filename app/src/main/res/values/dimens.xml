@@ -6,4 +6,5 @@
     <dimen name="margin_medium">15dp</dimen>
     <dimen name="margin_small">10dp</dimen>
     <dimen name="margin_smallest">5dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
