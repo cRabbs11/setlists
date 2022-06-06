@@ -9,9 +9,9 @@ Setlist-mobile
 
 .apk файл приложения находития в папке apk
 
-![](images/example_1.png =270x600) 
-![](images/example_2.png =540x1200) 
-![](images/example_3.png =1080x2400)
+![](images/example_1.png) 
+![](images/example_2.png) 
+![](images/example_3.png)
 
 
 
