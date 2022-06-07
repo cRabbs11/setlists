@@ -11,6 +11,7 @@ import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 class RemoteModule {
@@ -27,11 +28,12 @@ class RemoteModule {
                 it.proceed(request)
             }
             addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC
             }).build()
         }.build()
     }
 
+    @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): SetlistsRetrofitInterface{
         val retrofit = Retrofit.Builder()

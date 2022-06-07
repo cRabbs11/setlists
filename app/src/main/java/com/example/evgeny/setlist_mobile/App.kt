@@ -4,6 +4,8 @@ import android.app.Application
 import com.example.evgeny.setlist_mobile.di.AppComponent
 import com.example.evgeny.setlist_mobile.di.DaggerAppComponent
 import com.example.evgeny.setlist_mobile.di.modules.DataModule
+import com.example.evgeny.setlist_mobile.di.modules.DomainModule
+import com.example.evgeny.setlist_mobile.di.modules.RemoteModule
 
 class App: Application() {
     lateinit var dagger: AppComponent
@@ -12,8 +14,10 @@ class App: Application() {
         super.onCreate()
         instance = this
         dagger = DaggerAppComponent.builder()
-                .dataModule(DataModule(this))
-                .build()
+            .dataModule(DataModule(this))
+            .remoteModule(RemoteModule())
+            .domainModule(DomainModule())
+            .build()
     }
 
     companion object {
