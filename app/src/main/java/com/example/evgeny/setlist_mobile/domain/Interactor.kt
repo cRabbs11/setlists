@@ -14,7 +14,7 @@ import retrofit2.Response
 import java.util.concurrent.Executors
 
 
-class Interactor(val repository: SetlistsRepository, val retrofit: SetlistsRetrofitInterface) {
+class Interactor(private val repository: SetlistsRepository, private val retrofit: SetlistsRetrofitInterface) {
 
     fun searchArtist(artistName: String, callback: OnRetrofitCallback) {
         retrofit.searchArtists(
@@ -25,14 +25,11 @@ class Interactor(val repository: SetlistsRepository, val retrofit: SetlistsRetro
                 val artistList = Converter.convertArtistDTOListToArtistList(response.body()?.artist)
                 if (artistList.isNotEmpty()) {
                     repository.setLastSearchArtists(artistList)
-                    //if (!isArtistInHistory(artistName)) {
                         val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
                         Executors.newSingleThreadExecutor().execute {
                             repository.saveSearchQueryArtists(searchQuery)
                         }
-                    //}
                     callback.onSuccess(artistList)
-                    //artistsLiveData.postValue(artistList)
                 } else {
                     callback.onFailure()
                 }
