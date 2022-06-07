@@ -8,6 +8,8 @@ import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.data.entity.SetlistsDataDTO
 import com.example.evgeny.setlist_mobile.domain.Interactor
 import com.example.evgeny.setlist_mobile.utils.*
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
