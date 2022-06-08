@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class Interactor(private val repository: SetlistsRepository, private val retrofit: SetlistsRetrofitInterface) {
 
-    fun searchArtist(artistName: String, callback: OnRetrofitCallback) {
+    fun searchArtist(artistName: String, callback: OnRetrofitCallback<List<Artist>>) {
         val observable = retrofit.searchArtistsObservable(
             artistName = artistName,
             page = 1,
@@ -21,7 +21,7 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
             .subscribeOn(Schedulers.io())
             .onErrorComplete {
                 callback.onFailure()
-                false
+                true
             }
             .map {
                 Converter.convertArtistDTOListToArtistList(it.artist)
@@ -39,8 +39,36 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
             )
     }
 
-    interface OnRetrofitCallback {
-        fun onSuccess(list: List<Artist>)
+    fun getSetlists(artist: Artist, callback: OnRetrofitCallback<Boolean>) {
+        retrofit.getSetlistsByArtistObservable(
+            artistMbid = artist.mbid,
+            page = 1
+        ).subscribeOn(Schedulers.io())
+            .onErrorComplete {
+                callback.onSuccess(false)
+                true
+            }
+            .map {
+                Converter.convertSetlistDTOListToSetlistList(it.setlist)
+            }
+            .subscribeBy(
+                onNext = {
+                    if (!it.isEmpty()) {
+                        repository.setCurrentArtist(artist)
+                        repository.setNewSetlists(it)
+                        callback.onSuccess(true)
+                    } else {
+                        callback.onSuccess(false)
+                    }
+                },
+                onError = {
+                    callback.onSuccess(false)
+                }
+            )
+    }
+
+    interface OnRetrofitCallback<T> {
+        fun onSuccess(item: T)
         fun onFailure()
     }
 }

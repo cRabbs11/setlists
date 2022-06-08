@@ -25,6 +25,9 @@ import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBin
 import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ArtistSearchFragment : Fragment() {
 
@@ -33,6 +36,7 @@ class ArtistSearchFragment : Fragment() {
     lateinit var adapter: ArtistListAdapter
     lateinit var suggestionAdapter: SimpleCursorAdapter
     lateinit var binding: FragmentSearchConstraintBinding
+    private val SETLISTS_NOT_FINDED = "сетлистов не найдено"
 
     private val viewModel: ArtistSearchFragmentViewModel by viewModels()
 
@@ -43,12 +47,20 @@ class ArtistSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.toastEventLiveData.observe(viewLifecycleOwner) {
+            showToast(it)
+        }
+
         viewModel.artistsLiveData.observe(viewLifecycleOwner) {
             updateRecyclerView(it)
         }
 
-        viewModel.selectedArtistLiveData.observe(viewLifecycleOwner) {
-            (activity as MainActivity).openSetlistsSearchFragment()
+        viewModel.isSetlistsHaveLiveData.observe(viewLifecycleOwner) { isSetlistsFinded ->
+            if (isSetlistsFinded) {
+                (activity as MainActivity).openSetlistsSearchFragment()
+            } else {
+                showToast(SETLISTS_NOT_FINDED)
+            }
         }
     }
 
@@ -78,16 +90,17 @@ class ArtistSearchFragment : Fragment() {
 
         binding.searchView.suggestionsAdapter = suggestionAdapter
 
-        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel.searchArtist(query)
-                return true
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText!=null) populateAdapter(newText)
-                return true
-            }
-        })
+            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    viewModel.searchArtist(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (!newText.isNullOrEmpty()) populateAdapter(newText)
+                    return true
+                }
+            })
 
         binding.searchView.setOnSuggestionListener(object: SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {
@@ -124,12 +137,15 @@ class ArtistSearchFragment : Fragment() {
 
     private fun populateAdapter(query: String) {
         val c = MatrixCursor(arrayOf(BaseColumns._ID, "items"))
-        val suggestions = viewModel.getHistorySearchList()
-        for (i in suggestions.indices) {
-            if (suggestions[i].toLowerCase().contains(query.toLowerCase())) c.addRow(arrayOf(i, suggestions[i]))
+        Completable.fromAction {
+            val suggestions = viewModel.getSearchQueryArtists()
+            for (i in suggestions.indices) {
+                if (suggestions[i].lowercase().contains(query.lowercase())) c.addRow(arrayOf(i, suggestions[i]))
+            }
         }
-
-        suggestionAdapter.changeCursor(c)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { suggestionAdapter.changeCursor(c) }
     }
 
     private fun showToast(text: String) {
