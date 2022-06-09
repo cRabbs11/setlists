@@ -31,7 +31,7 @@ class DataModule(val context: Context) {
 
     @Singleton
     @Provides
-    fun provideSetlistRepository(): SetlistsRepository = SetlistsRepository
+    fun provideSetlistRepository(artistDao: ArtistDao): SetlistsRepository = SetlistsRepository(artistDao)
 
     @Singleton
     @Provides
