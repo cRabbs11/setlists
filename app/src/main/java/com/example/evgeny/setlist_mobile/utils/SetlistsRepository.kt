@@ -1,10 +1,12 @@
 package com.example.evgeny.setlist_mobile.utils
 
 import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.data.SearchQuery
+import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 
-object SetlistsRepository {
+class SetlistsRepository(val artistDao: ArtistDao) {
 
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
@@ -76,5 +78,18 @@ object SetlistsRepository {
 
     fun getSongList(): ArrayList<SongListItem> {
         return songlist
+    }
+
+    fun getSearchQueryArtists() : List<String> {
+        val result = arrayListOf<String>()
+        val list = artistDao.getSearchQueryArtists()
+        list.forEach {
+            result.add(it.queryText)
+        }
+        return result
+    }
+
+    fun saveSearchQueryArtists(query: SearchQuery) {
+        return artistDao.insertSearchQuery(query)
     }
 }
