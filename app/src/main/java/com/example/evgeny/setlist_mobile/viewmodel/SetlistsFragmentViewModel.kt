@@ -1,6 +1,5 @@
 package com.example.evgeny.setlist_mobile.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
@@ -36,7 +35,7 @@ class SetlistsFragmentViewModel : ViewModel() {
         } else {
             val artist = setlistsRepository.getCurrentArtist()
             if (artist!=null) {
-                retrofitInterface.getArtistSetlists(
+                retrofitInterface.getSetlistsByArtist(
                         artistMbid = artist.mbid,
                         page = setlistsRepository.getSetlistPage()
                 ).enqueue(object: Callback<SetlistsDataDTO> {
@@ -66,7 +65,7 @@ class SetlistsFragmentViewModel : ViewModel() {
         //Log.d(TAG, "lastVisiblePos=$lastVisiblePos, size= ${setlistsRepository.getSetlists().size}")
         if (!isLoading && lastVisiblePos>=totalPosCount-1) {
             isLoading=true
-            retrofitInterface.getArtistSetlists(
+            retrofitInterface.getSetlistsByArtist(
                     artistMbid = setlistsRepository.getCurrentArtist()!!.mbid,
                     page = setlistsRepository.getSetlistPage()
             ).enqueue(object: Callback<SetlistsDataDTO> {
