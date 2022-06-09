@@ -26,7 +26,7 @@ import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ArtistSearchFragment : Fragment() {
@@ -97,7 +97,7 @@ class ArtistSearchFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (!newText.isNullOrEmpty()) populateAdapter(newText)
+                    if (!newText.isNullOrEmpty() && newText.length>=2) populateAdapter(newText)
                     return true
                 }
             })
@@ -136,16 +136,22 @@ class ArtistSearchFragment : Fragment() {
     }
 
     private fun populateAdapter(query: String) {
-        val c = MatrixCursor(arrayOf(BaseColumns._ID, "items"))
-        Completable.fromAction {
-            val suggestions = viewModel.getSearchQueryArtists()
-            for (i in suggestions.indices) {
-                if (suggestions[i].lowercase().contains(query.lowercase())) c.addRow(arrayOf(i, suggestions[i]))
+        val observable = Observable.just(query)
+            .map {
+                val c = MatrixCursor(arrayOf(BaseColumns._ID, "items"))
+                val suggestions = viewModel.getSearchQueryArtists()
+                for (i in suggestions.indices) {
+                    if (suggestions[i].lowercase().contains(query.lowercase())) {
+                        c.addRow(arrayOf(i, suggestions[i]))
+                    }
+                }
+                c
             }
-        }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { suggestionAdapter.changeCursor(c) }
+            .subscribe {
+                suggestionAdapter.changeCursor(it)
+            }
     }
 
     private fun showToast(text: String) {
