@@ -1,7 +1,5 @@
-package com.example.evgeny.setlist_mobile.utils
+package com.example.evgeny.setlist_mobile.data
 
-import com.example.evgeny.setlist_mobile.data.Artist
-import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem

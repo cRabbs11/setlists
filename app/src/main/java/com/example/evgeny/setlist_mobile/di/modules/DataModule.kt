@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.example.evgeny.setlist_mobile.data.AppDataBase
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.utils.SearchHistoryHelper
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.SearchQuery
+import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.domain.Interactor
 import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_EMPTY

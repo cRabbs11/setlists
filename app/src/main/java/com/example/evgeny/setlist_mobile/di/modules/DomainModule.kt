@@ -1,7 +1,7 @@
 package com.example.evgeny.setlist_mobile.di.modules
 
 import com.example.evgeny.setlist_mobile.domain.Interactor
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import dagger.Module
 import dagger.Provides

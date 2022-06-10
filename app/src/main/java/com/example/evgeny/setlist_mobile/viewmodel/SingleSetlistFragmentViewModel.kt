@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
+import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import javax.inject.Inject
 
 class SingleSetlistFragmentViewModel: ViewModel() {
