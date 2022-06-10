@@ -7,6 +7,9 @@ import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.domain.Interactor
 import com.example.evgeny.setlist_mobile.utils.*
+import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_EMPTY
+import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_ON_FAILURE
+import com.example.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_FAILURE
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {
@@ -15,9 +18,6 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     val isSetlistsHaveLiveData = SingleLiveEvent<Boolean>()
     val searchQueryArtistLiveData = MutableLiveData<List<SearchQuery>>()
     val toastEventLiveData = SingleLiveEvent<String>()
-    val ARTIST_SEARCH_ON_FAILURE = "ничего не найдено"
-    val ARTIST_SEARCH_FIELD_IS_EMPTY = "введите что-то в поле поиска"
-    val SETLISTS_SEARCH_FAILURE = "поиск сетлистов неудался"
 
     @Inject
     lateinit var interactor: Interactor
