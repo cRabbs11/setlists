@@ -3,6 +3,7 @@ package com.example.evgeny.setlist_mobile.data
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class SetlistsRepository(val artistDao: ArtistDao) {
 
@@ -10,26 +11,27 @@ class SetlistsRepository(val artistDao: ArtistDao) {
 
     private val lastSearchArtists = ArrayList<Artist>()
     private var setlists = ArrayList<Setlist>()
-    private lateinit var currentArtist : Artist
+    private lateinit var selectedArtist : Artist
     private lateinit var currentSetlist: Setlist
     private var songlist =  ArrayList<SongListItem>()
-    private var setlistPage = 2
+    private var setlistPage = 1
 
-    fun setCurrentArtist(artist: Artist) {
-        currentArtist = artist
-    }
+    val setlistSubject = BehaviorSubject.create<List<Setlist>>()
 
-    fun getCurrentArtist() :  Artist? {
-        return currentArtist
-    }
-
-    fun setNewSetlists(setlists: List<Setlist>) {
+    fun setSelectedArtist(artist: Artist) {
+        selectedArtist = artist
         this.setlists.clear()
-        addToSetlists(setlists)
+        setlistPage = 1
+    }
+
+    fun getSelectedArtist() :  Artist? {
+        return selectedArtist
     }
 
     fun addToSetlists(setlists: List<Setlist>) {
         this.setlists.addAll(setlists)
+        increaseSetlistPage()
+        setlistSubject.onNext(this.setlists)
     }
 
     fun setLastSearchArtists(list: List<Artist>) {
