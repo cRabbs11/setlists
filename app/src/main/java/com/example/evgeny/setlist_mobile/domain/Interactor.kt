@@ -6,12 +6,26 @@ import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.utils.Converter
 import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
+import com.example.evgeny.setlist_mobile.setlists.Setlist
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 
 class Interactor(private val repository: SetlistsRepository, private val retrofit: SetlistsRetrofitInterface) {
+
+    fun setSelectedSetlist(setlist: Setlist) {
+        repository.setCurrentSetlist(setlist)
+    }
+
+    fun setSelectedArtist(artist: Artist) {
+        repository.setSelectedArtist(artist)
+    }
+
+    fun getSetlists(): BehaviorSubject<List<Setlist>> {
+        return repository.setlistSubject
+    }
 
     fun searchArtist(artistName: String, callback: OnRetrofitCallback<List<Artist>>) {
         val observable = retrofit.searchArtistsObservable(
@@ -39,10 +53,19 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
             )
     }
 
-    fun getSetlists(artist: Artist, callback: OnRetrofitCallback<Boolean>) {
+    fun getSetlists(callback: OnRetrofitCallback<Boolean>) {
+        val artist = repository.getSelectedArtist()
+        if (artist!=null) {
+            getSetlists(artist, callback)
+        } else {
+            callback.onSuccess(false)
+        }
+    }
+
+    private fun getSetlists(artist: Artist, callback: OnRetrofitCallback<Boolean>) {
         retrofit.getSetlistsByArtistObservable(
             artistMbid = artist.mbid,
-            page = 1
+            page = repository.getSetlistPage()
         ).subscribeOn(Schedulers.io())
             .onErrorComplete {
                 callback.onSuccess(false)
@@ -54,8 +77,7 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
             .subscribeBy(
                 onNext = {
                     if (!it.isEmpty()) {
-                        repository.setCurrentArtist(artist)
-                        repository.setNewSetlists(it)
+                        repository.addToSetlists(it)
                         callback.onSuccess(true)
                     } else {
                         callback.onSuccess(false)

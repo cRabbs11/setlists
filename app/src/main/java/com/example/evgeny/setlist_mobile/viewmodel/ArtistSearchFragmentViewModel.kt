@@ -50,7 +50,8 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     }
 
     fun getSetlists(artist: Artist) {
-        interactor.getSetlists(artist, object: Interactor.OnRetrofitCallback<Boolean> {
+        interactor.setSelectedArtist(artist)
+        interactor.getSetlists(object: Interactor.OnRetrofitCallback<Boolean> {
             override fun onSuccess(item: Boolean) {
                 isSetlistsHaveLiveData.postValue(item)
             }
