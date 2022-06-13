@@ -1,6 +1,5 @@
 package com.example.evgeny.setlist_mobile.setlists.diffs
 
-import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.example.evgeny.setlist_mobile.setlists.Setlist
 
@@ -23,7 +22,6 @@ class SetlistDiff(val oldList: List<Setlist>, val newList: List<Setlist>): DiffU
         val isSame = oldSetlist.artist==newSetlist.artist &&
                 oldSetlist.tour==newSetlist.tour &&
                 oldSetlist.eventDate==newSetlist.eventDate
-        Log.d("BMTH", "eventDate=${newSetlist.eventDate} same is $isSame")
         return isSame
     }
 }

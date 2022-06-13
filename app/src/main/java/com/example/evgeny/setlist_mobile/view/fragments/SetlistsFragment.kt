@@ -21,24 +21,6 @@ import com.example.evgeny.setlist_mobile.viewmodel.SetlistsFragmentViewModel
 
 class SetlistsFragment : Fragment() {
 
-    private fun oldUpdateRecyclerView(list: List<Setlist>) {
-        Log.d(TAG, "setlists count: ${list.size} ")
-        if (list.isNotEmpty()) {
-            val diff = SetlistDiff(adapter.setlists, list as ArrayList<Setlist>)
-            val scrollPosition = adapter.setlists.size
-            val diffResult = DiffUtil.calculateDiff(diff)
-            adapter.addUniqItems(list)
-            diffResult.dispatchUpdatesTo(adapter)
-
-            if (scrollPosition<adapter.setlists.size) {
-                binding.recyclerView.scrollToPosition(scrollPosition)
-            }
-            //emptyRecyclerMessageLayout.visibility= View.GONE
-        } else {
-            //emptyRecyclerMessageLayout.visibility= View.VISIBLE
-        }
-    }
-
     private fun updateRecyclerView(setlists: List<Setlist>) {
         val diff = SetlistDiff(adapter.setlists, setlists)
         val diffResult = DiffUtil.calculateDiff(diff)
@@ -77,9 +59,9 @@ class SetlistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setlistsLiveData.observe(viewLifecycleOwner, {
-            updateRecyclerView(it)
-        })
+        viewModel.setlistsLiveData.observe(viewLifecycleOwner) { list ->
+            updateRecyclerView(list)
+        }
 
         postponeEnterTransition()
     }
