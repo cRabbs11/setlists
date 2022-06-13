@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.domain.Interactor
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.utils.*
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject

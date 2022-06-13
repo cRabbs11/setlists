@@ -14,7 +14,7 @@ import com.example.evgeny.setlist_mobile.view.activities.MainActivity
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.viewmodel.SetlistsFragmentViewModel

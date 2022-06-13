@@ -16,7 +16,7 @@ import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
 import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter

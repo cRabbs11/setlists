@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.setlists.Coords
 
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
-import com.example.evgeny.setlist_mobile.utils.SetlistsRepository
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -70,11 +69,11 @@ class SetlistOnMapFragment : Fragment(), OnItemClickListener<Setlist>, SetlistOn
         val mapFragment = childFragmentManager!!.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val setlistsRepository = SetlistsRepository
+        //val setlistsRepository = SetlistsRepository
 
-        presenter = SetlistOnMapPresenter(setlistsRepository)
-        presenter.attachView(this)
-        presenter.viewIsReady()
+        //presenter = SetlistOnMapPresenter(setlistsRepository)
+        //presenter.attachView(this)
+        //presenter.viewIsReady()
     }
 
     override fun onItemClick(t: Setlist) {

@@ -1,6 +1,5 @@
 package com.example.evgeny.setlist_mobile.utils
 
-import android.util.Log
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.entity.*
 import com.example.evgeny.setlist_mobile.setlists.*

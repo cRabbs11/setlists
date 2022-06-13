@@ -3,7 +3,7 @@ package com.example.evgeny.setlist_mobile.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import javax.inject.Inject

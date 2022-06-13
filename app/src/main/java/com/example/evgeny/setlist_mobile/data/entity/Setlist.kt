@@ -1,6 +1,10 @@
-package com.example.evgeny.setlist_mobile.setlists
+package com.example.evgeny.setlist_mobile.data.entity
 
 import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.setlists.BaseModel
+import com.example.evgeny.setlist_mobile.setlists.Set
+import com.example.evgeny.setlist_mobile.setlists.Tour
+import com.example.evgeny.setlist_mobile.setlists.Venue
 
 data class Setlist(val artist: Artist?,
                    val venue: Venue?,

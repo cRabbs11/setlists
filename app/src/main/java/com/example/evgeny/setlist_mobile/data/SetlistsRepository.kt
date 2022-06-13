@@ -1,7 +1,7 @@
 package com.example.evgeny.setlist_mobile.data
 
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 

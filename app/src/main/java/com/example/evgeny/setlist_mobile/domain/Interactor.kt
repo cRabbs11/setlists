@@ -6,7 +6,7 @@ import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.utils.Converter
 import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
-import com.example.evgeny.setlist_mobile.setlists.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
