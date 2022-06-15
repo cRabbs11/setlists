@@ -6,6 +6,7 @@ import com.example.evgeny.setlist_mobile.data.AppDataBase
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.utils.SearchHistoryHelper
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
+import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -31,7 +32,9 @@ class DataModule(val context: Context) {
 
     @Singleton
     @Provides
-    fun provideSetlistRepository(artistDao: ArtistDao): SetlistsRepository = SetlistsRepository(artistDao)
+    fun provideSetlistRepository(
+        artistDao: ArtistDao,
+        retrofit: SetlistsRetrofitInterface): SetlistsRepository = SetlistsRepository(artistDao, retrofit)
 
     @Singleton
     @Provides
