@@ -89,7 +89,7 @@ class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>
 
         var tourName = " not tour name"
         if (setlist.tour?.name!=null) {
-            tourName = setlist.tour.name
+            tourName = setlist.tour!!.name
         } else {
             holder.layout_tour.setVisibility(View.GONE);
         }
