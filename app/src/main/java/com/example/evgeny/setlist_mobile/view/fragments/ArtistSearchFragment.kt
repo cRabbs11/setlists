@@ -119,7 +119,7 @@ class ArtistSearchFragment : Fragment() {
 
         adapter = ArtistListAdapter(object: OnItemClickListener<Artist> {
             override fun onItemClick(t: Artist) {
-                viewModel.getSetlists(t)
+                viewModel.isSetlistsHave(t)
             }
         })
         binding.recyclerView.adapter = adapter

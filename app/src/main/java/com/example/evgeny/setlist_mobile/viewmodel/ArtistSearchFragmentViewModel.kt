@@ -11,6 +11,8 @@ import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_EMPTY
 import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_ON_FAILURE
 import com.example.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_FAILURE
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {
@@ -25,9 +27,6 @@ class ArtistSearchFragmentViewModel: ViewModel() {
 
     @Inject
     lateinit var setlistsRepository: SetlistsRepository
-
-    @Inject
-    lateinit var setlistsRetrofit: SetlistsRetrofitInterface
 
     init {
         App.instance.dagger.inject(this)
@@ -49,17 +48,18 @@ class ArtistSearchFragmentViewModel: ViewModel() {
         }
     }
 
-    fun getSetlists(artist: Artist) {
+    fun isSetlistsHave(artist: Artist) {
         interactor.setSelectedArtist(artist)
-        interactor.getSetlists(object: Interactor.OnRetrofitCallback<Boolean> {
-            override fun onSuccess(item: Boolean) {
-                isSetlistsHaveLiveData.postValue(item)
-            }
-
-            override fun onFailure() {
-                toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
-            }
-        })
+        interactor.isHaveSetlists(artist)
+            .subscribeOn(Schedulers.io())
+            .subscribeBy(
+                onNext = {
+                    isSetlistsHaveLiveData.postValue(it)
+                },
+                onError = {
+                    toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
+                }
+            )
     }
 
     fun getSearchQueryArtists(): List<String> {
