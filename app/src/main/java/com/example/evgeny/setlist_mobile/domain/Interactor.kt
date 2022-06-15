@@ -8,9 +8,9 @@ import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 
 class Interactor(private val repository: SetlistsRepository, private val retrofit: SetlistsRetrofitInterface) {
@@ -21,10 +21,6 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
 
     fun setSelectedArtist(artist: Artist) {
         repository.setSelectedArtist(artist)
-    }
-
-    fun getSetlists(): BehaviorSubject<List<Setlist>> {
-        return repository.setlistSubject
     }
 
     fun searchArtist(artistName: String, callback: OnRetrofitCallback<List<Artist>>) {
@@ -53,40 +49,17 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
             )
     }
 
-    fun getSetlists(callback: OnRetrofitCallback<Boolean>) {
-        val artist = repository.getSelectedArtist()
-        if (artist!=null) {
-            getSetlists(artist, callback)
-        } else {
-            callback.onSuccess(false)
-        }
+    fun isHaveSetlists(artist: Artist): Observable<Boolean> {
+        return repository.isSetlistsHave(artist)
     }
 
-    private fun getSetlists(artist: Artist, callback: OnRetrofitCallback<Boolean>) {
-        retrofit.getSetlistsByArtistObservable(
-            artistMbid = artist.mbid,
-            page = repository.getSetlistPage()
-        ).subscribeOn(Schedulers.io())
-            .onErrorComplete {
-                callback.onSuccess(false)
-                true
-            }
-            .map {
-                Converter.convertSetlistDTOListToSetlistList(it.setlist)
-            }
-            .subscribeBy(
-                onNext = {
-                    if (!it.isEmpty()) {
-                        repository.addToSetlists(it)
-                        callback.onSuccess(true)
-                    } else {
-                        callback.onSuccess(false)
-                    }
-                },
-                onError = {
-                    callback.onSuccess(false)
-                }
-            )
+    fun getSetlists(): Observable<List<Setlist>> {
+        val artist = repository.getSelectedArtist()
+        return if (artist!=null) {
+            repository.getSetlists(artist)
+        } else {
+            Observable.empty<List<Setlist>>()
+        }
     }
 
     interface OnRetrofitCallback<T> {
