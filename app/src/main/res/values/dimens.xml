@@ -7,4 +7,6 @@
     <dimen name="margin_small">10dp</dimen>
     <dimen name="margin_smallest">5dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="text_size_big">16sp</dimen>
 </resources>

@@ -8,6 +8,7 @@
     <string name="artist_hint">artist…</string>
     <string name="search_error">artist not found</string>
     <string name="search_setlist_error">setlist not found</string>
+    <string name="write_your_artist_in_the_search_bar">write your artist in the search bar</string>
 
     <string name="more_artist_info">more info</string>
     <string name="more_venue_info">more info</string>

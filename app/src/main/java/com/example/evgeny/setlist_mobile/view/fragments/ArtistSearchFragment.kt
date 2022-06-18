@@ -36,7 +36,6 @@ class ArtistSearchFragment : Fragment() {
     lateinit var adapter: ArtistListAdapter
     lateinit var suggestionAdapter: SimpleCursorAdapter
     lateinit var binding: FragmentSearchConstraintBinding
-    private val SETLISTS_NOT_FINDED = "сетлистов не найдено"
 
     private val viewModel: ArtistSearchFragmentViewModel by viewModels()
 
@@ -52,6 +51,11 @@ class ArtistSearchFragment : Fragment() {
         }
 
         viewModel.artistsLiveData.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                binding.emptyArtistsText.visibility = View.GONE
+            } else {
+                binding.emptyArtistsText.visibility = View.VISIBLE
+            }
             updateRecyclerView(it)
         }
 
