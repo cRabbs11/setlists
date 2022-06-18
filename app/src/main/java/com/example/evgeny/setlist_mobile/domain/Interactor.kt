@@ -19,8 +19,8 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
         repository.setCurrentSetlist(setlist)
     }
 
-    fun setSelectedArtist(artist: Artist) {
-        repository.setSelectedArtist(artist)
+    fun setNewArtist() {
+        repository.setNewArtist()
     }
 
     fun searchArtist(artistName: String, callback: OnRetrofitCallback<List<Artist>>) {

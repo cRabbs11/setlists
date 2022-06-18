@@ -14,21 +14,15 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
     private val lastSearchArtists = ArrayList<Artist>()
-    private lateinit var selectedArtist : Artist
     private lateinit var currentSetlist: Setlist
     private var songlist =  ArrayList<SongListItem>()
     private var setlistPage = 1
 
-    fun setSelectedArtist(artist: Artist) {
+    fun setNewArtist() {
         Executors.newSingleThreadExecutor().execute {
-            selectedArtist = artist
             clearSetlistsInDB()
             setlistPage = 1
         }
-    }
-
-    fun getSelectedArtist() :  Artist? {
-        return selectedArtist
     }
 
     fun setLastSearchArtists(list: List<Artist>) {

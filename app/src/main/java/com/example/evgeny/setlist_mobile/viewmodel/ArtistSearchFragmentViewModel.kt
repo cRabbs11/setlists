@@ -50,13 +50,13 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     }
 
     fun isSetlistsHave(artist: Artist) {
-        interactor.setSelectedArtist(artist)
         interactor.isHaveSetlists(artist)
             .subscribeOn(Schedulers.io())
             .subscribeBy(
                 onNext = { ifSetlistsHave ->
                     if (ifSetlistsHave) {
-                    isSetlistsHaveLiveData.postValue(artist)
+                        interactor.setNewArtist()
+                        isSetlistsHaveLiveData.postValue(artist)
                     } else {
                         toastEventLiveData.postValue(SETLISTS_SEARCH_NOT_FOUND)
                     }
