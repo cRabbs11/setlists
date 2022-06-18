@@ -35,15 +35,16 @@ class ArtistSearchFragmentViewModel: ViewModel() {
 
     fun searchArtist(artistName: String) {
         if (artistName.isNotEmpty()) {
-            interactor.searchArtist(artistName, object : Interactor.OnRetrofitCallback<List<Artist>> {
-                override fun onSuccess(list: List<Artist>) {
-                    artistsLiveData.postValue(list)
-                }
-
-                override fun onFailure() {
-                    toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
-                }
-            })
+            interactor.searchArtist(artistName)
+                .subscribeOn(Schedulers.io())
+                .subscribeBy(
+                    onNext = { list ->
+                        artistsLiveData.postValue(list)
+                    },
+                    onError = {
+                        toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
+                    }
+                )
         } else {
             toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
         }

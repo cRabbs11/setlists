@@ -12,7 +12,5 @@ class DomainModule {
 
     @Singleton
     @Provides
-    fun provideInteractor(repository: SetlistsRepository,
-                          retrofitInterface: SetlistsRetrofitInterface)
-    : Interactor = Interactor(repository, retrofitInterface)
+    fun provideInteractor(repository: SetlistsRepository): Interactor = Interactor(repository)
 }

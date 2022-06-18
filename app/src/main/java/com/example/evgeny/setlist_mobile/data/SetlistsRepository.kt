@@ -4,6 +4,7 @@ import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.utils.Converter
+import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -80,9 +81,29 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         return artistDao.insertSearchQuery(query)
     }
 
+    fun searchArtist(artistName: String): Observable<List<Artist>> {
+        return retrofit.searchArtistsObservable(
+            artistName = artistName,
+            page = 1,
+            sort = SetlistsAPIConstants.SORT_TYPE_NAME)
+            .subscribeOn(Schedulers.io())
+            .onErrorComplete {
+
+                false
+            }
+            .map {
+                val list = Converter.convertArtistDTOListToArtistList(it.artist)
+                if (list.isNotEmpty()) {
+                    setLastSearchArtists(list)
+                    val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
+                    saveSearchQueryArtists(searchQuery)
+                }
+                list
+            }
+    }
+
     private fun insertSetlistsInDB(list: List<Setlist>) {
         artistDao.insertSetlists(list)
-        println("insert done1")
     }
 
     private fun clearSetlistsInDB() {
@@ -120,7 +141,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                     Converter.convertSetlistDTOListToSetlistList(it.setlist)
                 }
                 .flatMap {
-                    println("page = ${getSetlistPage()}, list.size = ${it.size}")
                     if (it.isNotEmpty()) {
                         insertSetlistsInDB(it)
                         increaseSetlistPage()
