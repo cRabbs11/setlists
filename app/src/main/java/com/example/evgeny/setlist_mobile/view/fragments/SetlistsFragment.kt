@@ -12,12 +12,15 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
 import com.example.evgeny.setlist_mobile.view.activities.MainActivity
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
+import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.example.evgeny.setlist_mobile.utils.*
+import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
 import com.example.evgeny.setlist_mobile.viewmodel.SetlistsFragmentViewModel
+import com.example.evgeny.setlist_mobile.viewmodel.factory
 
 class SetlistsFragment : Fragment() {
 
@@ -44,7 +47,7 @@ class SetlistsFragment : Fragment() {
     //lateinit var emptyRecyclerMessageLayout: TextView
     private lateinit var binding: FragmentSetlistsBinding
     lateinit var sharedView: View
-    private val viewModel: SetlistsFragmentViewModel by viewModels()
+    private val viewModel: SetlistsFragmentViewModel by viewModels { factory(arguments?.get(KEY_BUNDLE_ARTIST) as Artist)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

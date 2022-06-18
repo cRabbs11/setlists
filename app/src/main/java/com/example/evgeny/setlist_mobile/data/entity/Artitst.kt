@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.evgeny.setlist_mobile.setlists.BaseModel
+import java.io.Serializable
 
 @Entity(tableName = AppDataBase.SAVED_ARTISTS_TABLE_NAME, indices = [Index(value = ["mbid"], unique = true)])
 data class Artist(
@@ -15,4 +16,4 @@ data class Artist(
         @ColumnInfo(name = "sort_name") val sortName: String,
         @ColumnInfo(name = "tmid") val tmid: Int,
         @ColumnInfo(name = "url") val url: String
-) : BaseModel()
+) : BaseModel(), Serializable

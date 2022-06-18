@@ -53,8 +53,7 @@ class Interactor(private val repository: SetlistsRepository, private val retrofi
         return repository.isSetlistsHave(artist)
     }
 
-    fun getSetlists(): Observable<List<Setlist>> {
-        val artist = repository.getSelectedArtist()
+    fun getSetlists(artist: Artist): Observable<List<Setlist>> {
         return if (artist!=null) {
             repository.getSetlists(artist)
         } else {

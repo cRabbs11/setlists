@@ -55,12 +55,8 @@ class ArtistSearchFragment : Fragment() {
             updateRecyclerView(it)
         }
 
-        viewModel.isSetlistsHaveLiveData.observe(viewLifecycleOwner) { isSetlistsFinded ->
-            if (isSetlistsFinded) {
-                (activity as MainActivity).openSetlistsSearchFragment()
-            } else {
-                showToast(SETLISTS_NOT_FINDED)
-            }
+        viewModel.isSetlistsHaveLiveData.observe(viewLifecycleOwner) { artist ->
+            (activity as MainActivity).openSetlistsSearchFragment(artist)
         }
     }
 
@@ -118,8 +114,8 @@ class ArtistSearchFragment : Fragment() {
         })
 
         adapter = ArtistListAdapter(object: OnItemClickListener<Artist> {
-            override fun onItemClick(t: Artist) {
-                viewModel.isSetlistsHave(t)
+            override fun onItemClick(artist: Artist) {
+                viewModel.isSetlistsHave(artist)
             }
         })
         binding.recyclerView.adapter = adapter

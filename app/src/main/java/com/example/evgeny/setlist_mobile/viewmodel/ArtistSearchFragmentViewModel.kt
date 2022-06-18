@@ -11,6 +11,7 @@ import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_EMPTY
 import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_ON_FAILURE
 import com.example.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_FAILURE
+import com.example.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_NOT_FOUND
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class ArtistSearchFragmentViewModel: ViewModel() {
 
     val artistsLiveData = MutableLiveData<List<Artist>>()
-    val isSetlistsHaveLiveData = SingleLiveEvent<Boolean>()
+    val isSetlistsHaveLiveData = SingleLiveEvent<Artist>()
     val searchQueryArtistLiveData = MutableLiveData<List<SearchQuery>>()
     val toastEventLiveData = SingleLiveEvent<String>()
 
@@ -53,8 +54,12 @@ class ArtistSearchFragmentViewModel: ViewModel() {
         interactor.isHaveSetlists(artist)
             .subscribeOn(Schedulers.io())
             .subscribeBy(
-                onNext = {
-                    isSetlistsHaveLiveData.postValue(it)
+                onNext = { ifSetlistsHave ->
+                    if (ifSetlistsHave) {
+                    isSetlistsHaveLiveData.postValue(artist)
+                    } else {
+                        toastEventLiveData.postValue(SETLISTS_SEARCH_NOT_FOUND)
+                    }
                 },
                 onError = {
                     toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)

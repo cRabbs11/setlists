@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.evgeny.setlist_mobile.R
+import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
 import com.example.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SetlistsFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SingleSetlistFragment
@@ -37,8 +39,11 @@ class MainActivity: AppCompatActivity() {
                 .commit()
     }
 
-    fun openSetlistsSearchFragment() {
+    fun openSetlistsSearchFragment(artist: Artist) {
+        val bundle = Bundle()
+        bundle.putSerializable(KEY_BUNDLE_ARTIST, artist)
         val fragment = SetlistsFragment()
+        fragment.arguments = bundle
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
