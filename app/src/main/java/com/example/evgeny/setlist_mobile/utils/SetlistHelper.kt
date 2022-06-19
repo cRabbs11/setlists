@@ -7,14 +7,14 @@ object SetlistHelper {
 
     fun fromSetlistToSongList(setlist: Setlist): List<SongListItem> {
         val newSongList = arrayListOf<SongListItem>()
-        setlist.sets!!.forEach {
-            if (it.name!="") {
-                newSongList.add(it)
-            } else if (it.encore>0) {
-                newSongList.add(it)
+        setlist.sets!!.forEach { set ->
+            if (set.name!="") {
+                newSongList.add(set)
+            } else if (set.encore>0) {
+                newSongList.add(set)
             }
-            it.songs.forEach {
-                newSongList.add(it)
+            set.songs.forEach { song ->
+                newSongList.add(song)
             }
         }
         return newSongList
