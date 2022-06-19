@@ -5,7 +5,7 @@ import com.example.evgeny.setlist_mobile.data.entity.*
 import com.example.evgeny.setlist_mobile.setlists.*
 import com.example.evgeny.setlist_mobile.setlists.Set
 
-object Converter {
+object DTOConverter {
     fun convertArtistDTOListToArtistList(list : List<ArtistDTO>?) : List<Artist> {
         val artistList = arrayListOf<Artist>()
         list?.forEach {

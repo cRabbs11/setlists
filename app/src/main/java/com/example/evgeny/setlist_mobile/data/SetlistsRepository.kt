@@ -2,7 +2,7 @@ package com.example.evgeny.setlist_mobile.data
 
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
-import com.example.evgeny.setlist_mobile.utils.Converter
+import com.example.evgeny.setlist_mobile.utils.DTOConverter
 import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
@@ -62,7 +62,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 false
             }
             .map {
-                val list = Converter.convertArtistDTOListToArtistList(it.artist)
+                val list = DTOConverter.convertArtistDTOListToArtistList(it.artist)
                 if (list.isNotEmpty()) {
                     setLastSearchArtists(list)
                     val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
@@ -89,7 +89,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 false
             }
             .flatMap {
-                val list = Converter.convertSetlistDTOListToSetlistList(it.setlist)
+                val list = DTOConverter.convertSetlistDTOListToSetlistList(it.setlist)
                 if (list.isNotEmpty()) {
                     Observable.just(true)
                 } else {
@@ -108,7 +108,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                     false
                 }
                 .map {
-                    Converter.convertSetlistDTOListToSetlistList(it.setlist)
+                    DTOConverter.convertSetlistDTOListToSetlistList(it.setlist)
                 }
                 .flatMap {
                     if (it.isNotEmpty()) {
