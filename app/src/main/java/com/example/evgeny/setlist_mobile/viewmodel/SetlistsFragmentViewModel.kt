@@ -24,9 +24,6 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
     @Inject
     lateinit var interactor: Interactor
 
-    @Inject
-    lateinit var setlistsRepository: SetlistsRepository
-
     init {
         App.instance.dagger.inject(this)
         getSetlists(artist)
