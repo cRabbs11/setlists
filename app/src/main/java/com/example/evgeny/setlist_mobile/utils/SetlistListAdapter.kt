@@ -11,8 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
-import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
 
 class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>) : RecyclerView.Adapter<SetlistHolder>() {
 
@@ -67,24 +67,20 @@ class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>
         //Log.d(TAG, "onBindViewHolder")
         val setlist = setlists.get(position)
         val name = setlist.artist?.name
-        val eventDate = setlist.eventDate
 
-        val dt = SimpleDateFormat("dd-mm-yyyy")
-
-        try {
-            val date = dt.parse(eventDate);
-            val month = SimpleDateFormat("mm")
+        val dt = SimpleDateFormat("dd-mm-yyyy", Locale.getDefault())
+        val date = dt.parse(setlist.eventDate)
+        date?.let {
+            val month = SimpleDateFormat("mm", Locale.getDefault())
             val sMonth = identMonth(month.format(date))
-            val day = SimpleDateFormat("dd")
+            val day = SimpleDateFormat("dd", Locale.getDefault())
             val sDay = day.format(date)
-            val year = SimpleDateFormat("yyyy")
+            val year = SimpleDateFormat("yyyy", Locale.getDefault())
             val sYear = year.format(date)
 
-            holder.month.setText(sMonth)
-            holder.day.setText(sDay)
-            holder.year.setText(sYear)
-        } catch (e: ParseException) {
-            e.printStackTrace()
+            holder.month.text = sMonth
+            holder.day.text = sDay
+            holder.year.text = sYear
         }
 
         var tourName = " not tour name"

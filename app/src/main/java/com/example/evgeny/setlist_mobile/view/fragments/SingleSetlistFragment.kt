@@ -24,8 +24,8 @@ import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
 import com.example.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
 import com.example.evgeny.setlist_mobile.viewmodel.factory
-import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
 
 class SingleSetlistFragment : Fragment() {
 
@@ -45,26 +45,23 @@ class SingleSetlistFragment : Fragment() {
         binding.setlistInfoLayout.tourName.text = tour
         //binding.toolbar.title = setlist.artist?.name
 
-        val dt = SimpleDateFormat("dd-mm-yyyy")
-
-        try {
-            val date = dt.parse(setlist.eventDate);
-            val month = SimpleDateFormat("mm")
+        val dt = SimpleDateFormat("dd-mm-yyyy", Locale.getDefault())
+        val date = dt.parse(setlist.eventDate)
+        date?.let {
+            val month = SimpleDateFormat("mm", Locale.getDefault())
             val sMonth = identMonth(month.format(date))
-            val day = SimpleDateFormat("dd")
+            val day = SimpleDateFormat("dd", Locale.getDefault())
             val sDay = day.format(date)
-            val year = SimpleDateFormat("yyyy")
+            val year = SimpleDateFormat("yyyy", Locale.getDefault())
             val sYear = year.format(date)
 
-            binding.setlistInfoLayout.dateLayout.month.setText(sMonth)
-            binding.setlistInfoLayout.dateLayout.day.setText(sDay)
-            binding.setlistInfoLayout.dateLayout.year.setText(sYear)
-        } catch (e: ParseException) {
-            e.printStackTrace()
+            binding.setlistInfoLayout.dateLayout.month.text = sMonth
+            binding.setlistInfoLayout.dateLayout.day.text = sDay
+            binding.setlistInfoLayout.dateLayout.year.text = sYear
         }
     }
 
-    private fun identMonth(format: String): String? {
+    private fun identMonth(format: String): String {
         return when (format) {
             "01" -> getString(R.string.jan)
             "02" -> getString(R.string.feb)
