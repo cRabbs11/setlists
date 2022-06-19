@@ -14,7 +14,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
     private val lastSearchArtists = ArrayList<Artist>()
-    private lateinit var currentSetlist: Setlist
     private var setlistPage = 1
 
     fun setNewArtist() {
@@ -29,14 +28,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         list.forEach {
             lastSearchArtists.add(it)
         }
-    }
-
-    fun setCurrentSetlist(setlist: Setlist) {
-        this.currentSetlist = setlist
-    }
-
-    fun getCurrentSetlist(): Setlist? {
-        return currentSetlist
     }
 
     fun getSetlistPage(): Int {

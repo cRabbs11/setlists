@@ -48,8 +48,4 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
             )
     }
 
-    fun setCurrentSetlist(setlist: Setlist) {
-        interactor.setSelectedSetlist(setlist)
-    }
-
 }

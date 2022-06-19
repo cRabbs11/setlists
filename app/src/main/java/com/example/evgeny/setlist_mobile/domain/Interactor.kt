@@ -7,10 +7,6 @@ import io.reactivex.rxjava3.core.Observable
 
 class Interactor(private val repository: SetlistsRepository) {
 
-    fun setSelectedSetlist(setlist: Setlist) {
-        repository.setCurrentSetlist(setlist)
-    }
-
     fun setNewArtist() {
         repository.setNewArtist()
     }
