@@ -7,4 +7,9 @@ object Constants {
     const val SETLISTS_SEARCH_NOT_FOUND = "сетлистов не найдено"
 
     const val KEY_BUNDLE_ARTIST = "artist"
+    const val KEY_BUNDLE_SETLIST = "setlist"
+    const val KEY_BUNDLE_TRANSITION = "transition"
+
+    const val EXCEPTION_MESSAGE_ARGUMENT_IS_NULL = "Required argument is null"
+    const val EXCEPTION_MESSAGE_UNKNOWN_VIEW_MODEL = "Unknown view model class"
 }
