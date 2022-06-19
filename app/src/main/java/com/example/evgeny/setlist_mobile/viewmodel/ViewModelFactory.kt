@@ -7,7 +7,7 @@ import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.utils.Constants
 
-class ViewModelFactory(private val artist: Artist? = null, private val setlist: Setlist? = null): ViewModelProvider.Factory {
+class ViewModelFactory(private val artist: Artist?, private val setlist: Setlist?): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass) {
@@ -33,4 +33,4 @@ class ViewModelFactory(private val artist: Artist? = null, private val setlist: 
     }
 }
 
-fun Fragment.factory(artist: Artist?, setlist: Setlist?) = ViewModelFactory(artist = artist, setlist = setlist)
+fun Fragment.factory(artist: Artist? = null, setlist: Setlist? = null) = ViewModelFactory(artist = artist, setlist = setlist)

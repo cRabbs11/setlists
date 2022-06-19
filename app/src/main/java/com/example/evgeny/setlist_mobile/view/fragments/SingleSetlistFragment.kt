@@ -100,7 +100,7 @@ class SingleSetlistFragment : Fragment() {
     lateinit var adapter: SongListItemAdapter
     lateinit var binding: FragmentSetlistBinding
     //lateinit var emptyRecyclerMessageLayout: TextView
-    private val viewModel: SingleSetlistFragmentViewModel by viewModels{ factory(null, arguments?.get(Constants.KEY_BUNDLE_SETLIST) as Setlist)}
+    private val viewModel: SingleSetlistFragmentViewModel by viewModels{ factory(setlist = arguments?.get(Constants.KEY_BUNDLE_SETLIST) as Setlist)}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

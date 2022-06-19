@@ -47,7 +47,7 @@ class SetlistsFragment : Fragment() {
     //lateinit var emptyRecyclerMessageLayout: TextView
     private lateinit var binding: FragmentSetlistsBinding
     lateinit var sharedView: View
-    private val viewModel: SetlistsFragmentViewModel by viewModels { factory(arguments?.get(KEY_BUNDLE_ARTIST) as Artist, null)}
+    private val viewModel: SetlistsFragmentViewModel by viewModels { factory(artist = arguments?.get(KEY_BUNDLE_ARTIST) as Artist)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
