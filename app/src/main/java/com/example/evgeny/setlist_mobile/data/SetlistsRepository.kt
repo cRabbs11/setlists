@@ -2,7 +2,6 @@ package com.example.evgeny.setlist_mobile.data
 
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
-import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.utils.Converter
 import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
@@ -16,7 +15,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
 
     private val lastSearchArtists = ArrayList<Artist>()
     private lateinit var currentSetlist: Setlist
-    private var songlist =  ArrayList<SongListItem>()
     private var setlistPage = 1
 
     fun setNewArtist() {
@@ -47,25 +45,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
 
     fun increaseSetlistPage() {
         setlistPage++
-    }
-
-    fun setSongList(setlist: Setlist) {
-        val newSongList = arrayListOf<SongListItem>()
-        setlist.sets!!.forEach {
-            if (it.name!="") {
-                newSongList.add(it)
-            } else if (it.encore>0) {
-                newSongList.add(it)
-            }
-            it.songs.forEach {
-                newSongList.add(it)
-            }
-        }
-        this.songlist = newSongList
-    }
-
-    fun getSongList(): ArrayList<SongListItem> {
-        return songlist
     }
 
     fun getSearchQueryArtists() : List<String> {
