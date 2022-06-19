@@ -15,10 +15,11 @@ public class SetlistOnMapPresenter(setlistsRepository: SetlistsRepository):
 	}
 
 	override fun mapIsReady() {
-		val coords = setlistsRepository.getCurrentSetlist()?.venue?.city?.coords
-		if (coords!=null) {
-			getView()?.addMarker(coords)
-		}
+		//TODO сделать получени Setlist через конструктор
+		//val coords = setlistsRepository.getCurrentSetlist()?.venue?.city?.coords
+			//if (coords!=null) {
+		//	getView()?.addMarker(coords)
+					//}
 	}
 
 
