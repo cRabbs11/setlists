@@ -1,12 +1,9 @@
 package com.example.evgeny.setlist_mobile.viewmodel
 
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.data.Artist
-import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.domain.Interactor
 import com.example.evgeny.setlist_mobile.utils.*
@@ -55,13 +52,4 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
         interactor.setSelectedSetlist(setlist)
     }
 
-    public class ViewModelFactory(private val artist: Artist): ViewModelProvider.Factory {
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val viewModel = SetlistsFragmentViewModel(artist)
-            return viewModel as T
-        }
-    }
 }
-
-fun Fragment.factory(artist: Artist) = SetlistsFragmentViewModel.ViewModelFactory(artist)
