@@ -116,13 +116,13 @@ class SingleSetlistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.songListItemLiveData.observe(viewLifecycleOwner, {
+        viewModel.songListItemLiveData.observe(viewLifecycleOwner) {
             updateRecyclerView(it)
-        })
+        }
 
-        viewModel.setlistInfoLiveData.observe(viewLifecycleOwner, {
+        viewModel.setlistInfoLiveData.observe(viewLifecycleOwner) {
             showSetlistInfo(it)
-        })
+        }
 
         sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
 
