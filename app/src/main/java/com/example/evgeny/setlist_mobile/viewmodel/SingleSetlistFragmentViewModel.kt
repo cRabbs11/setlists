@@ -8,7 +8,7 @@ import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import javax.inject.Inject
 
-class SingleSetlistFragmentViewModel: ViewModel() {
+class SingleSetlistFragmentViewModel(private val setlist: Setlist): ViewModel() {
 
     var songListItemLiveData = MutableLiveData<List<SongListItem>>()
     var setlistInfoLiveData = MutableLiveData<Setlist>()

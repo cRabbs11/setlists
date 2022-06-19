@@ -7,6 +7,7 @@ import com.example.evgeny.setlist_mobile.setlists.BaseModel
 import com.example.evgeny.setlist_mobile.setlists.Set
 import com.example.evgeny.setlist_mobile.setlists.Tour
 import com.example.evgeny.setlist_mobile.setlists.Venue
+import java.io.Serializable
 
 @Entity(tableName = AppDataBase.CASHED_SETLISTS_TABLE_NAME)
 data class Setlist(
@@ -16,7 +17,7 @@ data class Setlist(
     @Embedded(prefix = "tour_") var tour: Tour?,
     @ColumnInfo(name = "eventDate") var eventDate: String,
     @ColumnInfo(name = "lastUpdated") var lastUpdated: String,
-    var sets: List<Set>?) : BaseModel() {
+    var sets: List<Set>?) : BaseModel(), Serializable {
         constructor(): this(
             artist = null,
             venue = null,

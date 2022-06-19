@@ -7,7 +7,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
+import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_SETLIST
+import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
 import com.example.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SetlistsFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SingleSetlistFragment
@@ -51,9 +54,10 @@ class MainActivity: AppCompatActivity() {
                 .commit()
     }
 
-    fun openSingleSetlistFragment(sharedView: View) {
+    fun openSingleSetlistFragment(sharedView: View, setlist: Setlist) {
         val bundle = Bundle()
-        bundle.putString("transition", sharedView.transitionName)
+        bundle.putString(KEY_BUNDLE_TRANSITION, sharedView.transitionName)
+        bundle.putSerializable(KEY_BUNDLE_SETLIST, setlist)
 
         val fragment = SingleSetlistFragment()
         fragment.arguments = bundle

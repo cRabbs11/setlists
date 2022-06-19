@@ -47,7 +47,7 @@ class SetlistsFragment : Fragment() {
     //lateinit var emptyRecyclerMessageLayout: TextView
     private lateinit var binding: FragmentSetlistsBinding
     lateinit var sharedView: View
-    private val viewModel: SetlistsFragmentViewModel by viewModels { factory(arguments?.get(KEY_BUNDLE_ARTIST) as Artist)}
+    private val viewModel: SetlistsFragmentViewModel by viewModels { factory(arguments?.get(KEY_BUNDLE_ARTIST) as Artist, null)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,10 +73,10 @@ class SetlistsFragment : Fragment() {
         Log.d(TAG, " запустили")
 
         adapter = SetlistListAdapter(object: OnSharedTransitionClickListener<Setlist> {
-            override fun onItemClick(t: Setlist, shared: View) {
-                viewModel.setCurrentSetlist(t)
+            override fun onItemClick(setlist: Setlist, shared: View) {
+                viewModel.setCurrentSetlist(setlist)
                 sharedView = shared
-                (activity as MainActivity).openSingleSetlistFragment(shared)
+                (activity as MainActivity).openSingleSetlistFragment(shared, setlist)
             }
         })
         binding.recyclerView.adapter = adapter

@@ -19,8 +19,10 @@ import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
+import com.example.evgeny.setlist_mobile.utils.Constants
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
 import com.example.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
+import com.example.evgeny.setlist_mobile.viewmodel.factory
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
@@ -98,7 +100,7 @@ class SingleSetlistFragment : Fragment() {
     lateinit var adapter: SongListItemAdapter
     lateinit var binding: FragmentSetlistBinding
     //lateinit var emptyRecyclerMessageLayout: TextView
-    private val viewModel: SingleSetlistFragmentViewModel by viewModels()
+    private val viewModel: SingleSetlistFragmentViewModel by viewModels{ factory(null, arguments?.get(Constants.KEY_BUNDLE_SETLIST) as Setlist)}
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
