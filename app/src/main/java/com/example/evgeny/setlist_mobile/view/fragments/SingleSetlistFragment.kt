@@ -20,6 +20,7 @@ import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
 import com.example.evgeny.setlist_mobile.utils.Constants
+import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
 import com.example.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
 import com.example.evgeny.setlist_mobile.viewmodel.factory
@@ -65,19 +66,19 @@ class SingleSetlistFragment : Fragment() {
 
     private fun identMonth(format: String): String? {
         return when (format) {
-            "01" -> requireContext().resources.getString(R.string.jan)
-            "02" -> requireContext().resources.getString(R.string.feb)
-            "03" -> requireContext().resources.getString(R.string.mar)
-            "04" -> requireContext().resources.getString(R.string.apr)
-            "05" -> requireContext().resources.getString(R.string.may)
-            "06" -> requireContext().resources.getString(R.string.jun)
-            "07" -> requireContext().resources.getString(R.string.jul)
-            "08" -> requireContext().resources.getString(R.string.aug)
-            "09" -> requireContext().resources.getString(R.string.sep)
-            "10" -> requireContext().resources.getString(R.string.oct)
-            "11" -> requireContext().resources.getString(R.string.nov)
-            "12" -> requireContext().resources.getString(R.string.nov)
-            else -> requireContext().resources.getString(R.string.jan)
+            "01" -> getString(R.string.jan)
+            "02" -> getString(R.string.feb)
+            "03" -> getString(R.string.mar)
+            "04" -> getString(R.string.apr)
+            "05" -> getString(R.string.may)
+            "06" -> getString(R.string.jun)
+            "07" -> getString(R.string.jul)
+            "08" -> getString(R.string.aug)
+            "09" -> getString(R.string.sep)
+            "10" -> getString(R.string.oct)
+            "11" -> getString(R.string.nov)
+            "12" -> getString(R.string.nov)
+            else -> getString(R.string.jan)
         }
     }
 
@@ -132,8 +133,7 @@ class SingleSetlistFragment : Fragment() {
         adapter = SongListItemAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
-
-        binding.setlistInfoLayout.dateLayout.dateLayout.transitionName = arguments?.getString("transition")
+        binding.setlistInfoLayout.dateLayout.dateLayout.transitionName = arguments?.getString(KEY_BUNDLE_TRANSITION)
         //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
         //binding.toMapView.setOnClickListener {
         //    presenter.onMapClicked()
