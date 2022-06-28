@@ -1,9 +1,9 @@
 package com.example.evgeny.setlist_mobile.setlistOnMap
 import com.example.evgeny.setlist_mobile.mvp.MVPView
 import com.example.evgeny.setlist_mobile.mvp.MvpPresenter
-import com.example.evgeny.setlist_mobile.setlists.Coords
+import com.example.evgeny.setlist_mobile.data.entity.Coords
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
-import com.example.evgeny.setlist_mobile.setlists.Song
+import com.example.evgeny.setlist_mobile.data.entity.Song
 
 interface SetlistOnMapContract {
  

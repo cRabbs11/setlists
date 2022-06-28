@@ -1,8 +1,8 @@
 package com.example.evgeny.setlist_mobile.setlists.diffs
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.evgeny.setlist_mobile.setlists.Song
-import com.example.evgeny.setlist_mobile.setlists.Set
+import com.example.evgeny.setlist_mobile.data.entity.Song
+import com.example.evgeny.setlist_mobile.data.entity.Set
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 
 data class SongListItemDiff(val oldList: List<SongListItem>, val newList: List<SongListItem>): DiffUtil.Callback() {

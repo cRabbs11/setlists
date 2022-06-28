@@ -1,6 +1,6 @@
 package com.example.evgeny.setlist_mobile.setlistOnMap
 import com.example.evgeny.setlist_mobile.mvp.PresenterBase
-import com.example.evgeny.setlist_mobile.setlists.Song
+import com.example.evgeny.setlist_mobile.data.entity.Song
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 
 public class SetlistOnMapPresenter(setlistsRepository: SetlistsRepository):

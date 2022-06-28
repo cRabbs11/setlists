@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.setlists.*
-import com.example.evgeny.setlist_mobile.setlists.Set
+import com.example.evgeny.setlist_mobile.data.entity.Set
+import com.example.evgeny.setlist_mobile.data.entity.Song
 
 const val SONGLIST_ITEM_SONG = 0
 const val SONGLIST_ITEM_SET = 1

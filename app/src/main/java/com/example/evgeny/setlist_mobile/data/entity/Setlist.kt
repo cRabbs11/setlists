@@ -4,9 +4,6 @@ import androidx.room.*
 import com.example.evgeny.setlist_mobile.data.AppDataBase
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.setlists.BaseModel
-import com.example.evgeny.setlist_mobile.setlists.Set
-import com.example.evgeny.setlist_mobile.setlists.Tour
-import com.example.evgeny.setlist_mobile.setlists.Venue
 import java.io.Serializable
 
 @Entity(tableName = AppDataBase.CASHED_SETLISTS_TABLE_NAME)

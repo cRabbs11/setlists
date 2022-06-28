@@ -1,7 +1,7 @@
 package com.example.evgeny.setlist_mobile.utils
 
 import androidx.room.TypeConverter
-import com.example.evgeny.setlist_mobile.setlists.Set
+import com.example.evgeny.setlist_mobile.data.entity.Set
 import com.google.gson.Gson
 
 class SetsTypeConverter {

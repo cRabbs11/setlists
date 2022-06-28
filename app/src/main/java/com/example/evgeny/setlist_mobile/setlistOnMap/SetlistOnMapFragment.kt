@@ -9,7 +9,7 @@ import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import com.example.evgeny.setlist_mobile.R
-import com.example.evgeny.setlist_mobile.setlists.Coords
+import com.example.evgeny.setlist_mobile.data.entity.Coords
 
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.utils.OnItemClickListener
