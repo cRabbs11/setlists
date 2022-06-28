@@ -12,3 +12,10 @@ data class VenueDTO(
         @SerializedName("url")
         val url: String
 )
+
+fun VenueDTO.toVenue() = Venue(
+        id = id,
+        name = name,
+        url =url,
+        city = city.toCity()
+)

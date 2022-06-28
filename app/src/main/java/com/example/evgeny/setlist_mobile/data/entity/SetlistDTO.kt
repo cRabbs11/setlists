@@ -24,3 +24,18 @@ data class SetlistDTO(
         @SerializedName("versionId")
         val versionId: String,
 )
+
+fun SetlistDTO.toSetlist(): Setlist {
+        val list = arrayListOf<Set>()
+        sets.set.forEach {
+                list.add(it.toSet())
+        }
+        return Setlist(
+                artist = artist.toArtist(),
+                venue = venue.toVenue(),
+                tour = tour?.toTour(),
+                eventDate = eventDate,
+                lastUpdated = lastUpdated,
+                sets = list
+        )
+}

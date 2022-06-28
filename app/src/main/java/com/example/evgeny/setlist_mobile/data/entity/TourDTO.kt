@@ -6,3 +6,5 @@ data class TourDTO(
         @SerializedName("name")
         val name: String?
 )
+
+fun TourDTO.toTour() = Tour(name = name ?: "")

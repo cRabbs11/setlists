@@ -8,3 +8,8 @@ data class CountryDTO(
         @SerializedName("name")
         val name: String
 )
+
+fun CountryDTO.toCountry() = Country(
+        code = code,
+        name = name
+)

@@ -8,3 +8,8 @@ data class CoordsDTO(
         @SerializedName("long")
         val long: Double
 )
+
+fun CoordsDTO.toCoords() = Coords(
+        coord_lat = lat.toString(),
+        coord_long = long.toString()
+)

@@ -14,3 +14,12 @@ data class SongDTO(
         @SerializedName("with")
         val with: ArtistDTO?
 )
+
+fun SongDTO.toSong(songNumber: Int) = Song(
+        name = name,
+        info = info,
+        tape = tape,
+        cover = cover?.toArtist(),
+        with = with?.toArtist(),
+        number = songNumber
+)
