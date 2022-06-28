@@ -1,6 +1,7 @@
-package com.example.evgeny.setlist_mobile.setlists
+package com.example.evgeny.setlist_mobile.data.entity
 
 import androidx.room.Embedded
+import com.example.evgeny.setlist_mobile.setlists.BaseModel
 
 data class City(
     val id: String,
@@ -10,3 +11,4 @@ data class City(
     @Embedded(prefix = "coords_") val coords: Coords?,
     @Embedded(prefix = "country_") val country: Country?) : BaseModel() {
 }
+

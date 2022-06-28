@@ -1,6 +1,7 @@
-package com.example.evgeny.setlist_mobile.setlists
+package com.example.evgeny.setlist_mobile.data.entity
 
 import androidx.room.Embedded
+import com.example.evgeny.setlist_mobile.setlists.BaseModel
 
 data class Venue(
     val id: String,
