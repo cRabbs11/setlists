@@ -26,9 +26,4 @@ class Interactor(private val repository: SetlistsRepository) {
             Observable.empty<List<Setlist>>()
         }
     }
-
-    interface OnRetrofitCallback<T> {
-        fun onSuccess(item: T)
-        fun onFailure()
-    }
 }
