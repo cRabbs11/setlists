@@ -2,8 +2,8 @@ package com.example.evgeny.setlist_mobile.data
 
 import com.example.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
-import com.example.evgeny.setlist_mobile.data.entity.toArtist
-import com.example.evgeny.setlist_mobile.data.entity.toSetlist
+import com.example.evgeny.setlist_mobile.data.entity.toArtistList
+import com.example.evgeny.setlist_mobile.data.entity.toSetlistList
 import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
@@ -63,10 +63,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 false
             }
             .map {
-                val list = arrayListOf<Artist>()
-                it.artist.forEach { artistDTO ->
-                    list.add(artistDTO.toArtist())
-                }
+                val list = it.toArtistList()
                 if (list.isNotEmpty()) {
                     setLastSearchArtists(list)
                     val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
@@ -93,11 +90,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 false
             }
             .flatMap {
-                val list = arrayListOf<Setlist>()
-                it.setlist.forEach {
-                    list.add(it.toSetlist())
-                }
-                list
+                val list = it.toSetlistList()
                 if (list.isNotEmpty()) {
                     Observable.just(true)
                 } else {
@@ -116,10 +109,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                     false
                 }
                 .map {
-                    val list = arrayListOf<Setlist>()
-                    it.setlist.forEach {
-                        list.add(it.toSetlist())
-                    }
+                    val list = it.toSetlistList()
                     list
                 }
                 .flatMap {
