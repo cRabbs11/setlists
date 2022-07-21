@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.data.Artist
-import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.domain.Interactor
 import com.example.evgeny.setlist_mobile.utils.*
@@ -20,7 +19,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
 
     val artistsLiveData = MutableLiveData<List<Artist>>()
     val isSetlistsHaveLiveData = SingleLiveEvent<Artist>()
-    val searchQueryArtistLiveData = MutableLiveData<List<SearchQuery>>()
+    val queryArtistLiveData = MutableLiveData<List<String>>()
     val toastEventLiveData = SingleLiveEvent<String>()
 
     @Inject
@@ -31,6 +30,21 @@ class ArtistSearchFragmentViewModel: ViewModel() {
 
     init {
         App.instance.dagger.inject(this)
+
+        setlistsRepository.getSearchQueryArtists()
+            .subscribeOn(Schedulers.io())
+            .map { list ->
+                val result = arrayListOf<String>()
+                list.forEach {
+                    result.add(it.queryText)
+                }
+                result
+            }
+            .subscribe{
+                if (it.isNotEmpty()) {
+                    queryArtistLiveData.postValue(it)
+                }
+            }
     }
 
     fun searchArtist(artistName: String) {
@@ -66,9 +80,5 @@ class ArtistSearchFragmentViewModel: ViewModel() {
                     toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
                 }
             )
-    }
-
-    fun getSearchQueryArtists(): List<String> {
-        return setlistsRepository.getSearchQueryArtists()
     }
 }

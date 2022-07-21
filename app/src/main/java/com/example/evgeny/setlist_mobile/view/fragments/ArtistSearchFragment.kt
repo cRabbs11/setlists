@@ -25,9 +25,6 @@ import com.example.evgeny.setlist_mobile.databinding.FragmentSearchConstraintBin
 import com.example.evgeny.setlist_mobile.setlists.diffs.ArtistDiff
 import com.example.evgeny.setlist_mobile.utils.*
 import com.example.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ArtistSearchFragment : Fragment() {
 
@@ -36,6 +33,7 @@ class ArtistSearchFragment : Fragment() {
     lateinit var adapter: ArtistListAdapter
     lateinit var suggestionAdapter: SimpleCursorAdapter
     lateinit var binding: FragmentSearchConstraintBinding
+    private var suggestions = listOf<String>()
 
     private val viewModel: ArtistSearchFragmentViewModel by viewModels()
 
@@ -61,6 +59,10 @@ class ArtistSearchFragment : Fragment() {
 
         viewModel.isSetlistsHaveLiveData.observe(viewLifecycleOwner) { artist ->
             (activity as MainActivity).openSetlistsSearchFragment(artist)
+        }
+
+        viewModel.queryArtistLiveData.observe(viewLifecycleOwner) {
+            suggestions = it
         }
     }
 
@@ -136,22 +138,13 @@ class ArtistSearchFragment : Fragment() {
     }
 
     private fun populateAdapter(query: String) {
-        val observable = Observable.just(query)
-            .map {
-                val c = MatrixCursor(arrayOf(BaseColumns._ID, "items"))
-                val suggestions = viewModel.getSearchQueryArtists()
-                for (i in suggestions.indices) {
-                    if (suggestions[i].lowercase().contains(query.lowercase())) {
-                        c.addRow(arrayOf(i, suggestions[i]))
-                    }
-                }
-                c
+        val c = MatrixCursor(arrayOf(BaseColumns._ID, "items"))
+        for (i in suggestions.indices) {
+            if (suggestions[i].lowercase().contains(query.lowercase())) {
+                c.addRow(arrayOf(i, suggestions[i]))
             }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                suggestionAdapter.changeCursor(it)
-            }
+        }
+        suggestionAdapter.changeCursor(c)
     }
 
     private fun showToast(text: String) {
