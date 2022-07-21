@@ -39,6 +39,24 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
             .subscribeBy(
                 onNext = {
                     isLoading = false
+                    var newList = arrayListOf<Setlist>()
+                    newList.addAll(setlistsLiveData.value?: arrayListOf())
+                    newList.addAll(it)
+                    setlistsLiveData.postValue(newList)
+                },
+                onError = {
+                    isLoading = false
+                    toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
+                }
+            )
+    }
+
+    private fun getSetlistsFromDB(artist: Artist) {
+        interactor.getSetlists(artist)
+            .subscribeOn(Schedulers.io())
+            .subscribeBy(
+                onNext = {
+                    isLoading = false
                     setlistsLiveData.postValue(it)
                 },
                 onError = {
