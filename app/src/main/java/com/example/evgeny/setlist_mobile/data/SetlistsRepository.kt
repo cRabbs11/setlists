@@ -94,7 +94,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
             }
     }
 
-    fun getSetlists(artist: Artist): Observable<List<Setlist>> {
+    fun getSetlistsWithDB(artist: Artist): Observable<List<Setlist>> {
         return Observable.concat(
             retrofit.getSetlistsByArtistObservable(
                 artistMbid = artist.mbid,
@@ -116,5 +116,19 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 },
             artistDao.getSetlists().subscribeOn(Schedulers.io())
         )
+    }
+
+    fun getSetlists(artist: Artist): Observable<List<Setlist>> {
+        return retrofit.getSetlistsByArtistObservable(
+            artistMbid = artist.mbid,
+            page = getSetlistPage()
+        )
+            .map {
+                val list = it.toSetlistList()
+                if (list.isNotEmpty()) {
+                    increaseSetlistPage()
+                }
+                list
+            }
     }
 }
