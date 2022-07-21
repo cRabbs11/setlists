@@ -30,7 +30,7 @@ interface ArtistDao {
     fun updateArtist(artist: Artist)
 
     @Query("SELECT * FROM ${AppDataBase.SAVED_SEARCH_QUERRY_TABLE_NAME}")
-    fun getSearchQueryArtists() : List<SearchQuery>
+    fun getSearchQueryArtists() : Observable<List<SearchQuery>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSearchQuery(searchQuery: SearchQuery)

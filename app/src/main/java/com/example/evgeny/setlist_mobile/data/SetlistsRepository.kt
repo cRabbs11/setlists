@@ -39,13 +39,8 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         setlistPage++
     }
 
-    fun getSearchQueryArtists() : List<String> {
-        val result = arrayListOf<String>()
-        val list = artistDao.getSearchQueryArtists()
-        list.forEach {
-            result.add(it.queryText)
-        }
-        return result
+    fun getSearchQueryArtists() : Observable<List<SearchQuery>> {
+        return artistDao.getSearchQueryArtists()
     }
 
     fun saveSearchQueryArtists(query: SearchQuery) {
