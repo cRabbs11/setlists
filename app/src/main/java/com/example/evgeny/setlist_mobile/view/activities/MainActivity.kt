@@ -5,6 +5,7 @@ import android.text.util.Linkify
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
@@ -12,6 +13,7 @@ import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
 import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_SETLIST
 import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
 import com.example.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
+import com.example.evgeny.setlist_mobile.view.fragments.MapFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SetlistsFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SingleSetlistFragment
 import java.util.regex.Pattern
@@ -36,10 +38,7 @@ class MainActivity: AppCompatActivity() {
 
         val fragment = ArtistSearchFragment()
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit()
+        launchFragment(fragment)
     }
 
     fun openSetlistsSearchFragment(artist: Artist) {
@@ -48,10 +47,16 @@ class MainActivity: AppCompatActivity() {
         val fragment = SetlistsFragment()
         fragment.arguments = bundle
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit()
+        launchFragment(fragment)
+    }
+
+    fun openMapFragment(artist: Artist) {
+        val bundle = Bundle()
+        bundle.putSerializable(KEY_BUNDLE_ARTIST, artist)
+        val fragment = MapFragment()
+        fragment.arguments = bundle
+
+        launchFragment(fragment)
     }
 
     fun openSingleSetlistFragment(sharedView: View, setlist: Setlist) {
@@ -62,11 +67,7 @@ class MainActivity: AppCompatActivity() {
         val fragment = SingleSetlistFragment()
         fragment.arguments = bundle
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .addSharedElement(sharedView, sharedView.transitionName)
-                .commit()
+        launchFragment(fragment = fragment, sharedView = sharedView)
     }
 
     override fun onBackPressed() {
@@ -76,5 +77,20 @@ class MainActivity: AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun launchFragment(fragment: Fragment, tag: String?=null, sharedView: View) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(tag)
+            .addSharedElement(sharedView, sharedView.transitionName)
+            .commit()
+    }
+
+    private fun launchFragment(fragment: Fragment, tag: String?=null) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(tag)
+            .commit()
     }
 }
