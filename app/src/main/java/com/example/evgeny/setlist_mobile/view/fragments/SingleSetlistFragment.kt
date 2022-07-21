@@ -2,7 +2,6 @@ package com.example.evgeny.setlist_mobile.view.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 
 import android.view.*
 import android.widget.*
@@ -14,14 +13,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.transition.TransitionInflater
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.animators.ItemListAnimator
-import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
-import com.example.evgeny.setlist_mobile.setlistOnMap.SetlistOnMapFragment
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
+import com.example.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
 import com.example.evgeny.setlist_mobile.utils.Constants
 import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
 import com.example.evgeny.setlist_mobile.utils.SongListItemAdapter
+import com.example.evgeny.setlist_mobile.view.activities.MainActivity
 import com.example.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
 import com.example.evgeny.setlist_mobile.viewmodel.factory
 import java.text.SimpleDateFormat
@@ -83,21 +82,10 @@ class SingleSetlistFragment : Fragment() {
         Toast.makeText(context, message, LENGTH_SHORT).show()
     }
 
-    private fun openMap() {
-        var mapFragment = SetlistOnMapFragment()
-
-        var fragmentManager = getFragmentManager()
-        var fragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.replace(R.id.fragment_container, mapFragment)
-        fragmentTransaction.addToBackStack("")
-        fragmentTransaction.commit()
-    }
-
     val TAG = SingleSetlistFragment::class.java.name + " BMTH "
 
     lateinit var adapter: SongListItemAdapter
     lateinit var binding: FragmentSetlistBinding
-    //lateinit var emptyRecyclerMessageLayout: TextView
     private val viewModel: SingleSetlistFragmentViewModel by viewModels{ factory(setlist = arguments?.get(Constants.KEY_BUNDLE_SETLIST) as Setlist)}
 
 
@@ -131,23 +119,11 @@ class SingleSetlistFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
         binding.setlistInfoLayout.dateLayout.dateLayout.transitionName = arguments?.getString(KEY_BUNDLE_TRANSITION)
-        //var linearLayoutManager = LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false)
-        //binding.toMapView.setOnClickListener {
-        //    presenter.onMapClicked()
-        //}
 
-        //for (Set set: setlist.getSets()) {
-        //    int groupPosition = setlist.getSets().indexOf(set);
-        //    expListView.expandGroup(groupPosition);
-        //}
-//
-        //expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-        //    @Override
-        //    public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-        //        return true;
-        //    }
-        //})
-
-        Log.d(TAG, " запустили")
+        binding.fabToMap.setOnClickListener { view ->
+            if (viewModel.isVenueHave()) {
+                (activity as MainActivity).openMapFragment(viewModel.getArtist())
+            }
+        }
     }
 }
