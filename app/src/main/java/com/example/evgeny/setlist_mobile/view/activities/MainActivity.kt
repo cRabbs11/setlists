@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Venue
 import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
 import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_SETLIST
 import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
+import com.example.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_VENUE
 import com.example.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
 import com.example.evgeny.setlist_mobile.view.fragments.MapFragment
 import com.example.evgeny.setlist_mobile.view.fragments.SetlistsFragment
@@ -50,9 +52,9 @@ class MainActivity: AppCompatActivity() {
         launchFragment(fragment)
     }
 
-    fun openMapFragment(artist: Artist) {
+    fun openMapFragment(venue: Venue) {
         val bundle = Bundle()
-        bundle.putSerializable(KEY_BUNDLE_ARTIST, artist)
+        bundle.putSerializable(KEY_BUNDLE_VENUE, venue)
         val fragment = MapFragment()
         fragment.arguments = bundle
 

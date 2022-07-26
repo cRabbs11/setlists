@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
 import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
+import com.example.evgeny.setlist_mobile.data.entity.Venue
 import com.example.evgeny.setlist_mobile.setlists.SongListItem
 import com.example.evgeny.setlist_mobile.utils.SetlistHelper
 
@@ -20,11 +21,7 @@ class SingleSetlistFragmentViewModel(private val setlist: Setlist): ViewModel() 
 
     }
 
-    fun isVenueHave(): Boolean {
-        return setlist.venue!=null
-    }
-
-    fun getArtist(): Artist {
-        return setlist.artist!!
+    fun getVenue(): Venue? {
+        return setlist.venue
     }
 }
