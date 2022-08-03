@@ -1,5 +1,7 @@
 package com.example.evgeny.setlist_mobile.setlists
 
-open class BaseModel {
+import java.io.Serializable
+
+open class BaseModel : Serializable {
 
 }
