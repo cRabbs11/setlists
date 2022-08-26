@@ -96,19 +96,26 @@ class ConcertDateView@JvmOverloads constructor(context: Context, attributeSet: A
     private fun drawDayText(canvas: Canvas) {
         val message = sDay
         val widths = FloatArray(message.length)
-        textDayPaint.getTextWidths(message, widths)
+
         textDayPaint.textSize = getDayTextSize()
+        textDayPaint.getTextWidths(message, widths)
+
         var advance = 0f
-        for (width in widths) advance += width
+        widths.forEach {
+            advance += it
+        }
+
+        val x = width / 2 - advance / 2
+        val y = height / 2 + advance / 4
         //Рисуем наш текст
-        canvas.drawText(message, width / 2 - advance / 2, height / 2 + advance / 4, textDayPaint)
+        canvas.drawText(message, x, y, textDayPaint)
     }
 
     private fun drawMonthText(canvas: Canvas) {
         val message = sMonth
         val widths = FloatArray(message.length)
-        textMonthPaint.getTextWidths(message, widths)
         textMonthPaint.textSize = getMonthTextSize()
+        textMonthPaint.getTextWidths(message, widths)
         var advance = 0f
         for (width in widths) advance += width
         //Рисуем наш текст
@@ -118,8 +125,8 @@ class ConcertDateView@JvmOverloads constructor(context: Context, attributeSet: A
     private fun drawYearText(canvas: Canvas) {
         val message = sYear
         val widths = FloatArray(message.length)
-        textYearPaint.getTextWidths(message, widths)
         textYearPaint.textSize = getYearTextSize()
+        textYearPaint.getTextWidths(message, widths)
         var advance = 0f
         for (width in widths) advance += width
         //Рисуем наш текст
