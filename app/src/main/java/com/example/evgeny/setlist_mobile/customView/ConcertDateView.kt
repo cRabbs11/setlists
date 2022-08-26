@@ -12,13 +12,18 @@ import com.example.evgeny.setlist_mobile.R
 
 class ConcertDateView@JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null): View(context, attributeSet) {
 
+    private val defaultDay = "01"
+    private val defaultMonth = "NOV"
+    private val defaultYear = "2021"
+
     private lateinit var backgroundPaint: Paint
     private lateinit var textDayPaint: Paint
     private lateinit var textMonthPaint: Paint
     private lateinit var textYearPaint: Paint
-    private var sDay = "01"
-    private var sMonth = "NOV"
-    private var sYear = "2021"
+
+    private var sDay = defaultDay
+    private var sMonth = defaultMonth
+    private var sYear = defaultYear
 
 
     private val backgroundRect = RectF()
