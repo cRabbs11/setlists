@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.evgeny.setlist_mobile.R
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import com.example.evgeny.setlist_mobile.databinding.ItemSetlistLayoutBinding
 import com.example.evgeny.setlist_mobile.view.holders.SetlistHolder
@@ -25,10 +24,6 @@ class SetlistListAdapter(clickListener: OnSharedTransitionClickListener<Setlist>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SetlistHolder {
-        //Log.d(TAG, "onCreateViewHolder")
-        val inflater = LayoutInflater.from(parent.getContext())
-        context = parent.context
-        val view = inflater.inflate(R.layout.item_setlist_layout, parent, false)
         val binding = ItemSetlistLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SetlistHolder(binding)
     }
