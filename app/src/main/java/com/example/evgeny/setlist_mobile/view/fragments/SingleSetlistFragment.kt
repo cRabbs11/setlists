@@ -60,9 +60,6 @@ class SingleSetlistFragment : Fragment() {
             val sYear = year.format(date)
 
             binding.setlistInfoLayout.concertDateView.setDate(sDay, sMonth!!, sYear)
-            //binding.setlistInfoLayout.dateLayout.month.text = sMonth
-            //binding.setlistInfoLayout.dateLayout.day.text = sDay
-            //binding.setlistInfoLayout.dateLayout.year.text = sYear
         }
     }
 
