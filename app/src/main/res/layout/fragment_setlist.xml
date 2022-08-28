@@ -7,10 +7,9 @@
 
     <include
         android:id="@+id/setlist_info_layout"
-        layout="@layout/layout_setlist_info"
+        layout="@layout/item_setlist_layout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/margin_small"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView

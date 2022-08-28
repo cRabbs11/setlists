@@ -37,12 +37,17 @@ class SingleSetlistFragment : Fragment() {
     }
 
     private fun showSetlistInfo(setlist: Setlist) {
+        var tourName = " not tour name"
+        if (setlist.tour?.name!=null) {
+            tourName = setlist.tour!!.name
+        } else {
+            binding.setlistInfoLayout.tourName.visibility = View.GONE
+        }
+        val tour = tourName
+        val venue = setlist.venue?.name + ": " + setlist.venue?.city?.name + ", " + setlist.venue?.city?.country?.name
         binding.setlistInfoLayout.artistName.text = setlist.artist?.name
-        val placeNameText = "at ${setlist.venue?.name}, ${setlist.venue?.city?.name}"
-        val tour = "Tour: ${setlist.tour?.name}"
-        binding.setlistInfoLayout.placeName.text = placeNameText
         binding.setlistInfoLayout.tourName.text = tour
-        //binding.toolbar.title = setlist.artist?.name
+        binding.setlistInfoLayout.venueName.text = venue
 
         val dt = SimpleDateFormat("dd-mm-yyyy", Locale.getDefault())
         val date = dt.parse(setlist.eventDate)
@@ -54,9 +59,10 @@ class SingleSetlistFragment : Fragment() {
             val year = SimpleDateFormat("yyyy", Locale.getDefault())
             val sYear = year.format(date)
 
-            binding.setlistInfoLayout.dateLayout.month.text = sMonth
-            binding.setlistInfoLayout.dateLayout.day.text = sDay
-            binding.setlistInfoLayout.dateLayout.year.text = sYear
+            binding.setlistInfoLayout.concertDateView.setDate(sDay, sMonth!!, sYear)
+            //binding.setlistInfoLayout.dateLayout.month.text = sMonth
+            //binding.setlistInfoLayout.dateLayout.day.text = sDay
+            //binding.setlistInfoLayout.dateLayout.year.text = sYear
         }
     }
 
@@ -118,7 +124,7 @@ class SingleSetlistFragment : Fragment() {
         adapter = SongListItemAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
-        binding.setlistInfoLayout.dateLayout.dateLayout.transitionName = arguments?.getString(KEY_BUNDLE_TRANSITION)
+        binding.setlistInfoLayout.concertDateView.transitionName = arguments?.getString(KEY_BUNDLE_TRANSITION)
 
         binding.fabToMap.setOnClickListener { view ->
             val venue = viewModel.getVenue()
