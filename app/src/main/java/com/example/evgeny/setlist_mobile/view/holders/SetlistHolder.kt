@@ -24,29 +24,29 @@ class SetlistHolder(private val binding: ItemSetlistLayoutBinding) : RecyclerVie
             val year = SimpleDateFormat("yyyy", Locale.getDefault())
             val sYear = year.format(date)
 
-            binding.dateLayout.month.text = sMonth
-            binding.dateLayout.day.text = sDay
-            binding.dateLayout.year.text = sYear
+            binding.concertDateView.setDate(sDay, sMonth!!, sYear)
         }
 
         var tourName = " not tour name"
         if (setlist.tour?.name!=null) {
             tourName = setlist.tour!!.name
         } else {
-            binding.layoutTour.visibility = View.GONE
+            binding.tourName.visibility = View.GONE
         }
         val tour = tourName
         val venue = setlist.venue?.name + ": " + setlist.venue?.city?.name + ", " + setlist.venue?.city?.country?.name
         val header = "$name at: $venue"
-        binding.artist.text = name
-        binding.dateLayout.dateLayout.transitionName = "trans${position}"
+        binding.artistName.text = name
+        binding.concertDateView.transitionName = "trans${position}"
 
-        binding.setlist.setOnClickListener {
-            clickListener.onItemClick(setlist, binding.dateLayout.dateLayout)
+        binding.root.setOnClickListener {
+            clickListener.onItemClick(setlist, binding.concertDateView)
         }
 
-        binding.tour.text = tour
-        binding.venue.text = venue
+        binding.tourName.text = tour
+        binding.venueName.text = venue
+
+        binding.concertDateView.requestLayout()
     }
 
     private fun identMonth(format: String): String? {
