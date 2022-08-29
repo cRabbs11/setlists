@@ -17,6 +17,16 @@
         app:iconifiedByDefault="false"
         app:queryHint="@string/artist_hint" />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:indeterminate="true" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
@@ -30,9 +40,8 @@
         android:id="@+id/empty_artists_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="@id/search_view"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_view"
+        android:layout_marginTop="@dimen/margin_50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text = "@string/write_your_artist_in_the_search_bar"
