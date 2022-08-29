@@ -44,6 +44,13 @@ class ArtistSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.loadingIndicatorLiveData.observe(viewLifecycleOwner) { value ->
+            with(binding.loadingIndicator) {
+                if (value) show() else hide()
+            }
+        }
+
         viewModel.toastEventLiveData.observe(viewLifecycleOwner) {
             showToast(it)
         }

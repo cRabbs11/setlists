@@ -21,6 +21,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     val isSetlistsHaveLiveData = SingleLiveEvent<Artist>()
     val queryArtistLiveData = MutableLiveData<List<String>>()
     val toastEventLiveData = SingleLiveEvent<String>()
+    val loadingIndicatorLiveData = MutableLiveData<Boolean>()
 
     @Inject
     lateinit var interactor: Interactor
@@ -45,18 +46,22 @@ class ArtistSearchFragmentViewModel: ViewModel() {
                     queryArtistLiveData.postValue(it)
                 }
             }
+        loadingIndicatorLiveData.postValue(false)
     }
 
     fun searchArtist(artistName: String) {
         if (artistName.isNotEmpty()) {
+            loadingIndicatorLiveData.postValue(true)
             interactor.searchArtist(artistName)
                 .subscribeOn(Schedulers.io())
                 .subscribeBy(
                     onNext = { list ->
                         artistsLiveData.postValue(list)
+                        loadingIndicatorLiveData.postValue(false)
                     },
                     onError = {
                         toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
+                        loadingIndicatorLiveData.postValue(false)
                     }
                 )
         } else {
