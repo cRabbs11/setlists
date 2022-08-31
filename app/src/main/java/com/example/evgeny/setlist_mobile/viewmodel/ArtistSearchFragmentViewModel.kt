@@ -32,16 +32,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     init {
         App.instance.dagger.inject(this)
 
-        setlistsRepository.getSearchQueryArtists()
-            .subscribeOn(Schedulers.io())
-            .map { list ->
-                val result = arrayListOf<String>()
-                list.forEach {
-                    result.add(it.queryText)
-                }
-                result
-            }
-            .subscribe{
+        interactor.getSearchQueryArtists().subscribe{
                 if (it.isNotEmpty()) {
                     queryArtistLiveData.postValue(it)
                 }
