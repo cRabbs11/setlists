@@ -18,17 +18,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
     private var setlistPage = 1
 
     fun setNewArtist() {
-        Executors.newSingleThreadExecutor().execute {
-            clearSetlistsInDB()
-            setlistPage = 1
-        }
-    }
-
-    fun setLastSearchArtists(list: List<Artist>) {
-        lastSearchArtists.clear()
-        list.forEach {
-            lastSearchArtists.add(it)
-        }
+        setlistPage = 1
     }
 
     fun getSetlistPage(): Int {
