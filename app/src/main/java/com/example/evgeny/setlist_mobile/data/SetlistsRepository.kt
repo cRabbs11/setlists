@@ -84,14 +84,12 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
             .onErrorComplete{
                 false
             }
-            .flatMap {
+            .observeOn(Schedulers.computation())
+            .map {
                 val list = it.toSetlistList()
-                if (list.isNotEmpty()) {
-                    Observable.just(true)
-                } else {
-                    Observable.just(false)
-                }
+                list.isNotEmpty()
             }
+
     }
 
     fun getSetlistsWithDB(artist: Artist): Observable<List<Setlist>> {
@@ -116,6 +114,14 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 },
             artistDao.getSetlists().subscribeOn(Schedulers.io())
         )
+    }
+
+    fun addArtistInwathed(artist: Artist): Single<Long> {
+        return artistDao.insertWatchedArtist(artist)
+    }
+
+    fun getWatchedArtists(): Observable<List<Artist>> {
+        return artistDao.getWatchedArtists()
     }
 
     fun getSetlists(artist: Artist): Observable<List<Setlist>> {
