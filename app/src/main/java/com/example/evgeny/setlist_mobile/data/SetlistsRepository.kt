@@ -7,14 +7,11 @@ import com.example.evgeny.setlist_mobile.data.entity.toSetlistList
 import com.example.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.example.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.Executors
 
 class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface) {
 
-    val TAG = SetlistsRepository::class.java.name + " BMTH "
-
-    private val lastSearchArtists = ArrayList<Artist>()
     private var setlistPage = 1
 
     fun setNewArtist() {
@@ -33,37 +30,24 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         return artistDao.getSearchQueryArtists()
     }
 
-    fun saveSearchQueryArtists(query: SearchQuery) {
+    fun saveSearchQueryArtists(query: SearchQuery): Single<Long> {
         return artistDao.insertSearchQuery(query)
     }
 
     fun searchArtist(artistName: String): Observable<List<Artist>> {
-        return retrofit.searchArtistsObservable(
+        return retrofit.searchArtists(
             artistName = artistName,
             page = 1,
             sort = SetlistsAPIConstants.SORT_TYPE_NAME)
             .subscribeOn(Schedulers.io())
             .onErrorComplete {
-
                 false
             }
+            .observeOn(Schedulers.computation())
             .map {
                 val list = it.toArtistList()
-                if (list.isNotEmpty()) {
-                    setLastSearchArtists(list)
-                    val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
-                    saveSearchQueryArtists(searchQuery)
-                }
                 list
             }
-    }
-
-    private fun insertSetlistsInDB(list: List<Setlist>) {
-        artistDao.insertSetlists(list)
-    }
-
-    private fun clearSetlistsInDB() {
-        artistDao.clearSetlists()
     }
 
     fun isSetlistsHave(artist: Artist): Observable<Boolean> {
@@ -126,5 +110,9 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 }
                 list
             }
+    }
+
+    private fun insertSetlistsInDB(list: List<Setlist>) {
+        artistDao.insertSetlists(list)
     }
 }
