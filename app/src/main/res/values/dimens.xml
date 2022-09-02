@@ -10,4 +10,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="text_size_big">16sp</dimen>
+    <dimen name="z_size_15">15dp</dimen>
 </resources>

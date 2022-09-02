@@ -25,7 +25,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:translationZ="@dimen/z_size_15"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
