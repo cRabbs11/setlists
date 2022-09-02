@@ -6,6 +6,7 @@ import com.example.evgeny.setlist_mobile.data.Artist
 import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 
 @Dao
@@ -13,6 +14,12 @@ interface ArtistDao {
 
     @Query("SELECT * FROM ${AppDataBase.SAVED_ARTISTS_TABLE_NAME}")
     fun getAllArtists() : List<Artist>
+
+    @Query("SELECT * FROM ${AppDataBase.SAVED_ARTISTS_TABLE_NAME} WHERE isWatched = '1'")
+    fun getWatchedArtists(): Observable<List<Artist>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertWatchedArtist(artist: Artist): Single<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertArtist(artist: Artist)
@@ -33,7 +40,7 @@ interface ArtistDao {
     fun getSearchQueryArtists() : Observable<List<SearchQuery>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSearchQuery(searchQuery: SearchQuery)
+    fun insertSearchQuery(searchQuery: SearchQuery) : Single<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSetlists(setlists: List<Setlist>)
