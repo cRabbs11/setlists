@@ -15,13 +15,6 @@ interface SetlistsRetrofitInterface {
             @Query("artistName") artistName: String,
             @Query("page") page: Int,
             @Query("sort") sort: String
-    ): Call<ArtistDataDTO>
-
-    @GET("search/artists")
-    fun searchArtistsObservable(
-        @Query("artistName") artistName: String,
-        @Query("page") page: Int,
-        @Query("sort") sort: String
     ): Observable<ArtistDataDTO>
 
     @GET("artist/{artistMbid}/setlists")
