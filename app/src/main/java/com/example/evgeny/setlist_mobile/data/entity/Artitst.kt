@@ -15,5 +15,6 @@ data class Artist(
         @ColumnInfo(name = "name") val name: String,
         @ColumnInfo(name = "sort_name") val sortName: String,
         @ColumnInfo(name = "tmid") val tmid: Int,
-        @ColumnInfo(name = "url") val url: String
+        @ColumnInfo(name = "url") val url: String,
+        @ColumnInfo(name = "isWatched") var isWatched: Boolean
 ) : BaseModel(), Serializable

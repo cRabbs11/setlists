@@ -24,5 +24,6 @@ fun ArtistDTO.toArtist() = Artist(
         name = name,
         sortName = sortName,
         tmid = tmid,
-        url = url
+        url = url,
+        isWatched = false
 )

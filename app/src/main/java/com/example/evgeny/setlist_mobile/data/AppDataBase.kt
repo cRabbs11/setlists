@@ -11,7 +11,7 @@ import com.example.evgeny.setlist_mobile.utils.SetsTypeConverter
     Artist::class,
     SearchQuery::class,
     Setlist::class],
-    version = 1, exportSchema = false)
+    version = 2, exportSchema = true)
 @TypeConverters(SetsTypeConverter::class)
 abstract class AppDataBase: RoomDatabase() {
 
