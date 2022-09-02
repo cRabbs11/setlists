@@ -3,7 +3,9 @@ package com.example.evgeny.setlist_mobile.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.evgeny.setlist_mobile.App
+import com.example.evgeny.setlist_mobile.data.AppDataBase
 import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.domain.Interactor
 import com.example.evgeny.setlist_mobile.utils.*
@@ -12,7 +14,6 @@ import com.example.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_ON_FAILUR
 import com.example.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_FAILURE
 import com.example.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_NOT_FOUND
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {
@@ -31,12 +32,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
 
     init {
         App.instance.dagger.inject(this)
-
-        interactor.getSearchQueryArtists().subscribe{
-                if (it.isNotEmpty()) {
-                    queryArtistLiveData.postValue(it)
-                }
-            }
+        getSearchQueryArtists()
         loadingIndicatorLiveData.postValue(false)
     }
 
@@ -44,16 +40,18 @@ class ArtistSearchFragmentViewModel: ViewModel() {
         if (artistName.isNotEmpty()) {
             loadingIndicatorLiveData.postValue(true)
             interactor.searchArtist(artistName)
-                .subscribeOn(Schedulers.io())
                 .subscribeBy(
                     onNext = { list ->
+                        if (list.isNotEmpty()) {
+                            saveSearchQuery(SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS))
+                        }
                         artistsLiveData.postValue(list)
                         loadingIndicatorLiveData.postValue(false)
                     },
                     onError = {
                         toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
                         loadingIndicatorLiveData.postValue(false)
-                    }
+                    },
                 )
         } else {
             toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
@@ -61,10 +59,11 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     }
 
     fun isSetlistsHave(artist: Artist) {
+        loadingIndicatorLiveData.postValue(true)
         interactor.isHaveSetlists(artist)
-            .subscribeOn(Schedulers.io())
             .subscribeBy(
                 onNext = { ifSetlistsHave ->
+                    loadingIndicatorLiveData.postValue(false)
                     if (ifSetlistsHave) {
                         interactor.setNewArtist()
                         isSetlistsHaveLiveData.postValue(artist)
@@ -73,8 +72,22 @@ class ArtistSearchFragmentViewModel: ViewModel() {
                     }
                 },
                 onError = {
+                    loadingIndicatorLiveData.postValue(false)
                     toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
                 }
             )
+    }
+
+    private fun saveSearchQuery(searchQuery: SearchQuery) {
+        interactor.saveSearchQuery(searchQuery).subscribe()
+    }
+
+    private fun getSearchQueryArtists() {
+        interactor.getSearchQueryArtists()
+            .subscribe{
+            if (it.isNotEmpty()) {
+                queryArtistLiveData.postValue(it)
+            }
+        }
     }
 }
