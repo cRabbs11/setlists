@@ -1,12 +1,20 @@
 package com.example.evgeny.setlist_mobile.domain
 
 import com.example.evgeny.setlist_mobile.data.Artist
+import com.example.evgeny.setlist_mobile.data.SearchQuery
 import com.example.evgeny.setlist_mobile.data.SetlistsRepository
 import com.example.evgeny.setlist_mobile.data.entity.Setlist
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 
 class Interactor(private val repository: SetlistsRepository) {
+
+    fun saveSearchQuery(searchQuery: SearchQuery): Single<Long> {
+        return repository.saveSearchQueryArtists(searchQuery)
+            .subscribeOn(Schedulers.io())
+    }
 
     fun setNewArtist() {
         repository.setNewArtist()
@@ -31,6 +39,7 @@ class Interactor(private val repository: SetlistsRepository) {
     fun getSearchQueryArtists(): Observable<List<String>>  {
         return repository.getSearchQueryArtists()
             .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.computation())
             .map { list ->
                 val result = arrayListOf<String>()
                 list.forEach {
@@ -38,5 +47,18 @@ class Interactor(private val repository: SetlistsRepository) {
                 }
                 result
             }
+    }
+
+    fun addArtistInWatched(artist: Artist) {
+        artist.isWatched = true
+        repository.addArtistInwathed(artist)
+            .subscribeOn(Schedulers.io())
+            .subscribe { result, throwable ->
+                Timber.d("result = $result")
+            }
+    }
+
+    fun getRecentlyWatchedArtists(): Observable<List<Artist>> {
+        return repository.getWatchedArtists()
     }
 }
