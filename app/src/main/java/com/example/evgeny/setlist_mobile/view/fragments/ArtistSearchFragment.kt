@@ -80,7 +80,7 @@ class ArtistSearchFragment : Fragment() {
         return rootView
     }
 
-    fun initView() {
+    private fun initView() {
         Log.d(TAG, " запустили")
         binding.recyclerView.itemAnimator = ItemListAnimator(requireContext())
         //val anim = AnimationUtils.loadLayoutAnimation(requireContext(), R.anim.layout_animation_slide_from_top_left)
