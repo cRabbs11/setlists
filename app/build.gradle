@@ -12,7 +12,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.example.evgeny.setlist_mobile"
+        applicationId "com.kochkov.evgeny.setlist_mobile"
         minSdkVersion 25
         targetSdkVersion 31
         versionCode 1
