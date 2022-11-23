@@ -2,6 +2,7 @@ package com.kochkov.evgeny.setlist_mobile.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.kochkov.evgeny.setlist_mobile.R
+import com.kochkov.evgeny.setlist_mobile.view.activities.MainActivity
 
 class MapFragment() : Fragment() {
 
@@ -26,6 +29,11 @@ class MapFragment() : Fragment() {
     private val viewModel: MapFragmentViewModel by viewModels{ factory(venue = arguments?.get(
         Constants.KEY_BUNDLE_VENUE) as Venue
     )}
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,12 +46,27 @@ class MapFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val mapFragment = childFragmentManager.findFragmentById(binding.map.id) as SupportMapFragment
         mapFragment.getMapAsync {
             googleMap = it
             //notify that map is ready
             observeVenue()
         }
+
+        (activity as MainActivity).supportActionBar?.let {
+            it.title = (arguments?.get(Constants.KEY_BUNDLE_VENUE) as Venue).name?: getString(R.string.title_venue)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                (activity as MainActivity).closeFragment()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun addMarker(venue: Venue) {

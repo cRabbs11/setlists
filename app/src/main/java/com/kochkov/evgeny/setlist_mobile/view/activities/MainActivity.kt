@@ -72,6 +72,10 @@ class MainActivity: AppCompatActivity() {
         launchFragment(fragment = fragment, sharedView = sharedView)
     }
 
+    fun closeFragment() {
+        supportFragmentManager.popBackStack()
+    }
+
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount<=1) {
             super.onBackPressed()

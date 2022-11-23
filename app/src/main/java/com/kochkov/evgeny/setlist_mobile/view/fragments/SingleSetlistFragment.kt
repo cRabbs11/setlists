@@ -105,6 +105,7 @@ class SingleSetlistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel.songListItemLiveData.observe(viewLifecycleOwner) {
             updateRecyclerView(it)
         }
@@ -115,6 +116,19 @@ class SingleSetlistFragment : Fragment() {
 
         sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
 
+        (activity as MainActivity).supportActionBar?.let {
+            it.title = (arguments?.get(Constants.KEY_BUNDLE_SETLIST) as Setlist).tour?.name?: getString(R.string.title_single_setlist)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                (activity as MainActivity).closeFragment()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun initView() {

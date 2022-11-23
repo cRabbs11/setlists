@@ -1,24 +1,22 @@
 package com.kochkov.evgeny.setlist_mobile.view.fragments
 
+import android.R
 import android.os.Bundle
 import android.util.Log
-
 import android.view.*
 import android.widget.*
-
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.*
-import com.kochkov.evgeny.setlist_mobile.view.activities.MainActivity
 import com.kochkov.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.kochkov.evgeny.setlist_mobile.data.Artist
-import com.kochkov.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
-
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
+import com.kochkov.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
 import com.kochkov.evgeny.setlist_mobile.setlists.diffs.SetlistDiff
 import com.kochkov.evgeny.setlist_mobile.utils.*
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
+import com.kochkov.evgeny.setlist_mobile.view.activities.MainActivity
 import com.kochkov.evgeny.setlist_mobile.viewmodel.SetlistsFragmentViewModel
 import com.kochkov.evgeny.setlist_mobile.viewmodel.factory
 
@@ -62,11 +60,26 @@ class SetlistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel.setlistsLiveData.observe(viewLifecycleOwner) { list ->
             updateRecyclerView(list)
         }
 
         postponeEnterTransition()
+
+        (activity as MainActivity).supportActionBar?.let {
+            it.title = (arguments?.get(KEY_BUNDLE_ARTIST) as Artist).name?: getString(com.kochkov.evgeny.setlist_mobile.R.string.title_single_setlist)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.home -> {
+                (activity as MainActivity).closeFragment()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun initView() {
