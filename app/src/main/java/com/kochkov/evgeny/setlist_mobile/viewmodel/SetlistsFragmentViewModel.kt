@@ -17,32 +17,36 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
     val setlistsLiveData = MutableLiveData<List<Setlist>>()
     val toastEventLiveData = SingleLiveEvent<String>()
     private var isLoading = false
+    private var setlistPage = 1
 
     @Inject
     lateinit var interactor: Interactor
 
     init {
         App.instance.dagger.inject(this)
-        getSetlists(artist)
+        getSetlists(artist, setlistPage)
     }
 
     fun onRecyclerViewScrolled(lastVisiblePos: Int, totalPosCount: Int) {
         if (!isLoading && lastVisiblePos>=totalPosCount-1) {
             isLoading=true
-            getSetlists(artist)
+            getSetlists(artist, setlistPage)
         }
     }
 
-    private fun getSetlists(artist: Artist) {
-        interactor.getSetlists(artist)
+    private fun getSetlists(artist: Artist, page: Int) {
+        interactor.getSetlists(artist, page)
             .subscribeOn(Schedulers.io())
             .subscribeBy(
                 onNext = {
-                    isLoading = false
-                    var newList = arrayListOf<Setlist>()
-                    newList.addAll(setlistsLiveData.value?: arrayListOf())
-                    newList.addAll(it)
-                    setlistsLiveData.postValue(newList)
+                    if (it.isNotEmpty()) {
+                        setlistPage++
+                        isLoading = false
+                        var newList = arrayListOf<Setlist>()
+                        newList.addAll(setlistsLiveData.value?: arrayListOf())
+                        newList.addAll(it)
+                        setlistsLiveData.postValue(newList)
+                    }
                 },
                 onError = {
                     isLoading = false
@@ -51,8 +55,8 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
             )
     }
 
-    private fun getSetlistsFromDB(artist: Artist) {
-        interactor.getSetlists(artist)
+    private fun getSetlistsFromDB(artist: Artist, page: Int) {
+        interactor.getSetlists(artist, page)
             .subscribeOn(Schedulers.io())
             .subscribeBy(
                 onNext = {
@@ -65,5 +69,4 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
                 }
             )
     }
-
 }
