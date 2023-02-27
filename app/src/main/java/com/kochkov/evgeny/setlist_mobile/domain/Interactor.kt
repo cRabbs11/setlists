@@ -19,9 +19,9 @@ class Interactor(private val repository: SetlistsRepository) {
         return repository.isSetlistsHave(artist)
     }
 
-    fun getSetlists(artist: Artist): Observable<List<Setlist>> {
+    fun getSetlists(artist: Artist, page: Int): Observable<List<Setlist>> {
         return if (artist!=null) {
-            repository.getSetlists(artist)
+            repository.getSetlists(artist, page)
         } else {
             Observable.empty<List<Setlist>>()
         }

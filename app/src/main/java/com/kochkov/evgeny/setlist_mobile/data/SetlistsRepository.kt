@@ -15,12 +15,10 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
     private val lastSearchArtists = ArrayList<Artist>()
-    private var setlistPage = 1
 
     fun setNewArtist() {
         Executors.newSingleThreadExecutor().execute {
             clearSetlistsInDB()
-            setlistPage = 1
         }
     }
 
@@ -29,14 +27,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         list.forEach {
             lastSearchArtists.add(it)
         }
-    }
-
-    fun getSetlistPage(): Int {
-        return setlistPage
-    }
-
-    fun increaseSetlistPage() {
-        setlistPage++
     }
 
     fun getSearchQueryArtists() : Observable<List<SearchQuery>> {
@@ -94,11 +84,11 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
             }
     }
 
-    fun getSetlistsWithDB(artist: Artist): Observable<List<Setlist>> {
+    fun getSetlistsWithDB(artist: Artist, page: Int): Observable<List<Setlist>> {
         return Observable.concat(
             retrofit.getSetlistsByArtistObservable(
                 artistMbid = artist.mbid,
-                page = getSetlistPage()
+                page = page
             ).subscribeOn(Schedulers.io())
                 .onErrorComplete{
                     false
@@ -110,7 +100,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 .flatMap {
                     if (it.isNotEmpty()) {
                         insertSetlistsInDB(it)
-                        increaseSetlistPage()
                     }
                     Observable.empty<List<Setlist>>()
                 },
@@ -118,17 +107,13 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         )
     }
 
-    fun getSetlists(artist: Artist): Observable<List<Setlist>> {
+    fun getSetlists(artist: Artist, page: Int): Observable<List<Setlist>> {
         return retrofit.getSetlistsByArtistObservable(
             artistMbid = artist.mbid,
-            page = getSetlistPage()
+            page = page
         )
             .map {
-                val list = it.toSetlistList()
-                if (list.isNotEmpty()) {
-                    increaseSetlistPage()
-                }
-                list
+                it.toSetlistList()
             }
     }
 }

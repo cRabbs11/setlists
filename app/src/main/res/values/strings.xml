@@ -29,5 +29,8 @@
     <string name="dec">dec</string>
     <string name="info">www.setlist.fm</string>
 
-
+    <string name="title_search">Search</string>
+    <string name="title_artist">Artist</string>
+    <string name="title_single_setlist">Concert</string>
+    <string name="title_venue">Venue</string>
 </resources>

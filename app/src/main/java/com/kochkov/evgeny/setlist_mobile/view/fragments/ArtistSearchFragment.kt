@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.kochkov.evgeny.setlist_mobile.R
 import com.kochkov.evgeny.setlist_mobile.view.activities.MainActivity
 import com.kochkov.evgeny.setlist_mobile.animators.ItemListAnimator
 import com.kochkov.evgeny.setlist_mobile.data.Artist
@@ -44,6 +45,8 @@ class ArtistSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.title_search)
 
         viewModel.loadingIndicatorLiveData.observe(viewLifecycleOwner) { value ->
             with(binding.loadingIndicator) {

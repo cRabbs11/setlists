@@ -29,4 +29,9 @@
     <string name="oct">окт</string>
     <string name="dec">дек</string>
     <string name="info">www.setlist.fm</string>
+
+    <string name="title_search">Поиск</string>
+    <string name="title_artist">Исполнитель</string>
+    <string name="title_single_setlist">Концерт</string>
+    <string name="title_venue">Место</string>
 </resources>
