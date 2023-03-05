@@ -15,6 +15,8 @@ class Interactor(private val repository: SetlistsRepository) {
         return repository.searchArtist(artistName)
     }
 
+    suspend fun searchArtistCoroutines(artistName: String) = repository.searchArtistCoroutines(artistName)
+
     fun isHaveSetlists(artist: Artist): Observable<Boolean> {
         return repository.isSetlistsHave(artist)
     }

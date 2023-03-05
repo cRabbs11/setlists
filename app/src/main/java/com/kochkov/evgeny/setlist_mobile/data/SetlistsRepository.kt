@@ -1,6 +1,7 @@
 package com.kochkov.evgeny.setlist_mobile.data
 
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
+import com.kochkov.evgeny.setlist_mobile.data.entity.ArtistDataDTO
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 import com.kochkov.evgeny.setlist_mobile.data.entity.toArtistList
 import com.kochkov.evgeny.setlist_mobile.data.entity.toSetlistList
@@ -8,6 +9,7 @@ import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import retrofit2.Response
 import java.util.concurrent.Executors
 
 class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface) {
@@ -56,6 +58,13 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 }
                 list
             }
+    }
+
+    suspend fun searchArtistCoroutines(artistName: String): Response<ArtistDataDTO> {
+        return retrofit.searchArtistsCoroutines(
+            artistName = artistName,
+            page = 1,
+            sort = SetlistsAPIConstants.SORT_TYPE_NAME)
     }
 
     private fun insertSetlistsInDB(list: List<Setlist>) {
