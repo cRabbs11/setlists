@@ -1,15 +1,20 @@
 package com.kochkov.evgeny.setlist_mobile.data
 
+import android.util.Log
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
-import com.kochkov.evgeny.setlist_mobile.data.entity.ArtistDataDTO
-import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
-import com.kochkov.evgeny.setlist_mobile.data.entity.toArtistList
-import com.kochkov.evgeny.setlist_mobile.data.entity.toSetlistList
+import com.kochkov.evgeny.setlist_mobile.data.entity.*
+import com.kochkov.evgeny.setlist_mobile.utils.Constants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.net.UnknownHostException
 import java.util.concurrent.Executors
 
 class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface) {
@@ -60,11 +65,18 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
             }
     }
 
-    suspend fun searchArtistCoroutines(artistName: String): Response<ArtistDataDTO> {
-        return retrofit.searchArtistsCoroutines(
+    suspend fun searchArtistCoroutines(artistName: String) : Flow<List<Artist>?> {
+        val result = retrofit.searchArtistsCoroutines(
             artistName = artistName,
             page = 1,
             sort = SetlistsAPIConstants.SORT_TYPE_NAME)
+            return toArtistListFlow(result.body()!!)
+    }
+
+    private fun toArtistListFlow(artistDataDTO: ArtistDataDTO): Flow<List<Artist>?> {
+        return flow {
+            emit(artistDataDTO.toArtistList())
+        }
     }
 
     private fun insertSetlistsInDB(list: List<Setlist>) {

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.kochkov.evgeny.setlist_mobile.App
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
-import com.kochkov.evgeny.setlist_mobile.data.entity.toArtistListFlow
 import com.kochkov.evgeny.setlist_mobile.domain.Interactor
 import com.kochkov.evgeny.setlist_mobile.utils.*
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_EMPTY
@@ -19,7 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
+import java.lang.Exception
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {
@@ -76,26 +75,17 @@ class ArtistSearchFragmentViewModel: ViewModel() {
         }
     }
 
+
     fun searchArtistCoroutines(artistName: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val result = interactor.searchArtistCoroutines(artistName)
-                when (result.isSuccessful) {
-                    true -> {
-                        result.body()?.let {
-                            it.toArtistListFlow().collect {
-                                artistsLiveData.postValue(it)
-                                loadingIndicatorLiveData.postValue(false)
-                            }
-                        } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
-                    }
-                    false -> {
-                        toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
-                    }
+        try {
+            CoroutineScope(Dispatchers.IO).launch {
+                interactor.searchArtistCoroutines(artistName).collect {
+                    artistsLiveData.postValue(it)
+                    loadingIndicatorLiveData.postValue(false)
                 }
-            } catch (e: UnknownHostException) {
-                toastEventLiveData.postValue(NETWORK_IS_NOT_OK)
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
