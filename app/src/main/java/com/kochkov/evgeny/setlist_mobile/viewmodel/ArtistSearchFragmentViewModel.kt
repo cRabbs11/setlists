@@ -15,11 +15,8 @@ import com.kochkov.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_FAILURE
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_NOT_FOUND
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -31,6 +28,11 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     val queryArtistLiveData = MutableLiveData<List<String>>()
     val toastEventLiveData = SingleLiveEvent<String>()
     val loadingIndicatorLiveData = MutableLiveData<Boolean>()
+
+    val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        loadingIndicatorLiveData.postValue(false)
+        toastEventLiveData.postValue(NETWORK_IS_NOT_OK)
+    }
 
     @Inject
     lateinit var interactor: Interactor
@@ -82,17 +84,12 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     fun searchArtistCoroutines(artistName: String) {
         if (artistName.isNotEmpty()) {
             loadingIndicatorLiveData.postValue(true)
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val list = interactor.searchArtistCoroutines(artistName)
-                    list?.let {
-                        artistsLiveData.postValue(it)
-                    } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
-                    loadingIndicatorLiveData.postValue(false)
-                } catch (e: IOException) {
-                    loadingIndicatorLiveData.postValue(false)
-                    toastEventLiveData.postValue(NETWORK_IS_NOT_OK)
-                }
+            viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+                val list = interactor.searchArtistCoroutines(artistName)
+                list?.let {
+                    artistsLiveData.postValue(it)
+                } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
+                loadingIndicatorLiveData.postValue(false)
             }
         } else {
             toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
