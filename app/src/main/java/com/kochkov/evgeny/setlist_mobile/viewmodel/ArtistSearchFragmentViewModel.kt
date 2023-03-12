@@ -2,6 +2,7 @@ package com.kochkov.evgeny.setlist_mobile.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kochkov.evgeny.setlist_mobile.App
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
@@ -18,7 +19,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {
@@ -77,15 +80,22 @@ class ArtistSearchFragmentViewModel: ViewModel() {
 
 
     fun searchArtistCoroutines(artistName: String) {
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                interactor.searchArtistCoroutines(artistName).collect {
-                    artistsLiveData.postValue(it)
+        if (artistName.isNotEmpty()) {
+            loadingIndicatorLiveData.postValue(true)
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val list = interactor.searchArtistCoroutines(artistName)
+                    list?.let {
+                        artistsLiveData.postValue(it)
+                    } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
                     loadingIndicatorLiveData.postValue(false)
+                } catch (e: IOException) {
+                    loadingIndicatorLiveData.postValue(false)
+                    toastEventLiveData.postValue(NETWORK_IS_NOT_OK)
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } else {
+            toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
         }
     }
 
