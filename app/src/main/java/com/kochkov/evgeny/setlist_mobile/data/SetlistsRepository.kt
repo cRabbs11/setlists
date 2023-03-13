@@ -43,30 +43,9 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         return artistDao.insertSearchQuery(query)
     }
 
-    fun searchArtist(artistName: String): Observable<List<Artist>> {
-        return retrofit.searchArtistsObservable(
-            artistName = artistName,
-            page = 1,
-            sort = SetlistsAPIConstants.SORT_TYPE_NAME)
-            .subscribeOn(Schedulers.io())
-            .onErrorComplete {
-
-                false
-            }
-            .map {
-                val list = it.toArtistList()
-                if (list.isNotEmpty()) {
-                    setLastSearchArtists(list)
-                    val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
-                    saveSearchQueryArtists(searchQuery)
-                }
-                list
-            }
-    }
-
-    suspend fun searchArtistCoroutines(artistName: String): List<Artist>? {
+    suspend fun searchArtist(artistName: String): List<Artist>? {
         return coroutineScope {
-            val result = retrofit.searchArtistsCoroutines(
+            val result = retrofit.searchArtists(
                 artistName = artistName,
                 page = 1,
                 sort = SetlistsAPIConstants.SORT_TYPE_NAME)

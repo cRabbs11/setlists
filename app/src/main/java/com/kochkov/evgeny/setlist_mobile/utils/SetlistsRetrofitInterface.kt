@@ -12,21 +12,7 @@ import retrofit2.http.Query
 interface SetlistsRetrofitInterface {
 
     @GET("search/artists")
-    fun searchArtists(
-            @Query("artistName") artistName: String,
-            @Query("page") page: Int,
-            @Query("sort") sort: String
-    ): Call<ArtistDataDTO>
-
-    @GET("search/artists")
-    fun searchArtistsObservable(
-        @Query("artistName") artistName: String,
-        @Query("page") page: Int,
-        @Query("sort") sort: String
-    ): Observable<ArtistDataDTO>
-
-    @GET("search/artists")
-    suspend fun searchArtistsCoroutines(
+    suspend fun searchArtists(
         @Query("artistName") artistName: String,
         @Query("page") page: Int,
         @Query("sort") sort: String
