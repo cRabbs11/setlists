@@ -1,5 +1,6 @@
 package com.kochkov.evgeny.setlist_mobile.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,6 +33,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         loadingIndicatorLiveData.postValue(false)
         toastEventLiveData.postValue(NETWORK_IS_NOT_OK)
+        Log.d("BMTH", "throwable: ${throwable.printStackTrace()}")
     }
 
     @Inject
@@ -76,20 +78,14 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     }
 
     fun isSetlistsHave(artist: Artist) {
-        interactor.isHaveSetlists(artist)
-            .subscribeOn(Schedulers.io())
-            .subscribeBy(
-                onNext = { ifSetlistsHave ->
-                    if (ifSetlistsHave) {
-                        interactor.setNewArtist()
-                        isSetlistsHaveLiveData.postValue(artist)
-                    } else {
-                        toastEventLiveData.postValue(SETLISTS_SEARCH_NOT_FOUND)
-                    }
-                },
-                onError = {
-                    toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
-                }
-            )
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            val result = interactor.isHaveSetlists(artist)
+            if (result) {
+                interactor.setNewArtist()
+                isSetlistsHaveLiveData.postValue(artist)
+            } else {
+                toastEventLiveData.postValue(SETLISTS_SEARCH_NOT_FOUND)
+            }
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.kochkov.evgeny.setlist_mobile.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kochkov.evgeny.setlist_mobile.App
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
@@ -10,6 +12,9 @@ import com.kochkov.evgeny.setlist_mobile.utils.*
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_FAILURE
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
@@ -19,54 +24,49 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
     private var isLoading = false
     private var setlistPage = 1
 
+    val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        toastEventLiveData.postValue(Constants.NETWORK_IS_NOT_OK)
+        isLoading = false
+        Log.d("BMTH", "throwable: ${throwable.printStackTrace()}")
+    }
+
     @Inject
     lateinit var interactor: Interactor
 
     init {
         App.instance.dagger.inject(this)
-        getSetlists(artist, setlistPage)
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            getSetlists(artist, setlistPage)
+        }
+
     }
 
     fun onRecyclerViewScrolled(lastVisiblePos: Int, totalPosCount: Int) {
         if (!isLoading && lastVisiblePos>=totalPosCount-1) {
             isLoading=true
-            getSetlists(artist, setlistPage)
+            viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+                getSetlists(artist, setlistPage)
+            }
         }
     }
 
-    private fun getSetlists(artist: Artist, page: Int) {
-        interactor.getSetlists(artist, page)
-            .subscribeOn(Schedulers.io())
-            .subscribeBy(
-                onNext = {
-                    if (it.isNotEmpty()) {
-                        setlistPage++
-                        isLoading = false
-                        var newList = arrayListOf<Setlist>()
-                        newList.addAll(setlistsLiveData.value?: arrayListOf())
-                        newList.addAll(it)
-                        setlistsLiveData.postValue(newList)
-                    }
-                },
-                onError = {
+    suspend fun getSetlists(artist: Artist, page: Int) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            val list = interactor.getSetlists(artist, page)
+            list?.let {
+                if (it.isNotEmpty()) {
+                    setlistPage++
                     isLoading = false
-                    toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
+                    var newList = arrayListOf<Setlist>()
+                    newList.addAll(setlistsLiveData.value?: arrayListOf())
+                    newList.addAll(it)
+                    setlistsLiveData.postValue(newList)
                 }
-            )
+            }
+        }
     }
 
-    private fun getSetlistsFromDB(artist: Artist, page: Int) {
-        interactor.getSetlists(artist, page)
-            .subscribeOn(Schedulers.io())
-            .subscribeBy(
-                onNext = {
-                    isLoading = false
-                    setlistsLiveData.postValue(it)
-                },
-                onError = {
-                    isLoading = false
-                    toastEventLiveData.postValue(SETLISTS_SEARCH_FAILURE)
-                }
-            )
+    suspend fun getSetlistsFromDBCoroutines(artist: Artist, page: Int) {
+
     }
 }

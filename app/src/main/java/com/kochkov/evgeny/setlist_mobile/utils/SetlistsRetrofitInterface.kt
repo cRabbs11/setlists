@@ -19,16 +19,16 @@ interface SetlistsRetrofitInterface {
     ): Response<ArtistDataDTO>
 
     @GET("artist/{artistMbid}/setlists")
-    fun getSetlistsByArtist(
-            @Path("artistMbid") artistMbid: String,
-            @Query("p") page: Int
-
-    ): Call<SetlistsDataDTO>
-
-    @GET("artist/{artistMbid}/setlists")
     fun getSetlistsByArtistObservable(
         @Path("artistMbid") artistMbid: String,
         @Query("p") page: Int
 
     ): Observable<SetlistsDataDTO>
+
+    @GET("artist/{artistMbid}/setlists")
+    suspend fun getSetlistsByArtist(
+        @Path("artistMbid") artistMbid: String,
+        @Query("p") page: Int
+
+    ): Response<SetlistsDataDTO>
 }

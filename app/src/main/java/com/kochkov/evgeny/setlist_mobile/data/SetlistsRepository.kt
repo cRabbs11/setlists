@@ -67,24 +67,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         artistDao.clearSetlists()
     }
 
-    fun isSetlistsHave(artist: Artist): Observable<Boolean> {
-        return retrofit.getSetlistsByArtistObservable(
-            artistMbid = artist.mbid,
-            page = 1
-        ).subscribeOn(Schedulers.io())
-            .onErrorComplete{
-                false
-            }
-            .flatMap {
-                val list = it.toSetlistList()
-                if (list.isNotEmpty()) {
-                    Observable.just(true)
-                } else {
-                    Observable.just(false)
-                }
-            }
-    }
-
     fun getSetlistsWithDB(artist: Artist, page: Int): Observable<List<Setlist>> {
         return Observable.concat(
             retrofit.getSetlistsByArtistObservable(
@@ -108,13 +90,19 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         )
     }
 
-    fun getSetlists(artist: Artist, page: Int): Observable<List<Setlist>> {
-        return retrofit.getSetlistsByArtistObservable(
-            artistMbid = artist.mbid,
-            page = page
-        )
-            .map {
-                it.toSetlistList()
-            }
+    suspend fun getSetlists(artist: Artist, page: Int): List<Setlist>? {
+        return coroutineScope {
+            val result = retrofit.getSetlistsByArtist(
+                artistMbid = artist.mbid,
+                page = page)
+            result.body()?.toSetlistList()
+        }
+    }
+
+    suspend fun isSetlistsHave(artist: Artist): Boolean {
+        return coroutineScope {
+            val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
+            result.body()?.toSetlistList()?.isNotEmpty()?: false
+        }
     }
 }

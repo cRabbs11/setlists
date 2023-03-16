@@ -13,15 +13,7 @@ class Interactor(private val repository: SetlistsRepository) {
 
     suspend fun searchArtist(artistName: String) = repository.searchArtist(artistName)
 
-    fun isHaveSetlists(artist: Artist): Observable<Boolean> {
-        return repository.isSetlistsHave(artist)
-    }
+    suspend fun isHaveSetlists(artist: Artist) = repository.isSetlistsHave(artist)
 
-    fun getSetlists(artist: Artist, page: Int): Observable<List<Setlist>> {
-        return if (artist!=null) {
-            repository.getSetlists(artist, page)
-        } else {
-            Observable.empty<List<Setlist>>()
-        }
-    }
+    suspend fun getSetlists(artist: Artist, page: Int) = repository.getSetlists(artist, page)
 }
