@@ -12,14 +12,9 @@ import com.kochkov.evgeny.setlist_mobile.utils.*
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_EMPTY
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_ON_FAILURE
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.NETWORK_IS_NOT_OK
-import com.kochkov.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_FAILURE
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_NOT_FOUND
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import java.io.IOException
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {

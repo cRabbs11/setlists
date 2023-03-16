@@ -1,19 +1,12 @@
 package com.kochkov.evgeny.setlist_mobile.data
 
-import android.util.Log
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
-import com.kochkov.evgeny.setlist_mobile.utils.Constants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import retrofit2.Response
-import java.net.UnknownHostException
 import java.util.concurrent.Executors
 
 class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface) {
