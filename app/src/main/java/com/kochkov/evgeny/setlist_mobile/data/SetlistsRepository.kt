@@ -43,6 +43,45 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 page = 1,
                 sort = SetlistsAPIConstants.SORT_TYPE_NAME)
             val list = result.body()?.toArtistList()
+            list
+        }
+    }
+
+    suspend fun searchArtistWithSetlists(artistName: String): List<Artist>? {
+        return coroutineScope {
+            val rearchResult = retrofit.searchArtists(
+                artistName = artistName,
+                page = 1,
+                sort = SetlistsAPIConstants.SORT_TYPE_NAME)
+            val list = rearchResult.body()?.toArtistList()
+            val result = arrayListOf<Artist>()
+            val deferred = list?.flatMap {
+                listOf(
+                    async {
+                        isSetlistsHaveReturnedArtist(it)
+                    }
+                )
+            }
+            deferred?.awaitAll()?.forEach { artist ->
+                artist?.let {
+                    result.add(it)
+                }
+            }
+            if (result.isNullOrEmpty()) {
+                val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
+                saveSearchQueryArtists(searchQuery)
+            }
+            result
+        }
+    }
+
+    suspend fun searchArtistAndSaveQuery(artistName: String): List<Artist>? {
+        return coroutineScope {
+            val result = retrofit.searchArtists(
+                artistName = artistName,
+                page = 1,
+                sort = SetlistsAPIConstants.SORT_TYPE_NAME)
+            val list = result.body()?.toArtistList()
             if (!list.isNullOrEmpty()) {
                 setLastSearchArtists(list)
                 val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
@@ -96,6 +135,19 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
             result.body()?.toSetlistList()?.isNotEmpty()?: false
+        }
+    }
+
+    private suspend fun isSetlistsHaveReturnedArtist(artist: Artist): Artist? {
+        return coroutineScope {
+            val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
+            result.body()?.toSetlistList()?.isNotEmpty()?.let {
+                if (it) {
+                    artist
+                } else {
+                    null
+                }
+            }
         }
     }
 }
