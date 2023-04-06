@@ -104,8 +104,7 @@ class ArtistSearchFragment : Fragment() {
 
             binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    //viewModel.searchArtist(query)
-                    viewModel.searchArtistCoroutines(query)
+                    viewModel.searchArtistWithSetlists(query)
                     return true
                 }
 

@@ -72,6 +72,22 @@ class ArtistSearchFragmentViewModel: ViewModel() {
         }
     }
 
+    fun searchArtistWithSetlists(artistName: String) {
+        if (artistName.isNotEmpty()) {
+            loadingIndicatorLiveData.postValue(true)
+            viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+                val list = interactor.searchArtistWithSetlists(artistName)
+                list?.let {
+                    artistsLiveData.postValue(it)
+                } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
+                loadingIndicatorLiveData.postValue(false)
+            }
+        } else {
+            toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
+        }
+    }
+
+
     fun isSetlistsHave(artist: Artist) {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val result = interactor.isHaveSetlists(artist)
