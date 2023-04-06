@@ -2,8 +2,6 @@ package com.kochkov.evgeny.setlist_mobile.domain
 
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
-import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
-import io.reactivex.rxjava3.core.Observable
 
 class Interactor(private val repository: SetlistsRepository) {
 
@@ -11,19 +9,11 @@ class Interactor(private val repository: SetlistsRepository) {
         repository.setNewArtist()
     }
 
-    fun searchArtist(artistName: String): Observable<List<Artist>> {
-        return repository.searchArtist(artistName)
-    }
+    suspend fun searchArtist(artistName: String) = repository.searchArtist(artistName)
 
-    fun isHaveSetlists(artist: Artist): Observable<Boolean> {
-        return repository.isSetlistsHave(artist)
-    }
+    suspend fun searchArtistWithSetlists(artistName: String) = repository.searchArtistWithSetlists(artistName)
 
-    fun getSetlists(artist: Artist, page: Int): Observable<List<Setlist>> {
-        return if (artist!=null) {
-            repository.getSetlists(artist, page)
-        } else {
-            Observable.empty<List<Setlist>>()
-        }
-    }
+    suspend fun isHaveSetlists(artist: Artist) = repository.isSetlistsHave(artist)
+
+    suspend fun getSetlists(artist: Artist, page: Int) = repository.getSetlists(artist, page)
 }

@@ -31,7 +31,7 @@ class SetlistHolder(private val binding: ItemSetlistLayoutBinding) : RecyclerVie
         if (setlist.tour?.name!=null) {
             tourName = setlist.tour!!.name
         } else {
-            binding.tourName.visibility = View.GONE
+            binding.tourName.visibility = View.INVISIBLE
         }
         val tour = tourName
         val venue = setlist.venue?.name + ": " + setlist.venue?.city?.name + ", " + setlist.venue?.city?.country?.name

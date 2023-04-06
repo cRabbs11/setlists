@@ -6,6 +6,7 @@ object Constants {
     const val SETLISTS_SEARCH_FAILURE = "поиск сетлистов неудался"
     const val SETLISTS_SEARCH_NOT_FOUND = "сетлистов не найдено"
     const val VENUE_DATA_NOT_FOUND = "данные не найдены"
+    const val NETWORK_IS_NOT_OK = "ошибка"
 
     const val KEY_BUNDLE_ARTIST = "artist"
     const val KEY_BUNDLE_SETLIST = "setlist"
