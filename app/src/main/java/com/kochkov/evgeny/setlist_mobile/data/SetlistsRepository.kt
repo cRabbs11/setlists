@@ -36,16 +36,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         return artistDao.insertSearchQuery(query)
     }
 
-    suspend fun searchArtist(artistName: String): List<Artist>? {
-        return coroutineScope {
-            val result = retrofit.searchArtists(
-                artistName = artistName,
-                page = 1,
-                sort = SetlistsAPIConstants.SORT_TYPE_NAME)
-            val list = result.body()?.toArtistList()
-            list
-        }
-    }
 
     suspend fun searchArtistWithSetlists(artistName: String): List<Artist>? {
         return coroutineScope {
