@@ -26,8 +26,11 @@ class MapFragment() : Fragment() {
 
     lateinit var googleMap: GoogleMap
     lateinit var binding : FragmentMapBinding
-    private val viewModel: MapFragmentViewModel by viewModels{ factory(venue = arguments?.get(
-        Constants.KEY_BUNDLE_VENUE) as Venue
+    //private val viewModel: MapFragmentViewModel by viewModels{ factory(venue = arguments?.get(
+    //    Constants.KEY_BUNDLE_VENUE) as Venue
+    //)}
+    private val viewModel: MapFragmentViewModel by viewModels{ factory(setlist = arguments?.get(
+        Constants.KEY_BUNDLE_SETLIST) as Setlist
     )}
 
     override fun onCreate(savedInstanceState: Bundle?) {

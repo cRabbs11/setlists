@@ -29,8 +29,8 @@ class ViewModelFactory(private val artist: Artist?,
                 }
             }
             MapFragmentViewModel::class.java -> {
-                if (venue!=null) {
-                    MapFragmentViewModel(venue)
+                if (setlist!=null) {
+                    MapFragmentViewModel(setlist)
                 } else {
                     throw IllegalStateException(Constants.EXCEPTION_MESSAGE_ARGUMENT_IS_NULL)
                 }

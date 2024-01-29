@@ -61,6 +61,15 @@ class MainActivity: AppCompatActivity() {
         launchFragment(fragment)
     }
 
+    fun openMapFragment(setlist: Setlist) {
+        val bundle = Bundle()
+        bundle.putSerializable(KEY_BUNDLE_SETLIST, setlist)
+        val fragment = MapFragment()
+        fragment.arguments = bundle
+
+        launchFragment(fragment)
+    }
+
     fun openSingleSetlistFragment(sharedView: View, setlist: Setlist) {
         val bundle = Bundle()
         bundle.putString(KEY_BUNDLE_TRANSITION, sharedView.transitionName)

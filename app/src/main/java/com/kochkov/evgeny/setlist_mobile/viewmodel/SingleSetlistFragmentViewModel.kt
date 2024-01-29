@@ -23,4 +23,8 @@ class SingleSetlistFragmentViewModel(private val setlist: Setlist): ViewModel() 
     fun getVenue(): Venue? {
         return setlist.venue
     }
+
+    fun getSetlist(): Setlist {
+        return setlist
+    }
 }
