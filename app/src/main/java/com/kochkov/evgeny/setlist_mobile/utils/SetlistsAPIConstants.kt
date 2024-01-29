@@ -7,4 +7,7 @@ object SetlistsAPIConstants {
 
     const val HEADER_NAME_API_KEY = "x-api-key"
     const val HEADER_NAME_ACCEPT= "Accept"
+
+    const val TOUR_NAME_EMPTY = "empty_name"
+    const val SETLISTS_IN_TOUR_IS_NULL = -1
 }
