@@ -3,6 +3,7 @@ package com.kochkov.evgeny.setlist_mobile.data
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
+import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_TOUR_IS_NULL
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -36,16 +37,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         return artistDao.insertSearchQuery(query)
     }
 
-    suspend fun searchArtist(artistName: String): List<Artist>? {
-        return coroutineScope {
-            val result = retrofit.searchArtists(
-                artistName = artistName,
-                page = 1,
-                sort = SetlistsAPIConstants.SORT_TYPE_NAME)
-            val list = result.body()?.toArtistList()
-            list
-        }
-    }
 
     suspend fun searchArtistWithSetlists(artistName: String): List<Artist>? {
         return coroutineScope {
@@ -67,7 +58,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                     result.add(it)
                 }
             }
-            if (result.isNullOrEmpty()) {
+            if (!result.isNullOrEmpty()) {
                 val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
                 saveSearchQueryArtists(searchQuery)
             }
@@ -128,6 +119,28 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
                 artistMbid = artist.mbid,
                 page = page)
             result.body()?.toSetlistList()
+        }
+    }
+
+    suspend fun getSetlistsInTour(tourName: String): List<Setlist>? {
+        return coroutineScope {
+            val setlistsInTour = arrayListOf<Setlist>()
+            var isTourEnded = false
+            var page = 0
+            var setlistsInTourTotal = SETLISTS_IN_TOUR_IS_NULL
+            var setlistsInTourCount = 0
+            while (!isTourEnded) {
+                val response = retrofit.searchSetlistsByTour(tourName, ++page)
+                setlistsInTourTotal = response.body()?.total?: SETLISTS_IN_TOUR_IS_NULL
+                val result = response.body()?.toSetlistList()
+                    result?.forEach { setlist ->
+                        setlistsInTour.add(setlist)
+                        setlistsInTourCount++
+                    }
+                if (setlistsInTourCount>=setlistsInTourTotal) isTourEnded = true
+                    //убрать проверку на совпадение имени тура (это происходит внутри апи?)
+            }
+            setlistsInTour
         }
     }
 

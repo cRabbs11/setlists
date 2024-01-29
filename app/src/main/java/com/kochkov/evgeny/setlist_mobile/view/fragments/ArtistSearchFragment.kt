@@ -102,17 +102,17 @@ class ArtistSearchFragment : Fragment() {
 
         binding.searchView.suggestionsAdapter = suggestionAdapter
 
-            binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    viewModel.searchArtistWithSetlists(query)
-                    return true
-                }
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.searchArtistWithSetlists(query)
+                return true
+            }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    if (!newText.isNullOrEmpty() && newText.length>=2) populateAdapter(newText)
-                    return true
-                }
-            })
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (!newText.isNullOrEmpty() && newText.length>=2) populateAdapter(newText)
+                return true
+            }
+        })
 
         binding.searchView.setOnSuggestionListener(object: SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {

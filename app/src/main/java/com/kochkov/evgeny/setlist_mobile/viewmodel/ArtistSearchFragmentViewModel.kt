@@ -57,20 +57,20 @@ class ArtistSearchFragmentViewModel: ViewModel() {
         loadingIndicatorLiveData.postValue(false)
     }
 
-    fun searchArtistCoroutines(artistName: String) {
-        if (artistName.isNotEmpty()) {
-            loadingIndicatorLiveData.postValue(true)
-            viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-                val list = interactor.searchArtist(artistName)
-                list?.let {
-                    artistsLiveData.postValue(it)
-                } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
-                loadingIndicatorLiveData.postValue(false)
-            }
-        } else {
-            toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
-        }
-    }
+    //fun searchArtistCoroutines(artistName: String) {
+    //    if (artistName.isNotEmpty()) {
+    //        loadingIndicatorLiveData.postValue(true)
+    //                    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+    //            val list = interactor.searchArtist(artistName)
+    //                            list?.let {
+    //                artistsLiveData.postValue(it)
+    //                                } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
+    //                            loadingIndicatorLiveData.postValue(false)
+    //                        }
+    //                } else {
+    //        toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
+    //                }
+    //        }
 
     fun searchArtistWithSetlists(artistName: String) {
         if (artistName.isNotEmpty()) {

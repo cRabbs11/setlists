@@ -138,9 +138,10 @@ class SingleSetlistFragment : Fragment() {
         binding.setlistInfoLayout.concertDateView.transitionName = arguments?.getString(KEY_BUNDLE_TRANSITION)
 
         binding.fabToMap.setOnClickListener { view ->
-            val venue = viewModel.getVenue()
-            if (venue!=null) {
-                (activity as MainActivity).openMapFragment(venue)
+            val setlist = viewModel.getSetlist()
+            if (setlist.venue!=null) {
+                //(activity as MainActivity).openMapFragment(venue)
+                (activity as MainActivity).openMapFragment(setlist)
             } else {
                 showToast(Constants.VENUE_DATA_NOT_FOUND)
             }
