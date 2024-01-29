@@ -14,4 +14,6 @@ class Interactor(private val repository: SetlistsRepository) {
     suspend fun isHaveSetlists(artist: Artist) = repository.isSetlistsHave(artist)
 
     suspend fun getSetlists(artist: Artist, page: Int) = repository.getSetlists(artist, page)
+
+    suspend fun getSetlistsInTour(tourName: String) = repository.getSetlistsInTour(tourName)
 }
