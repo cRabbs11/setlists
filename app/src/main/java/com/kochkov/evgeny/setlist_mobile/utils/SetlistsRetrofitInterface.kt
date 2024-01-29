@@ -30,4 +30,10 @@ interface SetlistsRetrofitInterface {
         @Query("p") page: Int
 
     ): Response<SetlistsDataDTO>
+
+    @GET("search/setlists")
+    suspend fun searchSetlistsByTour(
+        @Query("tourName") tourName: String,
+        @Query("p") page: Int
+    ): Response<SetlistsDataDTO>
 }
