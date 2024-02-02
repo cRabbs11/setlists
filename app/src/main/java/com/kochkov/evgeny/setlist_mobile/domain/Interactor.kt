@@ -2,11 +2,16 @@ package com.kochkov.evgeny.setlist_mobile.domain
 
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class Interactor(private val repository: SetlistsRepository) {
 
     fun setNewArtist() {
-        repository.setNewArtist()
+        MainScope().launch(Dispatchers.IO) {
+            repository.setNewArtist()
+        }
     }
 
     suspend fun searchArtistWithSetlists(artistName: String) = repository.searchArtistWithSetlists(artistName)

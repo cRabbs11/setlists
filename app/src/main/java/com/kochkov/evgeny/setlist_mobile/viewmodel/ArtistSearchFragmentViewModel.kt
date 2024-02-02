@@ -13,8 +13,8 @@ import com.kochkov.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_ON_FAILURE
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.NETWORK_IS_NOT_OK
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_NOT_FOUND
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {
@@ -40,20 +40,29 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     init {
         App.instance.dagger.inject(this)
 
-        setlistsRepository.getSearchQueryArtists()
-            .subscribeOn(Schedulers.io())
-            .map { list ->
+        viewModelScope.launch(Dispatchers.IO) {
+            setlistsRepository.getSearchQueryArtists().collect { list ->
                 val result = arrayListOf<String>()
                 list.forEach {
                     result.add(it.queryText)
                 }
-                result
+                queryArtistLiveData.postValue(result)
             }
-            .subscribe{
-                if (it.isNotEmpty()) {
-                    queryArtistLiveData.postValue(it)
-                }
-            }
+        }
+        //setlistsRepository.getSearchQueryArtists()
+        //    .subscribeOn(Schedulers.io())
+        //    .map { list ->
+        //        val result = arrayListOf<String>()
+        //        list.forEach {
+        //            result.add(it.queryText)
+        //        }
+        //        result
+        //    }
+        //    .subscribe{
+        //        if (it.isNotEmpty()) {
+        //            queryArtistLiveData.postValue(it)
+        //        }
+        //    }
         loadingIndicatorLiveData.postValue(false)
     }
 

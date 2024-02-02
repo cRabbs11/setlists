@@ -5,10 +5,7 @@ import com.kochkov.evgeny.setlist_mobile.data.entity.*
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_TOUR_IS_NULL
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
-import java.util.concurrent.Executors
 
 class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface) {
 
@@ -16,10 +13,8 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
 
     private val lastSearchArtists = ArrayList<Artist>()
 
-    fun setNewArtist() {
-        Executors.newSingleThreadExecutor().execute {
-            clearSetlistsInDB()
-        }
+    suspend fun setNewArtist() {
+        clearSetlistsInDB()
     }
 
     fun setLastSearchArtists(list: List<Artist>) {
@@ -29,13 +24,9 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         }
     }
 
-    fun getSearchQueryArtists() : Observable<List<SearchQuery>> {
-        return artistDao.getSearchQueryArtists()
-    }
+    fun getSearchQueryArtists() = artistDao.getSearchQueryArtists()
 
-    fun saveSearchQueryArtists(query: SearchQuery) {
-        return artistDao.insertSearchQuery(query)
-    }
+    suspend fun saveSearchQueryArtists(query: SearchQuery) = artistDao.insertSearchQuery(query)
 
 
     suspend fun searchArtistWithSetlists(artistName: String): List<Artist>? {
@@ -82,11 +73,11 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         }
     }
 
-    private fun insertSetlistsInDB(list: List<Setlist>) {
+    private suspend fun insertSetlistsInDB(list: List<Setlist>) {
         artistDao.insertSetlists(list)
     }
 
-    private fun clearSetlistsInDB() {
+    private suspend fun clearSetlistsInDB() {
         artistDao.clearSetlists()
     }
 
