@@ -17,12 +17,12 @@ interface SetlistsRetrofitInterface {
         @Query("sort") sort: String
     ): Response<ArtistDataDTO>
 
-    @GET("artist/{artistMbid}/setlists")
-    fun getSetlistsByArtistObservable(
-        @Path("artistMbid") artistMbid: String,
-        @Query("p") page: Int
-
-    ): Observable<SetlistsDataDTO>
+    //код на rxJava для получения сетлистов
+    //@GET("artist/{artistMbid}/setlists")
+    //fun getSetlistsByArtistObservable(
+    //    @Path("artistMbid") artistMbid: String,
+    //    @Query("p") page: Int
+    //): Observable<SetlistsDataDTO>
 
     @GET("artist/{artistMbid}/setlists")
     suspend fun getSetlistsByArtist(

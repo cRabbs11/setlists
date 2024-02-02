@@ -38,6 +38,7 @@ interface ArtistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSetlists(setlists: List<Setlist>)
 
-    @Query("SELECT * FROM ${AppDataBase.CASHED_SETLISTS_TABLE_NAME}")
-    fun getSetlists(): Observable<List<Setlist>>
+    //код на rxJava для получения сетлистов
+    //@Query("SELECT * FROM ${AppDataBase.CASHED_SETLISTS_TABLE_NAME}")
+    //fun getSetlists(): Observable<List<Setlist>>
 }

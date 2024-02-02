@@ -90,28 +90,29 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         artistDao.clearSetlists()
     }
 
-    fun getSetlistsWithDB(artist: Artist, page: Int): Observable<List<Setlist>> {
-        return Observable.concat(
-            retrofit.getSetlistsByArtistObservable(
-                artistMbid = artist.mbid,
-                page = page
-            ).subscribeOn(Schedulers.io())
-                .onErrorComplete{
-                    false
-                }
-                .map {
-                    val list = it.toSetlistList()
-                    list
-                }
-                .flatMap {
-                    if (it.isNotEmpty()) {
-                        insertSetlistsInDB(it)
-                    }
-                    Observable.empty<List<Setlist>>()
-                },
-            artistDao.getSetlists().subscribeOn(Schedulers.io())
-        )
-    }
+    //код на rxJava для получения сетлистов и с БД и с сети
+    //fun getSetlistsWithDB(artist: Artist, page: Int): Observable<List<Setlist>> {
+    //    return Observable.concat(
+    //        retrofit.getSetlistsByArtistObservable(
+    //            artistMbid = artist.mbid,
+    //            page = page
+    //        ).subscribeOn(Schedulers.io())
+    //            .onErrorComplete{
+    //                false
+    //            }
+    //            .map {
+    //                val list = it.toSetlistList()
+    //                list
+    //            }
+    //            .flatMap {
+    //                if (it.isNotEmpty()) {
+    //                    insertSetlistsInDB(it)
+    //                }
+    //                Observable.empty<List<Setlist>>()
+    //            },
+    //        artistDao.getSetlists().subscribeOn(Schedulers.io())
+    //    )
+    //}
 
     suspend fun getSetlists(artist: Artist, page: Int): List<Setlist>? {
         return coroutineScope {
