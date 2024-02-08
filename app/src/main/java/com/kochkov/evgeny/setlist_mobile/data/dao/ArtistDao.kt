@@ -5,7 +5,6 @@ import com.kochkov.evgeny.setlist_mobile.data.AppDataBase
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.SearchQuery
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
-import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.flow.Flow
 
 
