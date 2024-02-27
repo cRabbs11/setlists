@@ -1,4 +1,4 @@
-package com.kochkov.evgeny.setlist_mobile.view.compose
+package com.kochkov.evgeny.setlist_mobile.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,7 +47,9 @@ class SearchCompose {
                 .background(Color.White)
         ) {
             SearchBar(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 10.dp),
                 query = text,
                 onQueryChange = { text = it },
                 onSearch = {
