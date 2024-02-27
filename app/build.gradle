@@ -109,6 +109,9 @@ dependencies {
     androidTestImplementation(composeBom)
     implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta01'
     implementation 'androidx.compose.material:material-icons-extended'
+    def paging_version = "3.2.1"
+    implementation("androidx.paging:paging-runtime:$paging_version")
+    implementation 'androidx.paging:paging-compose'
 
 //
     // Choose one of the following:
