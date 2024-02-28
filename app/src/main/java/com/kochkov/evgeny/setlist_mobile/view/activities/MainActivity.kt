@@ -55,7 +55,6 @@ class MainActivity: AppCompatActivity() {
         bundle.putSerializable(KEY_BUNDLE_VENUE, venue)
         val fragment = MapFragment()
         fragment.arguments = bundle
-
         launchFragment(fragment)
     }
 
@@ -77,6 +76,17 @@ class MainActivity: AppCompatActivity() {
         fragment.arguments = bundle
 
         launchFragment(fragment = fragment, sharedView = sharedView)
+    }
+
+    fun openSingleSetlistFragment(setlist: Setlist) {
+        val bundle = Bundle()
+        //bundle.putString(KEY_BUNDLE_TRANSITION, sharedView.transitionName)
+        bundle.putSerializable(KEY_BUNDLE_SETLIST, setlist)
+
+        val fragment = SingleSetlistFragment()
+        fragment.arguments = bundle
+
+        launchFragment(fragment = fragment)
     }
 
     fun closeFragment() {
