@@ -7,6 +7,8 @@ import android.view.*
 import android.widget.*
 
 import android.widget.Toast.LENGTH_SHORT
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -17,8 +19,11 @@ import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 import com.kochkov.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
 import com.kochkov.evgeny.setlist_mobile.setlists.SongListItem
 import com.kochkov.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
+import com.kochkov.evgeny.setlist_mobile.ui.SetlistScreen
+import com.kochkov.evgeny.setlist_mobile.ui.SetlistsComposePaging
 import com.kochkov.evgeny.setlist_mobile.utils.Constants
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
+import com.kochkov.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.kochkov.evgeny.setlist_mobile.utils.SongListItemAdapter
 import com.kochkov.evgeny.setlist_mobile.view.activities.MainActivity
 import com.kochkov.evgeny.setlist_mobile.viewmodel.SingleSetlistFragmentViewModel
@@ -98,27 +103,35 @@ class SingleSetlistFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSetlistBinding.inflate(inflater, container, false)
-        initView()
-        return binding.root
+        //binding = FragmentSetlistBinding.inflate(inflater, container, false)
+        //initView()
+        //return binding.root
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                SetlistScreen(viewModel = viewModel, onMapClickListener = object: OnItemClickListener<Setlist>{
+                    override fun onItemClick(setlist: Setlist) { (activity as MainActivity).openMapFragment(setlist) }
+                })
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        viewModel.songListItemLiveData.observe(viewLifecycleOwner) {
-            updateRecyclerView(it)
-        }
-
-        viewModel.setlistInfoLiveData.observe(viewLifecycleOwner) {
-            showSetlistInfo(it)
-        }
-
-        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
-
-        (activity as MainActivity).supportActionBar?.let {
-            it.title = (arguments?.get(Constants.KEY_BUNDLE_SETLIST) as Setlist).tour?.name?: getString(R.string.title_single_setlist)
-        }
+        //(activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //viewModel.songListItemLiveData.observe(viewLifecycleOwner) {
+        //    updateRecyclerView(it)
+        //}
+//
+        //viewModel.setlistInfoLiveData.observe(viewLifecycleOwner) {
+        //    showSetlistInfo(it)
+        //}
+//
+        //sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+//
+        //(activity as MainActivity).supportActionBar?.let {
+        //    it.title = (arguments?.get(Constants.KEY_BUNDLE_SETLIST) as Setlist).tour?.name?: getString(R.string.title_single_setlist)
+        //}
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
