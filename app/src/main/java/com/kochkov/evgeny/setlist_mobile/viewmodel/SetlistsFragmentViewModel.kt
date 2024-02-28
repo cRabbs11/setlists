@@ -4,6 +4,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.kochkov.evgeny.setlist_mobile.App
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
@@ -11,10 +15,23 @@ import com.kochkov.evgeny.setlist_mobile.domain.Interactor
 import com.kochkov.evgeny.setlist_mobile.utils.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val ITEMS_STARTING_PAGE = 1
 class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
+
+
+    val items: Flow<PagingData<Setlist>> = Pager(
+        config = PagingConfig(pageSize = ITEMS_STARTING_PAGE, enablePlaceholders = false),
+        pagingSourceFactory = { interactor.setlistPagingSource(artist.mbid) }
+    )
+        .flow
+        .cachedIn(viewModelScope)
+
+    val artistLiveData = MutableLiveData<Artist>()
+
 
     val setlistsLiveData = MutableLiveData<List<Setlist>>()
     val toastEventLiveData = SingleLiveEvent<String>()
@@ -35,7 +52,7 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             getSetlists(artist, setlistPage)
         }
-
+        artistLiveData.postValue(artist)
     }
 
     fun onRecyclerViewScrolled(lastVisiblePos: Int, totalPosCount: Int) {
