@@ -155,4 +155,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
             }
         }
     }
+
+    fun setlistPagingSource(artist : String) = SetlistPagingSource(retrofit, artist)
+
 }
