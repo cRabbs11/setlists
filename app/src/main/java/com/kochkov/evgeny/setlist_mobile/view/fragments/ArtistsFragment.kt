@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.utils.OnItemClickListener
 import com.kochkov.evgeny.setlist_mobile.view.activities.MainActivity
-import com.kochkov.evgeny.setlist_mobile.view.compose.SearchCompose
+import com.kochkov.evgeny.setlist_mobile.ui.SearchCompose
 import com.kochkov.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
 
 class ArtistsFragment: Fragment() {
