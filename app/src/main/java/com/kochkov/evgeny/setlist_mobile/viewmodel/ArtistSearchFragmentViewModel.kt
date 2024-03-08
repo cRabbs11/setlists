@@ -84,6 +84,7 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     fun searchArtistWithSetlists(artistName: String) {
         if (artistName.isNotEmpty()) {
             loadingIndicatorLiveData.postValue(true)
+            artistsLiveData.postValue(arrayListOf())
             viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
                 val list = interactor.searchArtistWithSetlists(artistName)
                 list?.let {
