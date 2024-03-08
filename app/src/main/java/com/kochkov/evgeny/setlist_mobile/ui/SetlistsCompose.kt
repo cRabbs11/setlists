@@ -9,6 +9,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -82,20 +83,21 @@ fun SetlistsComposePaging(
 fun SetlistCompose(setlist: Setlist, clickListener: OnItemClickListener<Setlist>? = null) {
     Row(modifier = Modifier
         .padding(top = 1.dp, bottom = 1.dp)
-        .clickable { clickListener?.onItemClick(setlist) }
+        .clickable { clickListener?.onItemClick(setlist)},
+        verticalAlignment = Alignment.CenterVertically
     ) {
         MigrateConcertDateView(setlist.eventDate)
         Column(verticalArrangement = Arrangement.Center) {
             Row() {
-                Text(modifier = Modifier.width(50.dp), text = "Артист:", textAlign = TextAlign.End)
+                Text(modifier = Modifier.width(70.dp), text = "Артист:", textAlign = TextAlign.End)
                 Text(modifier = Modifier.padding(start = 5.dp), text = setlist.artist?.name?: "unknown artist")
             }
             Row() {
-                Text(modifier = Modifier.width(50.dp), text = "Тур:", textAlign = TextAlign.End)
+                Text(modifier = Modifier.width(70.dp), text = "Тур:", textAlign = TextAlign.End)
                 Text(modifier = Modifier.padding(start = 5.dp),text = setlist.tour?.name?: "")
             }
             Row() {
-                Text(modifier = Modifier.width(50.dp), text = "Место:", textAlign = TextAlign.End)
+                Text(modifier = Modifier.width(70.dp), text = "Место:", textAlign = TextAlign.End)
                 val venue = setlist.venue?.name + ": " + setlist.venue?.city?.name + ", " + setlist.venue?.city?.country?.name
                 Text(modifier = Modifier.padding(start = 5.dp),text = venue)
             }
