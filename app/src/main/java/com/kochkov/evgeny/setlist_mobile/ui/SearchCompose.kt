@@ -25,7 +25,7 @@ import com.kochkov.evgeny.setlist_mobile.viewmodel.ArtistSearchFragmentViewModel
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.ui.tooling.preview.Preview
 
-class SearchCompose {
+
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Preview
@@ -39,83 +39,88 @@ class SearchCompose {
         val suggestions by viewModel.queryArtistLiveData.observeAsState()
         val artists by viewModel.artistsLiveData.observeAsState()
         val loadingIndicator by viewModel.loadingIndicatorLiveData.observeAsState()
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-        ) {
-            SearchBar(
+        Box() {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 10.dp),
-                query = text,
-                onQueryChange = { text = it },
-                onSearch = {
-                    active = false
-                    if (text.isNotEmpty()) {
-                        viewModel.searchArtistWithSetlists(text)
-                    }
-                           },
-                active = active,
-                onActiveChange = { active = it },
-                placeholder = { Text(stringResource(R.string.artist_hint)) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                trailingIcon = {
-                    if (active) {
-                        Icon(
-                            Icons.Default.Close, contentDescription = null,
-                            Modifier.clickable {
-                                text = ""
-                                active = false
-                            })
-                    }
-                               },
+                    .fillMaxSize()
+                    .background(Color.White)
             ) {
-                suggestions?.forEach { suggest ->
-                    if (suggest.lowercase().contains(text.lowercase())) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                //.padding(all = 14.dp)
-                                .clickable { text = suggest }
-                        ) {
+                SearchBar(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 10.dp),
+                    query = text,
+                    onQueryChange = { text = it },
+                    onSearch = {
+                        active = false
+                        if (text.isNotEmpty()) {
+                            viewModel.searchArtistWithSetlists(text)
+                        }
+                    },
+                    active = active,
+                    onActiveChange = { active = it },
+                    placeholder = { Text(stringResource(R.string.artist_hint)) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    trailingIcon = {
+                        if (active) {
                             Icon(
-                                Icons.Default.History,
-                                contentDescription = null,
-                            modifier = Modifier
-                                .padding(start = 14.dp, end = 4.dp, top = 8.dp, bottom = 8.dp))
-                            Text(
-                                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-                                fontSize = 14.sp, text = suggest)
+                                Icons.Default.Close, contentDescription = null,
+                                Modifier.clickable {
+                                    text = ""
+                                    active = false
+                                })
+                        }
+                    },
+                ) {
+                    suggestions?.forEach { suggest ->
+                        if (suggest.lowercase().contains(text.lowercase())) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    //.padding(all = 14.dp)
+                                    .clickable { text = suggest }
+                            ) {
+                                Icon(
+                                    Icons.Default.History,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(start = 14.dp, end = 4.dp, top = 8.dp, bottom = 8.dp))
+                                Text(
+                                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+                                    fontSize = 14.sp, text = suggest)
+                            }
+                        }
+                    }
+                }
+                LazyColumn(Modifier
+                    .fillMaxSize()
+                    .padding(top = 10.dp, start = 4.dp, end = 4.dp, bottom = 10.dp)) {
+                    artists?.let { data ->
+                        itemsIndexed(data) { index, it ->
+                            ArtistItem(it, clickListener)
+                            if (index != data.size - 1) {
+                                Divider()
+                            }
                         }
                     }
                 }
             }
-            loadingIndicator?.let { if (it) { LoadingIndicator() } }
-            LazyColumn(Modifier
-                .fillMaxSize()
-                .padding(top = 10.dp, start = 4.dp, end = 4.dp, bottom = 10.dp)) {
-                artists?.let { data ->
-                    itemsIndexed(data) { index, it ->
-                        ArtistItem(it, clickListener)
-                        if (index != data.size - 1) {
-                            Divider()
-                        }
-                    }
-                }
+            Column(
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+                loadingIndicator?.let { if (it) { LoadingIndicator() } }
             }
         }
+
     }
 
     @Composable
     fun LoadingIndicator() {
-        CircularProgressIndicator(
-            modifier = Modifier.padding(top = 48.dp),
-            color = Color.Green,
-            strokeWidth = 2.dp
-        )
+       CircularProgressIndicator(
+           strokeWidth = 4.dp
+       )
     }
 
     @Composable
@@ -136,4 +141,4 @@ class SearchCompose {
                 text = artist.name)
         }
     }
-}
+
