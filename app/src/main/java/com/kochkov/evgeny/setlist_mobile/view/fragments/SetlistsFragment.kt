@@ -23,6 +23,7 @@ import androidx.fragment.app.viewModels
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 import com.kochkov.evgeny.setlist_mobile.databinding.FragmentSetlistsBinding
+import com.kochkov.evgeny.setlist_mobile.ui.MyTheme
 import com.kochkov.evgeny.setlist_mobile.utils.*
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
 import com.kochkov.evgeny.setlist_mobile.view.activities.MainActivity
@@ -70,39 +71,41 @@ class SetlistsFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                val artist = viewModel.artistLiveData.observeAsState()
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                //containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                //titleContentColor = MaterialTheme.colorScheme.primary,
-                            ),
-                            title = {
-                                artist.value?.let {
-                                    Text(it.name)
+                MyTheme {
+                    val artist = viewModel.artistLiveData.observeAsState()
+                    Scaffold(
+                        topBar = {
+                            TopAppBar(
+                                //colors = TopAppBarDefaults.topAppBarColors(
+                                //    //containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                //    //titleContentColor = MaterialTheme.colorScheme.primary,
+                                //),
+                                title = {
+                                    artist.value?.let {
+                                        Text(it.name)
+                                    }
+                                },
+                                navigationIcon = {
+                                    IconButton(onClick = { activity?.onBackPressed() })
+                                    {
+                                        Icon(
+                                            imageVector = Icons.Filled.ArrowBack,
+                                            contentDescription = "Localized description"
+                                        )
+                                    }
+                                },)
+                        },
+                    ) { innerPadding ->
+                        SetlistsComposePaging(
+                            clickListener = object : OnItemClickListener<Setlist> {
+                                override fun onItemClick(setlist: Setlist) {
+                                    (activity as MainActivity).openSingleSetlistFragment(setlist)
                                 }
                             },
-                            navigationIcon = {
-                                IconButton(onClick = { activity?.onBackPressed() })
-                                {
-                                    Icon(
-                                        imageVector = Icons.Filled.ArrowBack,
-                                        contentDescription = "Localized description"
-                                    )
-                                }
-                            },)
-                    },
-                ) { innerPadding ->
-                    SetlistsComposePaging(
-                        clickListener = object : OnItemClickListener<Setlist> {
-                            override fun onItemClick(setlist: Setlist) {
-                                (activity as MainActivity).openSingleSetlistFragment(setlist)
-                            }
-                        },
-                        viewModel = viewModel,
-                        paddingValues = innerPadding
-                    )
+                            viewModel = viewModel,
+                            paddingValues = innerPadding
+                        )
+                    }
                 }
             }
 

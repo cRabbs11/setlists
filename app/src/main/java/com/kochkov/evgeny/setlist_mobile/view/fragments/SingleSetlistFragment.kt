@@ -19,6 +19,7 @@ import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 import com.kochkov.evgeny.setlist_mobile.databinding.FragmentSetlistBinding
 import com.kochkov.evgeny.setlist_mobile.setlists.SongListItem
 import com.kochkov.evgeny.setlist_mobile.setlists.diffs.SongListItemDiff
+import com.kochkov.evgeny.setlist_mobile.ui.MyTheme
 import com.kochkov.evgeny.setlist_mobile.ui.SetlistScreen
 import com.kochkov.evgeny.setlist_mobile.ui.SetlistsComposePaging
 import com.kochkov.evgeny.setlist_mobile.utils.Constants
@@ -109,9 +110,11 @@ class SingleSetlistFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                SetlistScreen(viewModel = viewModel, onMapClickListener = object: OnItemClickListener<Setlist>{
-                    override fun onItemClick(setlist: Setlist) { (activity as MainActivity).openMapFragment(setlist) }
-                })
+                MyTheme{
+                    SetlistScreen(viewModel = viewModel, onMapClickListener = object: OnItemClickListener<Setlist>{
+                        override fun onItemClick(setlist: Setlist) { (activity as MainActivity).openMapFragment(setlist) }
+                    })
+                }
             }
         }
     }
