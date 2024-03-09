@@ -31,6 +31,7 @@ fun SetlistDTO.toSetlist(): Setlist {
                 list.add(it.toSet())
         }
         return Setlist(
+                id = id.hashCode(),
                 artist = artist.toArtist(),
                 venue = venue.toVenue(),
                 tour = tour?.toTour(),

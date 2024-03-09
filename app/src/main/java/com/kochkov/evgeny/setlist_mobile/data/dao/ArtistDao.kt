@@ -5,39 +5,40 @@ import com.kochkov.evgeny.setlist_mobile.data.AppDataBase
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.SearchQuery
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface ArtistDao {
-
     @Query("SELECT * FROM ${AppDataBase.SAVED_ARTISTS_TABLE_NAME}")
-    fun getAllArtists() : List<Artist>
+    suspend fun getAllArtists() : List<Artist>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArtist(artist: Artist)
+    suspend fun insertArtist(artist: Artist)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArtists(artists: List<Artist>)
+    suspend fun insertArtists(artists: List<Artist>)
 
     @Delete
-    fun deleteArtist(artist: Artist)
+    suspend fun deleteArtist(artist: Artist)
 
     @Query("DELETE FROM ${AppDataBase.CASHED_SETLISTS_TABLE_NAME}")
-    fun clearSetlists()
+    suspend fun clearSetlists()
 
     @Update
-    fun updateArtist(artist: Artist)
+    suspend fun updateArtist(artist: Artist)
 
     @Query("SELECT * FROM ${AppDataBase.SAVED_SEARCH_QUERRY_TABLE_NAME}")
-    fun getSearchQueryArtists() : Observable<List<SearchQuery>>
+    fun getSearchQueryArtists() : Flow<List<SearchQuery>>
+    //переделать на корутину
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSearchQuery(searchQuery: SearchQuery)
+    suspend fun insertSearchQuery(searchQuery: SearchQuery)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSetlists(setlists: List<Setlist>)
+    suspend fun insertSetlists(setlists: List<Setlist>)
 
-    @Query("SELECT * FROM ${AppDataBase.CASHED_SETLISTS_TABLE_NAME}")
-    fun getSetlists(): Observable<List<Setlist>>
+    //код на rxJava для получения сетлистов
+    //@Query("SELECT * FROM ${AppDataBase.CASHED_SETLISTS_TABLE_NAME}")
+    //fun getSetlists(): Observable<List<Setlist>>
 }

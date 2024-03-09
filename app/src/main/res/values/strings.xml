@@ -12,6 +12,7 @@
 
     <string name="more_artist_info">more info</string>
     <string name="more_venue_info">more info</string>
+    <string name="setlists">setlists</string>
     <string name="setlist_link">www.setlist.fm</string>
     <string name="setlist_link_prefix">http://</string>
 

@@ -12,7 +12,7 @@ class ViewModelFactory(private val artist: Artist?,
                        private val setlist: Setlist?,
                        private val venue: Venue?): ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass) {
             SetlistsFragmentViewModel::class.java -> {
                 if (artist!=null) {

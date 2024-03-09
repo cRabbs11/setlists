@@ -14,10 +14,7 @@ import com.kochkov.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_ARTIST
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_SETLIST
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_TRANSITION
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.KEY_BUNDLE_VENUE
-import com.kochkov.evgeny.setlist_mobile.view.fragments.ArtistSearchFragment
-import com.kochkov.evgeny.setlist_mobile.view.fragments.MapFragment
-import com.kochkov.evgeny.setlist_mobile.view.fragments.SetlistsFragment
-import com.kochkov.evgeny.setlist_mobile.view.fragments.SingleSetlistFragment
+import com.kochkov.evgeny.setlist_mobile.view.fragments.*
 import java.util.regex.Pattern
 
 class MainActivity: AppCompatActivity() {
@@ -38,7 +35,8 @@ class MainActivity: AppCompatActivity() {
 
     fun openArtistSearchFragment() {
 
-        val fragment = ArtistSearchFragment()
+        //val fragment = ArtistSearchFragment()
+        val fragment = ArtistsFragment()
 
         launchFragment(fragment)
     }
@@ -57,7 +55,6 @@ class MainActivity: AppCompatActivity() {
         bundle.putSerializable(KEY_BUNDLE_VENUE, venue)
         val fragment = MapFragment()
         fragment.arguments = bundle
-
         launchFragment(fragment)
     }
 
@@ -79,6 +76,17 @@ class MainActivity: AppCompatActivity() {
         fragment.arguments = bundle
 
         launchFragment(fragment = fragment, sharedView = sharedView)
+    }
+
+    fun openSingleSetlistFragment(setlist: Setlist) {
+        val bundle = Bundle()
+        //bundle.putString(KEY_BUNDLE_TRANSITION, sharedView.transitionName)
+        bundle.putSerializable(KEY_BUNDLE_SETLIST, setlist)
+
+        val fragment = SingleSetlistFragment()
+        fragment.arguments = bundle
+
+        launchFragment(fragment = fragment)
     }
 
     fun closeFragment() {

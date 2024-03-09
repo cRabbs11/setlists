@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.kochkov.evgeny.setlist_mobile.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ConcertDateView@JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null): View(context, attributeSet) {
 
@@ -158,6 +160,35 @@ class ConcertDateView@JvmOverloads constructor(context: Context, attributeSet: A
 
     private fun getCornerRoundSize() : Float {
         return height / 20f
+    }
+
+    fun setDate(date: Date) {
+        val month = SimpleDateFormat("mm", Locale.getDefault())
+        sMonth = identMonth(month.format(date))
+        val day = SimpleDateFormat("dd", Locale.getDefault())
+        sDay = day.format(date)
+        val year = SimpleDateFormat("yyyy", Locale.getDefault())
+        sYear = year.format(date)
+        initPaint()
+        invalidate()
+    }
+
+    private fun identMonth(format: String): String {
+        return when (format) {
+            "01" -> context.resources.getString(R.string.jan)
+            "02" -> context.resources.getString(R.string.feb)
+            "03" -> context.resources.getString(R.string.mar)
+            "04" -> context.resources.getString(R.string.apr)
+            "05" -> context.resources.getString(R.string.may)
+            "06" -> context.resources.getString(R.string.jun)
+            "07" -> context.resources.getString(R.string.jul)
+            "08" -> context.resources.getString(R.string.aug)
+            "09" -> context.resources.getString(R.string.sep)
+            "10" -> context.resources.getString(R.string.oct)
+            "11" -> context.resources.getString(R.string.nov)
+            "12" -> context.resources.getString(R.string.nov)
+            else -> context.resources.getString(R.string.jan)
+        }
     }
 
     fun setDate(day: String, month: String, year: String) {
