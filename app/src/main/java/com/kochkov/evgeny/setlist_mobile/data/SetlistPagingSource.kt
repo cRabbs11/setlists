@@ -3,7 +3,7 @@ package com.kochkov.evgeny.setlist_mobile.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
-import com.kochkov.evgeny.setlist_mobile.data.entity.toSetlistList
+import com.kochkov.evgeny.setlist_mobile.data.dto.toSetlistList
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 
 class SetlistPagingSource(private val retrofit: SetlistsRetrofitInterface, val artist: String): PagingSource<Int, Setlist>() {

@@ -1,6 +1,8 @@
 package com.kochkov.evgeny.setlist_mobile.data
 
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
+import com.kochkov.evgeny.setlist_mobile.data.dto.toArtistList
+import com.kochkov.evgeny.setlist_mobile.data.dto.toSetlistList
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_TOUR_IS_NULL

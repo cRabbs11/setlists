@@ -1,17 +1,18 @@
-package com.kochkov.evgeny.setlist_mobile.data.entity
+package com.kochkov.evgeny.setlist_mobile.data.dto
 
 import com.google.gson.annotations.SerializedName
+import com.kochkov.evgeny.setlist_mobile.data.entity.Song
 
 data class SongDTO(
-        @SerializedName("cover")
+    @SerializedName("cover")
         val cover: ArtistDTO?,
-        @SerializedName("info")
+    @SerializedName("info")
         val info: String,
-        @SerializedName("name")
+    @SerializedName("name")
         val name: String,
-        @SerializedName("tape")
+    @SerializedName("tape")
         val tape: Boolean,
-        @SerializedName("with")
+    @SerializedName("with")
         val with: ArtistDTO?
 )
 

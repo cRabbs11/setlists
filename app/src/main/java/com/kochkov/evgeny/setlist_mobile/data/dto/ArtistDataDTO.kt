@@ -1,12 +1,12 @@
-package com.kochkov.evgeny.setlist_mobile.data.entity
+package com.kochkov.evgeny.setlist_mobile.data.dto
 
 import com.kochkov.evgeny.setlist_mobile.data.Artist
 
 data class ArtistDataDTO(
-        val artist: List<ArtistDTO>,
-        val itemsPerPage: Int,
-        val page: Int,
-        val total: Int
+    val artist: List<ArtistDTO>,
+    val itemsPerPage: Int,
+    val page: Int,
+    val total: Int
 )
 
 fun ArtistDataDTO.toArtistList(): List<Artist> {

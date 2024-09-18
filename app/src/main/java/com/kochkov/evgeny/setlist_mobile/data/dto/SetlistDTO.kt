@@ -1,27 +1,29 @@
-package com.kochkov.evgeny.setlist_mobile.data.entity
+package com.kochkov.evgeny.setlist_mobile.data.dto
 
 import com.google.gson.annotations.SerializedName
+import com.kochkov.evgeny.setlist_mobile.data.entity.Set
+import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 
 data class SetlistDTO(
-        @SerializedName("artist")
+    @SerializedName("artist")
         val artist: ArtistDTO,
-        @SerializedName("eventDate")
+    @SerializedName("eventDate")
         val eventDate: String,
-        @SerializedName("id")
+    @SerializedName("id")
         val id: String,
-        @SerializedName("info")
+    @SerializedName("info")
         val info: String,
-        @SerializedName("lastUpdated")
+    @SerializedName("lastUpdated")
         val lastUpdated: String,
-        @SerializedName("sets")
+    @SerializedName("sets")
         val sets: SetsDTO,
-        @SerializedName("tour")
+    @SerializedName("tour")
         val tour: TourDTO?,
-        @SerializedName("url")
+    @SerializedName("url")
         val url: String,
-        @SerializedName("venue")
+    @SerializedName("venue")
         val venue: VenueDTO,
-        @SerializedName("versionId")
+    @SerializedName("versionId")
         val versionId: String,
 )
 

@@ -1,6 +1,8 @@
-package com.kochkov.evgeny.setlist_mobile.data.entity
+package com.kochkov.evgeny.setlist_mobile.data.dto
 
 import com.google.gson.annotations.SerializedName
+import com.kochkov.evgeny.setlist_mobile.data.entity.Set
+import com.kochkov.evgeny.setlist_mobile.data.entity.Song
 
 data class SetDTO(
         @SerializedName("encore")
