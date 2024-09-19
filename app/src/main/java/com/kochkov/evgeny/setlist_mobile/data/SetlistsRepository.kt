@@ -2,8 +2,8 @@ package com.kochkov.evgeny.setlist_mobile.data
 
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.kochkov.evgeny.setlist_mobile.data.dto.toArtistList
-import com.kochkov.evgeny.setlist_mobile.data.dto.toSetlistList
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
+import com.kochkov.evgeny.setlist_mobile.utils.SetlistHelper
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_TOUR_IS_NULL
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
@@ -112,7 +112,11 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
             val result = retrofit.getSetlistsByArtist(
                 artistMbid = artist.mbid,
                 page = page)
-            result.body()?.toSetlistList()
+            result.body()?.let {
+                SetlistHelper.fromSetlistDataDTOtoSetlists(it)
+            }
+            //SetlistHelper.fromSetlistDataDTOtoSetlists()
+            //result.body()?.toSetlistList()
         }
     }
 
@@ -126,13 +130,14 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
             while (!isTourEnded) {
                 val response = retrofit.searchSetlistsByTour(tourName, ++page)
                 setlistsInTourTotal = response.body()?.total?: SETLISTS_IN_TOUR_IS_NULL
-                val result = response.body()?.toSetlistList()
-                    result?.forEach { setlist ->
+                response.body()?.let {
+                    SetlistHelper.fromSetlistDataDTOtoSetlists(it).forEach { setlist ->
                         setlistsInTour.add(setlist)
                         setlistsInTourCount++
                     }
-                if (setlistsInTourCount>=setlistsInTourTotal) isTourEnded = true
+                    if (setlistsInTourCount>=setlistsInTourTotal) isTourEnded = true
                     //убрать проверку на совпадение имени тура (это происходит внутри апи?)
+                }
             }
             setlistsInTour
         }
@@ -141,15 +146,15 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
     suspend fun isSetlistsHave(artist: Artist): Boolean {
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
-            result.body()?.toSetlistList()?.isNotEmpty()?: false
+            result.body()!=null || SetlistHelper.fromSetlistDataDTOtoSetlists(result.body()!!).isEmpty()
         }
     }
 
     private suspend fun isSetlistsHaveReturnedArtist(artist: Artist): Artist? {
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
-            result.body()?.toSetlistList()?.isNotEmpty()?.let {
-                if (it) {
+            result.body()?.let {
+                if (SetlistHelper.fromSetlistDataDTOtoSetlists(it).isNotEmpty()) {
                     artist
                 } else {
                     null

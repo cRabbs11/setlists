@@ -3,7 +3,7 @@ package com.kochkov.evgeny.setlist_mobile.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
-import com.kochkov.evgeny.setlist_mobile.data.dto.toSetlistList
+import com.kochkov.evgeny.setlist_mobile.utils.SetlistHelper
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 
 class SetlistPagingSource(private val retrofit: SetlistsRetrofitInterface, val artist: String): PagingSource<Int, Setlist>() {
@@ -20,7 +20,7 @@ class SetlistPagingSource(private val retrofit: SetlistsRetrofitInterface, val a
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Setlist> {
         val pageNumber = params.key?: STARTING_KEY
         return try {
-            val setlists = retrofit.getSetlistsByArtist(artist, pageNumber).body()!!.toSetlistList()
+            val setlists = SetlistHelper.fromSetlistDataDTOtoSetlists(retrofit.getSetlistsByArtist(artist, pageNumber).body()!!)
             val nextKey = if (setlists.size<20) null else pageNumber + 1
             val prevKey = if (pageNumber==1) null else pageNumber - 1
             LoadResult.Page(
