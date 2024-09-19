@@ -1,12 +1,12 @@
 package com.kochkov.evgeny.setlist_mobile.domain
 
 import com.kochkov.evgeny.setlist_mobile.data.Artist
-import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
+import com.kochkov.evgeny.setlist_mobile.domain.repository.RemoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class Interactor(private val repository: SetlistsRepository) {
+class Interactor(private val repository: RemoteRepository) {
 
     fun setNewArtist() {
         MainScope().launch(Dispatchers.IO) {

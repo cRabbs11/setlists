@@ -3,19 +3,20 @@ package com.kochkov.evgeny.setlist_mobile.data
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.kochkov.evgeny.setlist_mobile.data.dto.toArtistList
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
+import com.kochkov.evgeny.setlist_mobile.domain.repository.RemoteRepository
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistHelper
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_TOUR_IS_NULL
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import kotlinx.coroutines.*
 
-class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface) {
+class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface): RemoteRepository {
 
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
     private val lastSearchArtists = ArrayList<Artist>()
 
-    suspend fun setNewArtist() {
+    override suspend fun setNewArtist() {
         clearSetlistsInDB()
     }
 
@@ -31,7 +32,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
     suspend fun saveSearchQueryArtists(query: SearchQuery) = artistDao.insertSearchQuery(query)
 
 
-    suspend fun searchArtistWithSetlists(artistName: String): List<Artist>? {
+    override suspend fun searchArtistWithSetlists(artistName: String): List<Artist>? {
         return coroutineScope {
             val rearchResult = retrofit.searchArtists(
                 artistName = artistName,
@@ -107,7 +108,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
     //    )
     //}
 
-    suspend fun getSetlists(artist: Artist, page: Int): List<Setlist>? {
+    override suspend fun getSetlists(artist: Artist, page: Int): List<Setlist>? {
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(
                 artistMbid = artist.mbid,
@@ -120,7 +121,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         }
     }
 
-    suspend fun getSetlistsInTour(tourName: String): List<Setlist>? {
+    override suspend fun getSetlistsInTour(tourName: String): List<Setlist>? {
         return coroutineScope {
             val setlistsInTour = arrayListOf<Setlist>()
             var isTourEnded = false
@@ -143,7 +144,7 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         }
     }
 
-    suspend fun isSetlistsHave(artist: Artist): Boolean {
+    override suspend fun isSetlistsHave(artist: Artist): Boolean {
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
             result.body()!=null || SetlistHelper.fromSetlistDataDTOtoSetlists(result.body()!!).isEmpty()
@@ -163,6 +164,6 @@ class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit:
         }
     }
 
-    fun setlistPagingSource(artist : String) = SetlistPagingSource(retrofit, artist)
+    override fun setlistPagingSource(artist : String) = SetlistPagingSource(retrofit, artist)
 
 }
