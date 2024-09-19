@@ -1,8 +1,6 @@
 package com.kochkov.evgeny.setlist_mobile.data.dto
 
 import com.google.gson.annotations.SerializedName
-import com.kochkov.evgeny.setlist_mobile.data.entity.Set
-import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 
 data class SetlistDTO(
     @SerializedName("artist")
@@ -26,19 +24,3 @@ data class SetlistDTO(
     @SerializedName("versionId")
         val versionId: String,
 )
-
-fun SetlistDTO.toSetlist(): Setlist {
-        val list = arrayListOf<Set>()
-        sets.set.forEach {
-                list.add(it.toSet())
-        }
-        return Setlist(
-                id = id.hashCode(),
-                artist = artist.toArtist(),
-                venue = venue.toVenue(),
-                tour = tour?.toTour(),
-                eventDate = eventDate,
-                lastUpdated = lastUpdated,
-                sets = list
-        )
-}
