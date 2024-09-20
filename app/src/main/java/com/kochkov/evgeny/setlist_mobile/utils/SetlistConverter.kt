@@ -15,7 +15,7 @@ import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 import com.kochkov.evgeny.setlist_mobile.data.entity.Song
 import com.kochkov.evgeny.setlist_mobile.setlists.SongListItem
 
-object SetlistHelper {
+object SetlistConverter {
 
     fun fromSetlistToSongList(setlist: Setlist): List<SongListItem> {
         val newSongList = arrayListOf<SongListItem>()

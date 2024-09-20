@@ -4,7 +4,7 @@ import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.kochkov.evgeny.setlist_mobile.data.SetlistPagingSource
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
 import com.kochkov.evgeny.setlist_mobile.domain.repository.RemoteRepository
-import com.kochkov.evgeny.setlist_mobile.utils.SetlistHelper
+import com.kochkov.evgeny.setlist_mobile.utils.SetlistConverter
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_TOUR_IS_NULL
 import kotlinx.coroutines.*
@@ -22,7 +22,7 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
             page = 1,
             sort = SetlistsAPIConstants.SORT_TYPE_NAME)
         searchResult.body()?.let {
-            list.addAll(SetlistHelper.fromArtistDataDTOToArtists(it))
+            list.addAll(SetlistConverter.fromArtistDataDTOToArtists(it))
         }
         return list
     }
@@ -41,7 +41,7 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
                 page = page)
             val list = arrayListOf<Setlist>()
             result.body()?.let {
-                list.addAll(SetlistHelper.fromSetlistDataDTOtoSetlists(it))
+                list.addAll(SetlistConverter.fromSetlistDataDTOtoSetlists(it))
             }
             list
             //SetlistHelper.fromSetlistDataDTOtoSetlists()
@@ -60,7 +60,7 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
                 val response = retrofit.searchSetlistsByTour(tourName, ++page)
                 setlistsInTourTotal = response.body()?.total?: SETLISTS_IN_TOUR_IS_NULL
                 response.body()?.let {
-                    SetlistHelper.fromSetlistDataDTOtoSetlists(it).forEach { setlist ->
+                    SetlistConverter.fromSetlistDataDTOtoSetlists(it).forEach { setlist ->
                         setlistsInTour.add(setlist)
                         setlistsInTourCount++
                     }
@@ -75,7 +75,7 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
     override suspend fun isSetlistsHave(artist: Artist): Boolean {
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
-            result.body()!=null || SetlistHelper.fromSetlistDataDTOtoSetlists(result.body()!!).isEmpty()
+            result.body()!=null || SetlistConverter.fromSetlistDataDTOtoSetlists(result.body()!!).isEmpty()
         }
     }
 
@@ -83,7 +83,7 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
             result.body()?.let {
-                if (SetlistHelper.fromSetlistDataDTOtoSetlists(it).isNotEmpty()) {
+                if (SetlistConverter.fromSetlistDataDTOtoSetlists(it).isNotEmpty()) {
                     artist
                 } else {
                     null
