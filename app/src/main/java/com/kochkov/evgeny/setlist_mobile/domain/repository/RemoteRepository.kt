@@ -14,8 +14,6 @@ interface RemoteRepository {
 
     suspend fun getSetlists(artist: Artist, page: Int): List<Setlist>
 
-    suspend fun getSetlists(tourName: String, page: Int): Response<SetlistsDataDTO>
-
     suspend fun getAllSetlistsInTour(tourName: String): List<Setlist>
 
     fun setlistPagingSource(artist : String) : SetlistPagingSource
