@@ -46,37 +46,8 @@ class ArtistSearchFragmentViewModel: ViewModel() {
                 queryArtistLiveData.postValue(result)
             }
         }
-        //setlistsRepository.getSearchQueryArtists()
-        //    .subscribeOn(Schedulers.io())
-        //    .map { list ->
-        //        val result = arrayListOf<String>()
-        //        list.forEach {
-        //            result.add(it.queryText)
-        //        }
-        //        result
-        //    }
-        //    .subscribe{
-        //        if (it.isNotEmpty()) {
-        //            queryArtistLiveData.postValue(it)
-        //        }
-        //    }
         loadingIndicatorLiveData.postValue(false)
     }
-
-    //fun searchArtistCoroutines(artistName: String) {
-    //    if (artistName.isNotEmpty()) {
-    //        loadingIndicatorLiveData.postValue(true)
-    //                    viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-    //            val list = interactor.searchArtist(artistName)
-    //                            list?.let {
-    //                artistsLiveData.postValue(it)
-    //                                } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
-    //                            loadingIndicatorLiveData.postValue(false)
-    //                        }
-    //                } else {
-    //        toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
-    //                }
-    //        }
 
     fun searchArtistWithSetlists(artistName: String) {
         if (artistName.isNotEmpty()) {
