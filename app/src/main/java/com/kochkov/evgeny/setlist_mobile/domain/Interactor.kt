@@ -16,7 +16,7 @@ class Interactor(private val remoteRepository: RemoteRepository, private val loc
 
     fun setNewArtist() {
         MainScope().launch(Dispatchers.IO) {
-            repository.setNewArtist()
+            localRepository.setNewArtist()
         }
     }
 
