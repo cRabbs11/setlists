@@ -67,8 +67,11 @@ object SetlistConverter {
 
     private fun fromSetlistDTOtoSetlist(setlistDTO: SetlistDTO): Setlist {
         val list = arrayListOf<Set>()
+        var songNumber = 1
         setlistDTO.sets.set.forEach {
-            list.add(fromSetDTOToSet(it))
+            val set = fromSetDTOToSet(it, songNumber)
+            songNumber = set.songs.last().number + 1
+            list.add(set)
         }
         return Setlist(
             id = setlistDTO.id.hashCode(),
@@ -109,16 +112,14 @@ object SetlistConverter {
     coord_long = coordsDTO.long.toString()
     )
 
-    private fun fromSetDTOToSet(setDTO: SetDTO): Set {
-        var songNumber = 1
+    private fun fromSetDTOToSet(setDTO: SetDTO, songNumber: Int): Set {
+        var number = songNumber
         val list = arrayListOf<Song>()
         setDTO.song.forEach {
-            val number = if (!it.tape) {
-                songNumber++
-            } else {
-                songNumber
-            }
             list.add(fromSongDTOToSong(it, number))
+            if (!it.tape) {
+                number++
+            }
         }
         return Set(
             name = setDTO.name?: "",
