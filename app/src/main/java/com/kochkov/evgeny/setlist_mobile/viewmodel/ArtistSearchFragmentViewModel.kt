@@ -54,10 +54,12 @@ class ArtistSearchFragmentViewModel: ViewModel() {
             loadingIndicatorLiveData.postValue(true)
             artistsLiveData.postValue(arrayListOf())
             viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-                val list = interactor.searchArtistWithSetlists(artistName)
-                list?.let {
-                    artistsLiveData.postValue(it)
-                } ?: toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
+                val list = interactor.searchArtistsWithSetlists(artistName)
+                if (list.isEmpty()) {
+                    toastEventLiveData.postValue(ARTIST_SEARCH_ON_FAILURE)
+                } else {
+                    artistsLiveData.postValue(list)
+                }
                 loadingIndicatorLiveData.postValue(false)
             }
         } else {
