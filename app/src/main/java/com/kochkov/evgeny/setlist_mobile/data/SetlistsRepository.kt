@@ -66,7 +66,7 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
         }
     }
 
-    override suspend fun getSetlistsInTour(tourName: String): List<Setlist>? {
+    override suspend fun getAllSetlistsInTour(tourName: String): List<Setlist> {
         return coroutineScope {
             val setlistsInTour = arrayListOf<Setlist>()
             var isTourEnded = false
