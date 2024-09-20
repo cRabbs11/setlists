@@ -13,8 +13,6 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
 
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
-    private val lastSearchArtists = ArrayList<Artist>()
-
     override suspend fun searchArtists(artistName: String): List<Artist> {
         val list = arrayListOf<Artist>()
         val searchResult = retrofit.searchArtists(
@@ -25,13 +23,6 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
             list.addAll(SetlistConverter.fromArtistDataDTOToArtists(it))
         }
         return list
-    }
-
-    fun setLastSearchArtists(list: List<Artist>) {
-        lastSearchArtists.clear()
-        list.forEach {
-            lastSearchArtists.add(it)
-        }
     }
 
     override suspend fun getSetlists(artist: Artist, page: Int): List<Setlist> {
