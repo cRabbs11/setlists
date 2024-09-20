@@ -63,19 +63,6 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
         }
     }
 
-    private suspend fun isSetlistsHaveReturnedArtist(artist: Artist): Artist? {
-        return coroutineScope {
-            val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
-            result.body()?.let {
-                if (SetlistConverter.fromSetlistDataDTOtoSetlists(it).isNotEmpty()) {
-                    artist
-                } else {
-                    null
-                }
-            }
-        }
-    }
-
     override fun setlistPagingSource(artist : String) = SetlistPagingSource(retrofit, artist)
 
 }
