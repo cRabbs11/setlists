@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kochkov.evgeny.setlist_mobile.App
 import com.kochkov.evgeny.setlist_mobile.data.Artist
-import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
 import com.kochkov.evgeny.setlist_mobile.domain.Interactor
 import com.kochkov.evgeny.setlist_mobile.utils.*
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_FIELD_IS_EMPTY
@@ -14,7 +13,6 @@ import com.kochkov.evgeny.setlist_mobile.utils.Constants.ARTIST_SEARCH_ON_FAILUR
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.NETWORK_IS_NOT_OK
 import com.kochkov.evgeny.setlist_mobile.utils.Constants.SETLISTS_SEARCH_NOT_FOUND
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class ArtistSearchFragmentViewModel: ViewModel() {
