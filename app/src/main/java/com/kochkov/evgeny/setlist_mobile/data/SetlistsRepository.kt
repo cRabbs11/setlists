@@ -121,9 +121,11 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
             val result = retrofit.getSetlistsByArtist(
                 artistMbid = artist.mbid,
                 page = page)
+            val list = arrayListOf<Setlist>()
             result.body()?.let {
-                SetlistHelper.fromSetlistDataDTOtoSetlists(it)
+                list.addAll(SetlistHelper.fromSetlistDataDTOtoSetlists(it))
             }
+            list
             //SetlistHelper.fromSetlistDataDTOtoSetlists()
             //result.body()?.toSetlistList()
         }
