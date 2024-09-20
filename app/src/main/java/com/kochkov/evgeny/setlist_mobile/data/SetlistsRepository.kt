@@ -1,7 +1,5 @@
 package com.kochkov.evgeny.setlist_mobile.data
 
-import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
-import com.kochkov.evgeny.setlist_mobile.data.dto.toArtistList
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
 import com.kochkov.evgeny.setlist_mobile.domain.repository.RemoteRepository
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistHelper
@@ -32,22 +30,6 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
         lastSearchArtists.clear()
         list.forEach {
             lastSearchArtists.add(it)
-        }
-    }
-
-    suspend fun searchArtistAndSaveQuery(artistName: String): List<Artist>? {
-        return coroutineScope {
-            val result = retrofit.searchArtists(
-                artistName = artistName,
-                page = 1,
-                sort = SetlistsAPIConstants.SORT_TYPE_NAME)
-            val list = result.body()?.toArtistList()
-            if (!list.isNullOrEmpty()) {
-                setLastSearchArtists(list)
-                val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
-                saveSearchQueryArtists(searchQuery)
-            }
-            list
         }
     }
 
