@@ -34,14 +34,11 @@ class ArtistSearchFragmentViewModel: ViewModel() {
     @Inject
     lateinit var interactor: Interactor
 
-    @Inject
-    lateinit var setlistsRepository: SetlistsRepository
-
     init {
         App.instance.dagger.inject(this)
 
         viewModelScope.launch(Dispatchers.IO) {
-            setlistsRepository.getSearchQueryArtists().collect { list ->
+            interactor.getSearchQueryArtists().collect { list ->
                 val result = arrayListOf<String>()
                 list.forEach {
                     result.add(it.queryText)
