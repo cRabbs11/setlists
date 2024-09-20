@@ -49,8 +49,6 @@ class Interactor(private val remoteRepository: RemoteRepository, private val loc
         }
     }
 
-    suspend fun isHaveSetlists(artist: Artist) = remoteRepository.isSetlistsHave(artist)
-
     suspend fun getSetlists(artist: Artist, page: Int) = remoteRepository.getSetlists(artist, page)
 
     suspend fun getSetlistsInTour(tourName: String) = remoteRepository.getAllSetlistsInTour(tourName)
