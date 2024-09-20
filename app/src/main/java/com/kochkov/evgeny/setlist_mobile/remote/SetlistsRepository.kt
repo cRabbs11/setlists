@@ -72,13 +72,6 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
         }
     }
 
-    override suspend fun isSetlistsHave(artist: Artist): Boolean {
-        return coroutineScope {
-            val result = retrofit.getSetlistsByArtist(artist.mbid, 1)
-            result.body()!=null || SetlistConverter.fromSetlistDataDTOtoSetlists(result.body()!!).isEmpty()
-        }
-    }
-
     private suspend fun isSetlistsHaveReturnedArtist(artist: Artist): Artist? {
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(artist.mbid, 1)

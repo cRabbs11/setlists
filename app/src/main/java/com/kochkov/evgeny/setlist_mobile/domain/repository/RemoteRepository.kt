@@ -7,10 +7,8 @@ import com.kochkov.evgeny.setlist_mobile.data.entity.Setlist
 import retrofit2.Response
 
 interface RemoteRepository {
-    //старые методы
-    suspend fun searchArtists(artistName: String): List<Artist>
 
-    suspend fun isSetlistsHave(artist: Artist): Boolean
+    suspend fun searchArtists(artistName: String): List<Artist>
 
     suspend fun getSetlists(artist: Artist, page: Int): List<Setlist>
 
