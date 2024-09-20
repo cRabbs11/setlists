@@ -1,4 +1,4 @@
-package com.kochkov.evgeny.setlist_mobile.utils
+package com.kochkov.evgeny.setlist_mobile.remote
 
 import com.kochkov.evgeny.setlist_mobile.data.dto.ArtistDataDTO
 import com.kochkov.evgeny.setlist_mobile.data.dto.SetlistsDataDTO

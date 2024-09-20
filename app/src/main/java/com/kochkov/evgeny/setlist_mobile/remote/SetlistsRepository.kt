@@ -1,11 +1,12 @@
-package com.kochkov.evgeny.setlist_mobile.data
+package com.kochkov.evgeny.setlist_mobile.remote
 
+import com.kochkov.evgeny.setlist_mobile.data.Artist
+import com.kochkov.evgeny.setlist_mobile.data.SetlistPagingSource
 import com.kochkov.evgeny.setlist_mobile.data.entity.*
 import com.kochkov.evgeny.setlist_mobile.domain.repository.RemoteRepository
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistHelper
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_TOUR_IS_NULL
-import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import kotlinx.coroutines.*
 
 class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): RemoteRepository {
