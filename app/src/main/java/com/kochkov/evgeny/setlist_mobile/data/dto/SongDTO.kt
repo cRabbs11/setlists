@@ -1,7 +1,6 @@
 package com.kochkov.evgeny.setlist_mobile.data.dto
 
 import com.google.gson.annotations.SerializedName
-import com.kochkov.evgeny.setlist_mobile.data.entity.Song
 
 data class SongDTO(
     @SerializedName("cover")
@@ -14,13 +13,4 @@ data class SongDTO(
         val tape: Boolean,
     @SerializedName("with")
         val with: ArtistDTO?
-)
-
-fun SongDTO.toSong(songNumber: Int) = Song(
-        name = name,
-        info = info,
-        tape = tape,
-        cover = cover?.toArtist(),
-        with = with?.toArtist(),
-        number = songNumber
 )

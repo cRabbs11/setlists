@@ -1,6 +1,5 @@
 package com.kochkov.evgeny.setlist_mobile.data.dto
 
-import com.kochkov.evgeny.setlist_mobile.data.Artist
 import com.google.gson.annotations.SerializedName
 
 data class ArtistDTO(
@@ -16,13 +15,4 @@ data class ArtistDTO(
         val tmid: Int,
         @SerializedName("url")
         val url: String
-)
-
-fun ArtistDTO.toArtist() = Artist(
-        disambiguation = disambiguation ?: "",
-        mbid = mbid,
-        name = name,
-        sortName = sortName,
-        tmid = tmid,
-        url = url
 )

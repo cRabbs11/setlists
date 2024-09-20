@@ -1,7 +1,6 @@
 package com.kochkov.evgeny.setlist_mobile.data.dto
 
 import com.google.gson.annotations.SerializedName
-import com.kochkov.evgeny.setlist_mobile.data.entity.Venue
 
 data class VenueDTO(
     @SerializedName("city")
@@ -12,11 +11,4 @@ data class VenueDTO(
         val name: String,
     @SerializedName("url")
         val url: String
-)
-
-fun VenueDTO.toVenue() = Venue(
-        id = id,
-        name = name,
-        url =url,
-        city = city.toCity()
 )

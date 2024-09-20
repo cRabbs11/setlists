@@ -1,6 +1,5 @@
 package com.kochkov.evgeny.setlist_mobile.data.dto
 import com.google.gson.annotations.SerializedName
-import com.kochkov.evgeny.setlist_mobile.data.entity.City
 
 data class CityDTO(
     @SerializedName("coords")
@@ -15,13 +14,4 @@ data class CityDTO(
         val state: String?,
     @SerializedName("stateCode")
         val stateCode: String?
-)
-
-fun CityDTO.toCity() = City(
-        id = id,
-        name = name,
-        state = state ?: "",
-        stateCode = stateCode?: "",
-        coords = coords.toCoords(),
-        country = country.toCountry()
 )
