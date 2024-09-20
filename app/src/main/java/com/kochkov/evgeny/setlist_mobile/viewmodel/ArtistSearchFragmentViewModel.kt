@@ -64,17 +64,4 @@ class ArtistSearchFragmentViewModel: ViewModel() {
             toastEventLiveData.postValue(ARTIST_SEARCH_FIELD_IS_EMPTY)
         }
     }
-
-
-    fun isSetlistsHave(artist: Artist) {
-        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            val result = interactor.isHaveSetlists(artist)
-            if (result) {
-                interactor.setNewArtist()
-                isSetlistsHaveLiveData.postValue(artist)
-            } else {
-                toastEventLiveData.postValue(SETLISTS_SEARCH_NOT_FOUND)
-            }
-        }
-    }
 }

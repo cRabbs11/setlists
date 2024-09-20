@@ -131,7 +131,7 @@ class ArtistSearchFragment : Fragment() {
 
         adapter = ArtistListAdapter(object: OnItemClickListener<Artist> {
             override fun onItemClick(artist: Artist) {
-                viewModel.isSetlistsHave(artist)
+                (activity as MainActivity).openSetlistsSearchFragment(artist)
             }
         })
         binding.recyclerView.adapter = adapter
