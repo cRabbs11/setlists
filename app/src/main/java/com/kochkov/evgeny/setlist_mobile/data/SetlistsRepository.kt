@@ -10,14 +10,22 @@ import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants.SETLISTS_IN_
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
 import kotlinx.coroutines.*
 
-class SetlistsRepository(private val artistDao: ArtistDao, private val retrofit: SetlistsRetrofitInterface): RemoteRepository {
+class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): RemoteRepository {
 
     val TAG = SetlistsRepository::class.java.name + " BMTH "
 
     private val lastSearchArtists = ArrayList<Artist>()
 
-    override suspend fun setNewArtist() {
-        clearSetlistsInDB()
+    override suspend fun searchArtists(artistName: String): List<Artist> {
+        val list = arrayListOf<Artist>()
+        val searchResult = retrofit.searchArtists(
+            artistName = artistName,
+            page = 1,
+            sort = SetlistsAPIConstants.SORT_TYPE_NAME)
+        searchResult.body()?.let {
+            list.addAll(SetlistHelper.fromArtistDataDTOToArtists(it))
+        }
+        return list
     }
 
     fun setLastSearchArtists(list: List<Artist>) {
