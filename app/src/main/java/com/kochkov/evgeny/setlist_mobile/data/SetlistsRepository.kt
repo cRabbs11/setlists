@@ -35,39 +35,6 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
         }
     }
 
-    fun getSearchQueryArtists() = artistDao.getSearchQueryArtists()
-
-    suspend fun saveSearchQueryArtists(query: SearchQuery) = artistDao.insertSearchQuery(query)
-
-
-    override suspend fun searchArtistWithSetlists(artistName: String): List<Artist>? {
-        return coroutineScope {
-            val rearchResult = retrofit.searchArtists(
-                artistName = artistName,
-                page = 1,
-                sort = SetlistsAPIConstants.SORT_TYPE_NAME)
-            val list = rearchResult.body()?.toArtistList()
-            val result = arrayListOf<Artist>()
-            val deferred = list?.flatMap {
-                listOf(
-                    async {
-                        isSetlistsHaveReturnedArtist(it)
-                    }
-                )
-            }
-            deferred?.awaitAll()?.forEach { artist ->
-                artist?.let {
-                    result.add(it)
-                }
-            }
-            if (!result.isNullOrEmpty()) {
-                val searchQuery = SearchQuery(queryText = artistName, searchType = AppDataBase.SEARCH_TYPE_ARTISTS)
-                saveSearchQueryArtists(searchQuery)
-            }
-            result
-        }
-    }
-
     suspend fun searchArtistAndSaveQuery(artistName: String): List<Artist>? {
         return coroutineScope {
             val result = retrofit.searchArtists(
@@ -84,39 +51,7 @@ class SetlistsRepository(private val retrofit: SetlistsRetrofitInterface): Remot
         }
     }
 
-    private suspend fun insertSetlistsInDB(list: List<Setlist>) {
-        artistDao.insertSetlists(list)
-    }
-
-    private suspend fun clearSetlistsInDB() {
-        artistDao.clearSetlists()
-    }
-
-    //код на rxJava для получения сетлистов и с БД и с сети
-    //fun getSetlistsWithDB(artist: Artist, page: Int): Observable<List<Setlist>> {
-    //    return Observable.concat(
-    //        retrofit.getSetlistsByArtistObservable(
-    //            artistMbid = artist.mbid,
-    //            page = page
-    //        ).subscribeOn(Schedulers.io())
-    //            .onErrorComplete{
-    //                false
-    //            }
-    //            .map {
-    //                val list = it.toSetlistList()
-    //                list
-    //            }
-    //            .flatMap {
-    //                if (it.isNotEmpty()) {
-    //                    insertSetlistsInDB(it)
-    //                }
-    //                Observable.empty<List<Setlist>>()
-    //            },
-    //        artistDao.getSetlists().subscribeOn(Schedulers.io())
-    //    )
-    //}
-
-    override suspend fun getSetlists(artist: Artist, page: Int): List<Setlist>? {
+    override suspend fun getSetlists(artist: Artist, page: Int): List<Setlist> {
         return coroutineScope {
             val result = retrofit.getSetlistsByArtist(
                 artistMbid = artist.mbid,
