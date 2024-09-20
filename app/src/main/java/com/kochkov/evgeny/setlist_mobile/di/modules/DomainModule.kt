@@ -1,7 +1,8 @@
 package com.kochkov.evgeny.setlist_mobile.di.modules
 
 import com.kochkov.evgeny.setlist_mobile.domain.Interactor
-import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
+import com.kochkov.evgeny.setlist_mobile.domain.repository.LocalRepository
+import com.kochkov.evgeny.setlist_mobile.domain.repository.RemoteRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -11,5 +12,7 @@ class DomainModule {
 
     @Singleton
     @Provides
-    fun provideInteractor(repository: SetlistsRepository): Interactor = Interactor(repository)
+    fun provideInteractor(
+        remoteRepository: RemoteRepository,
+        localRepository: LocalRepository): Interactor = Interactor(remoteRepository, localRepository)
 }
