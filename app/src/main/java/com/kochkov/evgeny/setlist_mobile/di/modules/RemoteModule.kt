@@ -2,7 +2,7 @@ package com.kochkov.evgeny.setlist_mobile.di.modules
 
 import com.kochkov.evgeny.setlist_mobile.utils.ApiKeys
 import com.kochkov.evgeny.setlist_mobile.utils.SetlistsAPIConstants
-import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
+import com.kochkov.evgeny.setlist_mobile.remote.SetlistsRetrofitInterface
 import dagger.Module
 import dagger.Provides
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
