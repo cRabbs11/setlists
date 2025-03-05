@@ -15,7 +15,7 @@ class SingleSetlistFragmentViewModel(private val setlist: Setlist): ViewModel() 
 
     init {
         App.instance.dagger.inject(this)
-        songListItemLiveData.postValue(SetlistHelper.fromSetlistToSongList(setlist))
+        songListItemLiveData.postValue(setlist.getComponentsList())
         setlistInfoLiveData.postValue(setlist)
 
     }

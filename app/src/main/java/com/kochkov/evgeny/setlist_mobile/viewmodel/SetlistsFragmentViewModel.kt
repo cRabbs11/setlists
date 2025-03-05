@@ -67,11 +67,11 @@ class SetlistsFragmentViewModel(private val artist: Artist) : ViewModel() {
     suspend fun getSetlists(artist: Artist, page: Int) {
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val list = interactor.getSetlists(artist, page)
-            list?.let {
+            list.let {
                 if (it.isNotEmpty()) {
                     setlistPage++
                     isLoading = false
-                    var newList = arrayListOf<Setlist>()
+                    val newList = arrayListOf<Setlist>()
                     newList.addAll(setlistsLiveData.value?: arrayListOf())
                     newList.addAll(it)
                     setlistsLiveData.postValue(newList)

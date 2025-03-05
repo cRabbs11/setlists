@@ -3,10 +3,13 @@ package com.kochkov.evgeny.setlist_mobile.di.modules
 import android.content.Context
 import androidx.room.Room
 import com.kochkov.evgeny.setlist_mobile.data.AppDataBase
+import com.kochkov.evgeny.setlist_mobile.data.RoomRepository
 import com.kochkov.evgeny.setlist_mobile.data.dao.ArtistDao
 import com.kochkov.evgeny.setlist_mobile.utils.SearchHistoryHelper
-import com.kochkov.evgeny.setlist_mobile.data.SetlistsRepository
-import com.kochkov.evgeny.setlist_mobile.utils.SetlistsRetrofitInterface
+import com.kochkov.evgeny.setlist_mobile.remote.SetlistsRepository
+import com.kochkov.evgeny.setlist_mobile.domain.repository.LocalRepository
+import com.kochkov.evgeny.setlist_mobile.domain.repository.RemoteRepository
+import com.kochkov.evgeny.setlist_mobile.remote.SetlistsRetrofitInterface
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -14,7 +17,6 @@ import javax.inject.Singleton
 
 @Module
 class DataModule(val context: Context) {
-
 
     @Provides
     fun provideContext(): Context = context
@@ -33,8 +35,12 @@ class DataModule(val context: Context) {
     @Singleton
     @Provides
     fun provideSetlistRepository(
-        artistDao: ArtistDao,
-        retrofit: SetlistsRetrofitInterface): SetlistsRepository = SetlistsRepository(artistDao, retrofit)
+        retrofit: SetlistsRetrofitInterface
+    ): RemoteRepository = SetlistsRepository(retrofit)
+
+    @Singleton
+    @Provides
+    fun provideLocalRepository(artistDao: ArtistDao): LocalRepository = RoomRepository(artistDao)
 
     @Singleton
     @Provides
